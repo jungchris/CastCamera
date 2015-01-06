@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GoogleCast/GoogleCast.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <GCKDeviceScannerListener,
+GCKDeviceManagerDelegate,
+GCKMediaControlChannelDelegate,
+UIActionSheetDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *labelCast;
+- (IBAction)buttonCast:(id)sender;
 
 @end
 
