@@ -14,9 +14,14 @@
 
 @implementation AppDelegate
 
+@synthesize webServer;
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    // setup basic web server
+    webServer = [[GCDWebServer alloc] init];
+    
     return YES;
 }
 

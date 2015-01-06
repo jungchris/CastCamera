@@ -38,20 +38,41 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZL-Dg-Uoi">
+                                <rect key="frame" x="16" y="289" width="568" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="0dm-hc-JDe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LCj-5k-nf8">
+                                <rect key="frame" x="16" y="355" width="568" height="225"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="pZL-Dg-Uoi" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="6Xv-pf-glu"/>
                             <constraint firstItem="gIB-it-eRJ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="8Pj-34-Ytm"/>
                             <constraint firstItem="gIB-it-eRJ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="73" id="BUQ-j8-S6X"/>
                             <constraint firstItem="C5G-hl-S36" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="DVU-0s-6gc"/>
                             <constraint firstItem="gIB-it-eRJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="MNA-hg-JvS"/>
+                            <constraint firstItem="pZL-Dg-Uoi" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="TKr-Jo-VJ0"/>
+                            <constraint firstItem="LCj-5k-nf8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="V7s-LL-4gQ"/>
                             <constraint firstItem="C5G-hl-S36" firstAttribute="top" secondItem="gIB-it-eRJ" secondAttribute="bottom" constant="38" id="Yz9-jT-Yvz"/>
                             <constraint firstItem="C5G-hl-S36" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="gzD-7w-mj7"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LCj-5k-nf8" secondAttribute="bottom" constant="20" id="hMx-IK-Jkc"/>
+                            <constraint firstItem="pZL-Dg-Uoi" firstAttribute="top" secondItem="C5G-hl-S36" secondAttribute="bottom" constant="52" id="pIL-5U-MfO"/>
+                            <constraint firstItem="LCj-5k-nf8" firstAttribute="top" secondItem="pZL-Dg-Uoi" secondAttribute="bottom" constant="45" id="pRK-Qb-v50"/>
+                            <constraint firstItem="LCj-5k-nf8" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="rK8-lu-DqR"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
                     <connections>
+                        <outlet property="imageViewIcon" destination="LCj-5k-nf8" id="AdD-xE-IzZ"/>
                         <outlet property="labelCast" destination="gIB-it-eRJ" id="mj4-QW-SMs"/>
+                        <outlet property="labelURL" destination="pZL-Dg-Uoi" id="3BD-eu-L14"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

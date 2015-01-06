@@ -8,13 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleCast/GoogleCast.h>
+#import "AppDelegate.h"
+
+#define SharedWebServer ((AppDelegate *)[[UIApplication sharedApplication] delegate]).webServer
 
 @interface ViewController : UIViewController <GCKDeviceScannerListener,
 GCKDeviceManagerDelegate,
 GCKMediaControlChannelDelegate,
-UIActionSheetDelegate>
+UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelCast;
+@property (weak, nonatomic) IBOutlet UILabel *labelURL;
+
 - (IBAction)buttonCast:(id)sender;
 
 @end

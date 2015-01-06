@@ -17,6 +17,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     UIImage *_btnImageSelected;
 }
 
+// Chromecast
 @property GCKMediaControlChannel *mediaControlChannel;
 @property GCKApplicationMetadata *applicationMetadata;
 @property GCKDevice *selectedDevice;
@@ -24,6 +25,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property(nonatomic, strong) UIButton *chromecastButton;
 @property(nonatomic, strong) GCKDeviceManager *deviceManager;
 @property(nonatomic, readonly) GCKMediaInformation *mediaInformation;
+
+// Camera Library
+@property (strong, nonatomic) UIPopoverController *imagePickerPopover;
+
+// Web Server
+@property (strong, nonatomic) NSData *mediaData;
+@property (strong, nonatomic) NSString *mediaType;
 
 @end
 
@@ -63,6 +71,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     [self.deviceScanner addListener:self];
     [self.deviceScanner startScan];
+    
+    // configure image store
+    self.mediaData = [[NSData alloc] init];
+    // display the URL
+    self.labelURL.text = [SharedWebServer.serverURL absoluteString];
+    
 }
 
 
@@ -241,29 +255,85 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         return;
     }
     
+    // avoid crash
+    if ([self.imagePickerPopover isPopoverVisible]) {
+        
+        // if already there get rid of it
+        [self.imagePickerPopover dismissPopoverAnimated:YES];
+        self.imagePickerPopover = nil;
+        return;
+    }
+    
+    // page 217
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    
+    //    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    //
+    //        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    //
+    //    } else {
+    //
+    //        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    //    }
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    // TODO: else handler
+    
+    imagePicker.delegate = self;
+    //    [self presentViewController:imagePicker animated:YES completion:nil];
+    
+    // present popover controller for iPad
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        self.imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
+        self.imagePickerPopover.delegate = self;
+        
+        [self.imagePickerPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+    } else {
+        
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+    
+    
+    
+
+    
     //Define Media metadata
     GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
     
-    [metadata setString:@"Big Buck Bunny (2008)" forKey:kGCKMetadataKeyTitle];
+    [metadata setString:@"Videos and Pictures" forKey:kGCKMetadataKeyTitle];
     
-    [metadata setString:@"Big Buck Bunny tells the story of a giant rabbit with a heart bigger than "
-     "himself. When one sunny day three rodents rudely harass him, something "
-     "snaps... and the rabbit ain't no bunny anymore! In the typical cartoon "
-     "tradition he prepares the nasty rodents a comical revenge."
+    [metadata setString:@"Chris tells the story of a ship sailing in a sea of mercury"
                  forKey:kGCKMetadataKeySubtitle];
     
+//    [metadata addImage:[[GCKImage alloc]
+//                        initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
+//                                     "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+//                        width:480
+//                        height:360]];
+    
     [metadata addImage:[[GCKImage alloc]
-                        initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
-                                     "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+                        initWithURL:[[NSURL alloc] initWithString:@"http://incaffeine.com/img/slides/slide-bg.jpg"]
                         width:480
                         height:360]];
     
     //define Media information
+//    GCKMediaInformation *mediaInformation =
+//    [[GCKMediaInformation alloc] initWithContentID:
+//     @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+//                                        streamType:GCKMediaStreamTypeNone
+//                                       contentType:@"video/mp4"
+//                                          metadata:metadata
+//                                    streamDuration:0
+//                                        customData:nil];
+    
     GCKMediaInformation *mediaInformation =
-    [[GCKMediaInformation alloc] initWithContentID:
-     @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    [[GCKMediaInformation alloc] initWithContentID:@"http://incaffeine.com/img/slides/slide-bg.jpg"
                                         streamType:GCKMediaStreamTypeNone
-                                       contentType:@"video/mp4"
+                                       contentType:@"image/jpeg"
                                           metadata:metadata
                                     streamDuration:0
                                         customData:nil];
@@ -341,6 +411,90 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     self.applicationMetadata = applicationMetadata;
 }
 
+#pragma mark - Server Methods
+
+- (void)webServerStart {
+    
+    // Start server on port 8080
+    [SharedWebServer startWithPort:8080 bonjourName:nil];
+    NSLog(@"Visit %@ in your web browser", SharedWebServer.serverURL);
+    
+}
+
+// no need to start-stop web server with each new image
+- (void)webServerStop {
+    
+    [SharedWebServer removeAllHandlers];
+    [SharedWebServer stop];
+    
+}
+
+// This sets the response to the client's HTTP 'GET'
+- (void)webServerAddHandlerForData:(NSData *)data type:(NSString *)contentType {
+    
+    // Add a handler to respond to GET requests on any URL
+    [SharedWebServer addDefaultHandlerForMethod:@"GET"
+                                   requestClass:[GCDWebServerRequest class]
+                                   processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
+                                       
+                                       NSLog(@"===> processBlock invoked");
+                                       
+                                       return [GCDWebServerDataResponse responseWithData:self.mediaData contentType:self.mediaType];
+                                       
+                                   }];
+    
+}
+
+#pragma mark - Image Picker
+
+// Your delegate object’s implementation of this method should pass the specified media on to any custom code that needs it, and should then dismiss the picker view.
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    // get image picked from image directory
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    NSLog(@"NSDictionary image info: %@", info);
+    
+    // process image based on type
+    //    self.imageData = UIImagePNGRepresentation(image);
+    self.imageViewIcon.image = image;
+    
+    self.mediaData = UIImageJPEGRepresentation(image, 0.2);
+    self.mediaType = @"image/jpeg";
+    
+    // if server is already running, remove any previous handlers
+    if (SharedWebServer.isRunning) {
+        NSLog(@"-> TODO: Replace image");
+        // Warning: Removing handlers while the server is running is not allowed
+        //        [self webServerStop];
+        //        [SharedWebServer removeAllHandlers];
+        //        [self webServerAddHandlerForData:self.imageData type:@"image/jpeg"];
+        //        [self webServerStart];
+    } else {
+        NSLog(@"-> Starting Web Server");
+        [self webServerAddHandlerForData:self.mediaData type:@"image/jpeg"];
+        [self webServerStart];
+    }
+    
+    // now add handler for request
+    //    [self webServerAddHandlerForData:self.imageData type:@"image/jpeg"];
+    
+    // blow away image picker
+    //    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.imagePickerPopover) {
+        
+        [self.imagePickerPopover dismissPopoverAnimated:YES];
+        self.imagePickerPopover = nil;
+        
+    } else {
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }
+    
+}
+
 #pragma mark - Helper Methods
 
 - (void)showError:(NSError *)error {
@@ -354,3 +508,19 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 
 @end
+
+//
+// Created new project to combine GCDWebServer with Chromecast code
+// Removing handlers while the server is running is not allowed: http://cocoadocs.org/docsets/GCDWebServer/2.4/Classes/GCDWebServer.html
+// Created custom methods to handle changes to media without restarting web server
+// Not getting imagePicker (loading camera only)
+// Corrected image/jpeg (from image/jpg) and now image loads correctly in target window
+// W3 MIME Types: http://www.w3.org/Protocols/rfc1341/4_Content-Type.html
+// PNG was rendering too slowly.  Converted to JPG and got it fast, but loaded in new browser window.  Checking MIME-Types for contentType flag.
+// Changed server response to responseWithData from responseWithHTML (PNG)
+// Converting uiimage to NSData: http://stackoverflow.com/questions/6476929/convert-uiimage-to-nsdata
+// Added camera picker controller
+// Moved server config and start code from AppDelegate to ViewController
+// added GCDWebServer to project root (copied entire subfolder per instruction)
+// Stream a local file to Chromecast: http://stackoverflow.com/questions/21631673/how-to-stream-a-local-file-to-the-chromecast
+
