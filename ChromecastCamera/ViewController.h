@@ -23,6 +23,9 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 @property (weak, nonatomic) IBOutlet UILabel *labelURL;
 
 - (IBAction)buttonCast:(id)sender;
+- (IBAction)buttonBunny:(id)sender;
+- (IBAction)buttonWebsite:(id)sender;
+- (IBAction)buttonNewImage:(id)sender;
 
 @end
 

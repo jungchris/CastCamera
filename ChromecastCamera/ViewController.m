@@ -304,6 +304,73 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // http://stackoverflow.com/questions/21631673/how-to-stream-a-local-file-to-the-chromecast
 }
 
+- (IBAction)buttonBunny:(id)sender {
+    
+    NSLog(@"Updating Chromecast with Bunny");
+    
+    //Define Media metadata
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+    
+    [metadata setString:@"Crazy Bunny" forKey:kGCKMetadataKeyTitle];
+    
+    [metadata setString:@"Big Buck Bunny is Sweet"
+                 forKey:kGCKMetadataKeySubtitle];
+    
+    [metadata addImage:[[GCKImage alloc]
+                         initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
+                                      "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+                         width:480
+                         height:360]];
+    
+    // define Media information
+    GCKMediaInformation *mediaInformation =
+    [[GCKMediaInformation alloc] initWithContentID:@"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                                        streamType:GCKMediaStreamTypeNone
+                                       contentType:@"video/mp4"
+                                          metadata:metadata
+                                    streamDuration:0
+                                        customData:nil];
+    
+    //cast video
+    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+    
+}
+
+- (IBAction)buttonWebsite:(id)sender {
+    
+    NSLog(@"Updating Chromecast with Web Image");
+    
+    //Define Media metadata
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+    
+    [metadata setString:@"iOS Videos and Pictures" forKey:kGCKMetadataKeyTitle];
+    
+    [metadata setString:@"Chris tells the story of a ship sailing in a sea of mercury"
+                 forKey:kGCKMetadataKeySubtitle];
+    
+    [metadata addImage:[[GCKImage alloc]
+                        initWithURL:[[NSURL alloc] initWithString:@"http://incaffeine.com/img/slides/slide-bg.jpg"]
+                        width:480
+                        height:360]];
+    
+    GCKMediaInformation *mediaInformation =
+    [[GCKMediaInformation alloc] initWithContentID:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                                        streamType:GCKMediaStreamTypeNone
+                                       contentType:@"image/jpeg"
+                                          metadata:metadata
+                                    streamDuration:0
+                                        customData:nil];
+    
+    //cast video
+    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+}
+
+- (IBAction)buttonNewImage:(id)sender {
+    
+    
+    
+}
+
 #pragma mark - GCKDeviceManagerDelegate
 
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
@@ -367,6 +434,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     NSLog(@"didReceiveStatusForApplication");
 
     self.applicationMetadata = applicationMetadata;
+}
+
+#pragma mark - GCKMediaControlChannelDelegate
+
+- (void)mediaControlChannelDidUpdateMetadata:(GCKMediaControlChannel *)mediaControlChannel {
+    NSLog(@"mediaControlChannelDidUpdateMetadata");
+    
+}
+
+- (void)mediaControlChannelDidUpdateStatus:(GCKMediaControlChannel *)mediaControlChannel {
+    NSLog(@"mediaControlChannelDidUpdateStatus:");
+    
 }
 
 #pragma mark - Server Methods
@@ -441,7 +520,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     //                                        customData:nil];
     
     GCKMediaInformation *mediaInformation =
-    [[GCKMediaInformation alloc] initWithContentID:@"http://192.168.3.211/image.jpg"
+    [[GCKMediaInformation alloc] initWithContentID:@"http://192.168.3.211/image1.jpg"
                                         streamType:GCKMediaStreamTypeNone
                                        contentType:@"image/jpeg"
                                           metadata:metadata
@@ -452,6 +531,43 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
     
 }
+
+- (void)updateChromeCasting {
+    
+    NSLog(@"Updating Chromecast");
+    
+    //Define Media metadata
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+    
+    [metadata setString:@"iOS Videos and Pictures" forKey:kGCKMetadataKeyTitle];
+    
+    [metadata setString:@"Chris tells the story of a ship sailing in a sea of mercury"
+                 forKey:kGCKMetadataKeySubtitle];
+    
+    //    [metadata addImage:[[GCKImage alloc]
+    //                        initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
+    //                                     "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+    //                        width:480
+    //                        height:360]];
+    
+    [metadata addImage:[[GCKImage alloc]
+                        initWithURL:[[NSURL alloc] initWithString:@"http://incaffeine.com/img/slides/slide-bg.jpg"]
+                        width:480
+                        height:360]];
+
+    GCKMediaInformation *mediaInformation =
+    [[GCKMediaInformation alloc] initWithContentID:@"http://192.168.3.211/image2.jpg"
+                                        streamType:GCKMediaStreamTypeNone
+                                       contentType:@"image/jpeg"
+                                          metadata:metadata
+                                    streamDuration:0
+                                        customData:nil];
+    
+    //cast video
+    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+    
+}
+
 
 #pragma mark - Image Picker
 
@@ -478,6 +594,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         //        [SharedWebServer removeAllHandlers];
         //        [self webServerAddHandlerForData:self.imageData type:@"image/jpeg"];
         //        [self webServerStart];
+        
+//        [_mediaControlChannel stop];
+        // TODO: Replace with startChromCasting is it's not identical
+        [self updateChromeCasting];
+        
     } else {
         NSLog(@"-> Starting Web Server");
         [self webServerAddHandlerForData:self.mediaData type:@"image/jpeg"];
@@ -521,6 +642,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
+// Try forcing an update by changing the image pseudoname
+// Noticed that the last image from local device is persistent.  Appears to be cached.
+// Added buttons to force changes from video to image, locally and remotely
 // 01-06-15 Had to create complete URL for image to load in Chromecast http://192.168.3.211/image.jpg
 // Need to figure out how to load chromecast from image without extension
 // Changed location of init chromecast code, refactored as startChromeCasting in delegate for picker controller (from button)
