@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+
+
 #import <GoogleCast/GoogleCast.h>
 #import "AppDelegate.h"
 
@@ -25,7 +29,6 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)buttonCast:(id)sender;
 - (IBAction)buttonBunny:(id)sender;
 - (IBAction)buttonWebsite:(id)sender;
-- (IBAction)buttonNewImage:(id)sender;
 
 @end
 

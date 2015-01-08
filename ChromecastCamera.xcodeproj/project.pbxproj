@@ -26,6 +26,7 @@
 		2D9CDA041A59F7B900032CDE /* icon-cast-connected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */; };
 		2D9CDA051A59F7B900032CDE /* icon-cast-identified.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */; };
 		2D9CDA061A59F7B900032CDE /* icon-cast-identified@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */; };
+		2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */; };
 		2DF115DA1A5B77B7000734FE /* GCDWebServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BD1A5B77B7000734FE /* GCDWebServer.m */; };
 		2DF115DB1A5B77B7000734FE /* GCDWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BF1A5B77B7000734FE /* GCDWebServerConnection.m */; };
 		2DF115DC1A5B77B7000734FE /* GCDWebServerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115C11A5B77B7000734FE /* GCDWebServerFunctions.m */; };
@@ -78,6 +79,7 @@
 		2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-connected@2x.png"; sourceTree = "<group>"; };
 		2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-identified.png"; sourceTree = "<group>"; };
 		2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-identified@2x.png"; sourceTree = "<group>"; };
+		2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2DF115BC1A5B77B7000734FE /* GCDWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServer.h; sourceTree = "<group>"; };
 		2DF115BD1A5B77B7000734FE /* GCDWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDWebServer.m; sourceTree = "<group>"; };
 		2DF115BE1A5B77B7000734FE /* GCDWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServerConnection.h; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */,
 				2DF115E81A5B7D02000734FE /* libz.dylib in Frameworks */,
 				2D9CD9FB1A59F63C00032CDE /* SystemConfiguration.framework in Frameworks */,
 				2D9CD9F91A59F63100032CDE /* CoreText.framework in Frameworks */,
@@ -204,6 +207,7 @@
 		2D9CD9FE1A59F67800032CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */,
 				2DF115E71A5B7D02000734FE /* libz.dylib */,
 				2D9CD9FC1A59F65300032CDE /* GoogleCast.framework */,
 				2D9CD9FA1A59F63C00032CDE /* SystemConfiguration.framework */,

@@ -26,8 +26,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property(nonatomic, strong) GCKDeviceManager *deviceManager;
 @property(nonatomic, readonly) GCKMediaInformation *mediaInformation;
 
-// Camera Library
+// Camera
 @property (strong, nonatomic) UIPopoverController *imagePickerPopover;
+@property int mediaIndex;
+@property (nonatomic, strong) NSString *videoFilePath;
 
 // Web Server
 @property (strong, nonatomic) NSData *mediaData;
@@ -64,16 +66,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     //Initialize device scanner
     self.deviceScanner = [[GCKDeviceScanner alloc] init];
     
-    // added CJ
+    // prepare to Chromecast
     GCKFilterCriteria *filterCriteria = [[GCKFilterCriteria alloc] init];
     filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"898F3A9B"];
     self.deviceScanner.filterCriteria = filterCriteria;
-    
     [self.deviceScanner addListener:self];
     [self.deviceScanner startScan];
     
     // configure image store
     self.mediaData = [[NSData alloc] init];
+    self.mediaIndex = 0;                        // used to update the image/video URL requested by Chromecast
     // display the URL
     self.labelURL.text = [SharedWebServer.serverURL absoluteString];
     
@@ -279,6 +281,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        // TODO: Change picker to include video media as well
     }
     // TODO: else handler
     
@@ -365,11 +369,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
 }
 
-- (IBAction)buttonNewImage:(id)sender {
-    
-    
-    
-}
 
 #pragma mark - GCKDeviceManagerDelegate
 
@@ -448,7 +447,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
 }
 
-#pragma mark - Server Methods
+#pragma mark - GCDWebServer Methods
 
 - (void)webServerStart {
     
@@ -477,8 +476,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     [SharedWebServer addDefaultHandlerForMethod:@"GET"
                                    requestClass:[GCDWebServerRequest class]
                                    processBlock:^GCDWebServerResponse *(GCDWebServerRequest* request) {
-                                       
-                                       NSLog(@"===> processBlock invoked");
                                        
                                        return [GCDWebServerDataResponse responseWithData:self.mediaData contentType:self.mediaType];
                                        
@@ -568,6 +565,33 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
 }
 
+// customized method
+- (void)updateChromecastWithTitle:(NSString *)title subTitle:(NSString *)subTitle imageURL:(NSString *)imageURL mediaURL:(NSString *)mediaURL contentType:(NSString *)type {
+   
+    NSLog(@"Updating Chromecast with parameters");
+    
+    //Define Media metadata
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+    
+    [metadata setString:title forKey:kGCKMetadataKeyTitle];
+    [metadata setString:subTitle forKey:kGCKMetadataKeySubtitle];
+    
+    [metadata addImage:[[GCKImage alloc]
+                        initWithURL:[[NSURL alloc] initWithString:imageURL]
+                        width:480
+                        height:360]];
+    
+    GCKMediaInformation *mediaInformation =
+    [[GCKMediaInformation alloc] initWithContentID:mediaURL
+                                        streamType:GCKMediaStreamTypeNone
+                                       contentType:type
+                                          metadata:metadata
+                                    streamDuration:0
+                                        customData:nil];
+    
+    //cast video
+    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+}
 
 #pragma mark - Image Picker
 
@@ -576,6 +600,31 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     // get image picked from image directory
     UIImage *image = info[UIImagePickerControllerOriginalImage];
+    
+    // adding 1-7-15
+    // check if photo or video (Uses <MobileCoreServices/UTCoreTypes.h>)
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        // a photo was taken or selected
+        NSLog(@"a photo was taken");
+        self.imageViewIcon.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        // check that the camera is being used .. don't save an image already on the phone
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            // save the image
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        }
+    }
+    else {
+        // a video was taken
+        NSLog(@"a video was taken");
+        self.videoFilePath = (__bridge NSString *)([[info objectForKey:UIImagePickerControllerMediaURL] path]);
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            // save the video
+            if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
+                UISaveVideoAtPathToSavedPhotosAlbum(self.videoFilePath, nil, nil, nil);
+            }
+        }
+    }
     
     NSLog(@"NSDictionary image info: %@", info);
     
@@ -586,26 +635,30 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     self.mediaData = UIImageJPEGRepresentation(image, 0.2);
     self.mediaType = @"image/jpeg";
     
-    // if server is already running, remove any previous handlers
-    if (SharedWebServer.isRunning) {
-        NSLog(@"-> TODO: Replace image");
-        // Warning: Removing handlers while the server is running is not allowed
-        //        [self webServerStop];
-        //        [SharedWebServer removeAllHandlers];
-        //        [self webServerAddHandlerForData:self.imageData type:@"image/jpeg"];
-        //        [self webServerStart];
-        
-//        [_mediaControlChannel stop];
-        // TODO: Replace with startChromCasting is it's not identical
-        [self updateChromeCasting];
-        
-    } else {
+    // start server if not running
+    if (!SharedWebServer.isRunning) {
         NSLog(@"-> Starting Web Server");
         [self webServerAddHandlerForData:self.mediaData type:@"image/jpeg"];
         [self webServerStart];
         
-        [self startChromeCasting];
     }
+    
+    // set the URL's media index to avoid getting a cached image
+    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+    [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+    [mediaURL appendString:@"image"];
+    [mediaURL appendString:[NSString stringWithFormat:@"%d", self.mediaIndex]];
+    [mediaURL appendString:@".jpg"];
+    _mediaIndex = _mediaIndex + 1;
+    
+    NSLog(@"mutable URL %@", mediaURL);
+    
+    // cast it
+    [self updateChromecastWithTitle:@"Image"
+                           subTitle:@"from iPhone"
+                           imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                           mediaURL:[mediaURL copy]
+                        contentType:self.mediaType];
     
     // now add handler for request
     //    [self webServerAddHandlerForData:self.imageData type:@"image/jpeg"];
@@ -642,7 +695,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-// Try forcing an update by changing the image pseudoname
+// Setting an update by changing the image pseudoname
 // Noticed that the last image from local device is persistent.  Appears to be cached.
 // Added buttons to force changes from video to image, locally and remotely
 // 01-06-15 Had to create complete URL for image to load in Chromecast http://192.168.3.211/image.jpg
