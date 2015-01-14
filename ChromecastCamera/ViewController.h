@@ -30,9 +30,10 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)buttonBunny:(id)sender;
 - (IBAction)buttonWebsite:(id)sender;
 
-- (IBAction)switchSpeed:(id)sender;
-- (IBAction)switchRandomize:(id)sender;
-- (IBAction)switchRepeat:(id)sender;
+@property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;
+@property (weak, nonatomic) IBOutlet UISwitch *switchRandomize;
+@property (weak, nonatomic) IBOutlet UISwitch *switchRepeat;
+
 
 @end
 

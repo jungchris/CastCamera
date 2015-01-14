@@ -40,7 +40,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 //@property (nonatomic, strong) NSMutableArray *mediaArray;
 
 // Used by NSTimer
+@property (nonatomic, strong) NSTimer *timerForShow;
 @property (nonatomic, assign) NSUInteger mediaIndex;
+
+// User preferences
+@property BOOL isOnSwitchSpeed;
+@property BOOL isOnSwitchRandomize;
+@property BOOL isOnswitchRepeat;
 
 @end
 
@@ -104,6 +110,17 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.assetsLibrary = library;
     self.pickerController = [[WSAssetPickerController alloc] initWithAssetsLibrary:library];
     self.pickerController.delegate = self;
+    
+    // set switch defaults
+    // TODO: load switch settings from user model
+    self.switchSpeed.on = NO;
+    self.switchRandomize.on = NO;
+    self.switchRepeat.on = NO;
+    
+    // add switch listeners
+    [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
+    [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
+    [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
     
 }
 
@@ -410,13 +427,41 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
 }
 
-- (IBAction)switchSpeed:(id)sender {
+// switches
+- (void)selectorForSwitchSpeed:(id)sender {
+    
+    if ([sender isOn]) {
+        NSLog(@"switch selector ON");
+        self.isOnSwitchSpeed = YES;
+    } else {
+        NSLog(@"switch selector OFF");
+        self.isOnSwitchSpeed = NO;
+    }
+    
+    if (self.timerForShow) {
+        NSLog(@"... timer was running, kill first");
+        [self.timerForShow invalidate];
+        // TODO: restart timer with new speed
+    }
+    
 }
 
-- (IBAction)switchRandomize:(id)sender {
+- (void)selectorForSwitchRandomize:(id)sender {
+    
+    if ([sender isOn]) {
+        self.isOnSwitchRandomize = YES;
+    } else {
+        self.isOnSwitchRandomize = NO;
+    }
 }
 
-- (IBAction)switchRepeat:(id)sender {
+- (void)selectorForSwitchRepeat:(id)sender {
+    
+    if ([sender isOn]) {
+        self.isOnswitchRepeat = YES;
+    } else {
+        self.isOnswitchRepeat = NO;
+    }
 }
 
 
@@ -750,14 +795,19 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // setup image counter incremented by NSTimer
         self.mediaIndex = 0;
         
-        // TODO: check if timer already running and invalidate if it is
+        // check if timer already running and invalidate if it is
+        if (self.timerForShow) {
+            NSLog(@"timer already running, kill first");
+            [self.timerForShow invalidate];
+        }
         
         // start timer to walk through all array items
-        [NSTimer scheduledTimerWithTimeInterval:8.0
-                                         target:self
-                                       selector:@selector(selectorForDisplayImagesTimer:)
-                                       userInfo:imageArray
-                                        repeats:YES];
+        self.timerForShow = [NSTimer
+                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 5.0 : 2.5)
+                             target:self
+                             selector:@selector(selectorForDisplayImagesTimer:)
+                             userInfo:imageArray
+                             repeats:YES];
         
     } else {
         // do nothing
@@ -846,7 +896,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // Todo: Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL.
 // Todo: Add image order randomizer and wire to switch
 // Todo: Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  The people around me at Flying Star are going to notice me if I move any more.
-// Todo: Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (0.75 hours)
+// Todo: Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
 // 01-15-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
 // 01-15-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
 // Todo In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon

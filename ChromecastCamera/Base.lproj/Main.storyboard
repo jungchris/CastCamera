@@ -46,21 +46,12 @@
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HAK-9u-0Hq">
                                 <rect key="frame" x="35" y="178" width="51" height="31"/>
-                                <connections>
-                                    <action selector="switchSpeed:" destination="BYZ-38-t0r" eventType="valueChanged" id="af8-Ex-8s6"/>
-                                </connections>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nNy-lk-k1g">
                                 <rect key="frame" x="35" y="237" width="51" height="31"/>
-                                <connections>
-                                    <action selector="switchRandomize:" destination="BYZ-38-t0r" eventType="valueChanged" id="Ej3-eR-yts"/>
-                                </connections>
                             </switch>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uN4-BY-GxL">
                                 <rect key="frame" x="35" y="297" width="51" height="31"/>
-                                <connections>
-                                    <action selector="switchRepeat:" destination="BYZ-38-t0r" eventType="valueChanged" id="JK6-ik-8e0"/>
-                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speedy Slideshow" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8u-4L-kTP">
                                 <rect key="frame" x="127" y="183" width="216" height="21"/>
@@ -95,6 +86,9 @@
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
                     <connections>
                         <outlet property="imageViewIcon" destination="LCj-5k-nf8" id="AdD-xE-IzZ"/>
+                        <outlet property="switchRandomize" destination="nNy-lk-k1g" id="AJx-cp-BLp"/>
+                        <outlet property="switchRepeat" destination="uN4-BY-GxL" id="dge-En-Hq5"/>
+                        <outlet property="switchSpeed" destination="HAK-9u-0Hq" id="fU4-Fg-9wP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
