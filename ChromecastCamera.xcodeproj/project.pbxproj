@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D2F6B8C1A66CFD3009724B5 /* WSAlbumTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B7D1A66CFD3009724B5 /* WSAlbumTableViewController.m */; };
+		2D2F6B8D1A66CFD3009724B5 /* WSAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B811A66CFD3009724B5 /* WSAssetPickerController.m */; };
+		2D2F6B8E1A66CFD3009724B5 /* WSAssetPickerState.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B831A66CFD3009724B5 /* WSAssetPickerState.m */; };
+		2D2F6B8F1A66CFD3009724B5 /* WSAssetsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B851A66CFD3009724B5 /* WSAssetsTableViewCell.m */; };
+		2D2F6B901A66CFD3009724B5 /* WSAssetTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B871A66CFD3009724B5 /* WSAssetTableViewController.m */; };
+		2D2F6B911A66CFD3009724B5 /* WSAssetViewColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B891A66CFD3009724B5 /* WSAssetViewColumn.m */; };
+		2D2F6B921A66CFD3009724B5 /* WSAssetWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2F6B8B1A66CFD3009724B5 /* WSAssetWrapper.m */; };
+		2D2F6B991A66D006009724B5 /* WSAssetViewSelectionIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B931A66D006009724B5 /* WSAssetViewSelectionIndicator.png */; };
+		2D2F6B9A1A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B941A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png */; };
+		2D2F6B9B1A66D006009724B5 /* WSButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B951A66D006009724B5 /* WSButtonBackground.png */; };
+		2D2F6B9C1A66D006009724B5 /* WSButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B961A66D006009724B5 /* WSButtonBackground@2x.png */; };
+		2D2F6B9D1A66D006009724B5 /* WSButtonBackgroundPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */; };
+		2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */; };
 		2D9CD9CB1A59F55000032CDE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CA1A59F55000032CDE /* main.m */; };
 		2D9CD9CE1A59F55000032CDE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CD1A59F55000032CDE /* AppDelegate.m */; };
 		2D9CD9D11A59F55000032CDE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9D01A59F55000032CDE /* ViewController.m */; };
@@ -41,6 +54,7 @@
 		2DF115E51A5B77B7000734FE /* GCDWebServerFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115D71A5B77B7000734FE /* GCDWebServerFileResponse.m */; };
 		2DF115E61A5B77B7000734FE /* GCDWebServerStreamedResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115D91A5B77B7000734FE /* GCDWebServerStreamedResponse.m */; };
 		2DF115E81A5B7D02000734FE /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DF115E71A5B7D02000734FE /* libz.dylib */; };
+		2DFE82E51A5F28EC0043A150 /* movie-icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DFE82E41A5F28EC0043A150 /* movie-icon.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +68,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D2F6B7C1A66CFD3009724B5 /* WSAlbumTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAlbumTableViewController.h; sourceTree = "<group>"; };
+		2D2F6B7D1A66CFD3009724B5 /* WSAlbumTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAlbumTableViewController.m; sourceTree = "<group>"; };
+		2D2F6B7E1A66CFD3009724B5 /* WSAssetPicker-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WSAssetPicker-Prefix.pch"; sourceTree = "<group>"; };
+		2D2F6B7F1A66CFD3009724B5 /* WSAssetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPicker.h; sourceTree = "<group>"; };
+		2D2F6B801A66CFD3009724B5 /* WSAssetPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPickerController.h; sourceTree = "<group>"; };
+		2D2F6B811A66CFD3009724B5 /* WSAssetPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetPickerController.m; sourceTree = "<group>"; };
+		2D2F6B821A66CFD3009724B5 /* WSAssetPickerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetPickerState.h; sourceTree = "<group>"; };
+		2D2F6B831A66CFD3009724B5 /* WSAssetPickerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetPickerState.m; sourceTree = "<group>"; };
+		2D2F6B841A66CFD3009724B5 /* WSAssetsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetsTableViewCell.h; sourceTree = "<group>"; };
+		2D2F6B851A66CFD3009724B5 /* WSAssetsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetsTableViewCell.m; sourceTree = "<group>"; };
+		2D2F6B861A66CFD3009724B5 /* WSAssetTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetTableViewController.h; sourceTree = "<group>"; };
+		2D2F6B871A66CFD3009724B5 /* WSAssetTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetTableViewController.m; sourceTree = "<group>"; };
+		2D2F6B881A66CFD3009724B5 /* WSAssetViewColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetViewColumn.h; sourceTree = "<group>"; };
+		2D2F6B891A66CFD3009724B5 /* WSAssetViewColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetViewColumn.m; sourceTree = "<group>"; };
+		2D2F6B8A1A66CFD3009724B5 /* WSAssetWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAssetWrapper.h; sourceTree = "<group>"; };
+		2D2F6B8B1A66CFD3009724B5 /* WSAssetWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSAssetWrapper.m; sourceTree = "<group>"; };
+		2D2F6B931A66D006009724B5 /* WSAssetViewSelectionIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WSAssetViewSelectionIndicator.png; sourceTree = "<group>"; };
+		2D2F6B941A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSAssetViewSelectionIndicator@2x.png"; sourceTree = "<group>"; };
+		2D2F6B951A66D006009724B5 /* WSButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WSButtonBackground.png; sourceTree = "<group>"; };
+		2D2F6B961A66D006009724B5 /* WSButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSButtonBackground@2x.png"; sourceTree = "<group>"; };
+		2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WSButtonBackgroundPressed.png; sourceTree = "<group>"; };
+		2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSButtonBackgroundPressed@2x.png"; sourceTree = "<group>"; };
 		2D9CD9C51A59F55000032CDE /* ChromecastCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChromecastCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9CD9C91A59F55000032CDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D9CD9CA1A59F55000032CDE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -109,6 +145,7 @@
 		2DF115D81A5B77B7000734FE /* GCDWebServerStreamedResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServerStreamedResponse.h; sourceTree = "<group>"; };
 		2DF115D91A5B77B7000734FE /* GCDWebServerStreamedResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDWebServerStreamedResponse.m; sourceTree = "<group>"; };
 		2DF115E71A5B7D02000734FE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		2DFE82E41A5F28EC0043A150 /* movie-icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "movie-icon.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,9 +176,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D2F6B7B1A66CFAA009724B5 /* WSAssetPickerController */ = {
+			isa = PBXGroup;
+			children = (
+				2D2F6B7C1A66CFD3009724B5 /* WSAlbumTableViewController.h */,
+				2D2F6B7D1A66CFD3009724B5 /* WSAlbumTableViewController.m */,
+				2D2F6B7E1A66CFD3009724B5 /* WSAssetPicker-Prefix.pch */,
+				2D2F6B7F1A66CFD3009724B5 /* WSAssetPicker.h */,
+				2D2F6B801A66CFD3009724B5 /* WSAssetPickerController.h */,
+				2D2F6B811A66CFD3009724B5 /* WSAssetPickerController.m */,
+				2D2F6B821A66CFD3009724B5 /* WSAssetPickerState.h */,
+				2D2F6B831A66CFD3009724B5 /* WSAssetPickerState.m */,
+				2D2F6B841A66CFD3009724B5 /* WSAssetsTableViewCell.h */,
+				2D2F6B851A66CFD3009724B5 /* WSAssetsTableViewCell.m */,
+				2D2F6B861A66CFD3009724B5 /* WSAssetTableViewController.h */,
+				2D2F6B871A66CFD3009724B5 /* WSAssetTableViewController.m */,
+				2D2F6B881A66CFD3009724B5 /* WSAssetViewColumn.h */,
+				2D2F6B891A66CFD3009724B5 /* WSAssetViewColumn.m */,
+				2D2F6B8A1A66CFD3009724B5 /* WSAssetWrapper.h */,
+				2D2F6B8B1A66CFD3009724B5 /* WSAssetWrapper.m */,
+			);
+			name = WSAssetPickerController;
+			sourceTree = "<group>";
+		};
 		2D9CD9BC1A59F55000032CDE = {
 			isa = PBXGroup;
 			children = (
+				2D2F6B7B1A66CFAA009724B5 /* WSAssetPickerController */,
 				2DF115BA1A5B77B7000734FE /* GCDWebServer */,
 				2D9CD9FE1A59F67800032CDE /* Frameworks */,
 				2D9CD9C71A59F55000032CDE /* ChromecastCamera */,
@@ -181,6 +242,13 @@
 				2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */,
 				2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */,
 				2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */,
+				2D2F6B931A66D006009724B5 /* WSAssetViewSelectionIndicator.png */,
+				2D2F6B941A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png */,
+				2D2F6B951A66D006009724B5 /* WSButtonBackground.png */,
+				2D2F6B961A66D006009724B5 /* WSButtonBackground@2x.png */,
+				2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */,
+				2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */,
+				2DFE82E41A5F28EC0043A150 /* movie-icon.jpg */,
 				2D9CD9C91A59F55000032CDE /* Info.plist */,
 				2D9CD9CA1A59F55000032CDE /* main.m */,
 			);
@@ -361,11 +429,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D9CD9D41A59F55000032CDE /* Main.storyboard in Resources */,
+				2D2F6B9A1A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
+				2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */,
 				2D9CD9D91A59F55000032CDE /* LaunchScreen.xib in Resources */,
 				2D9CDA051A59F7B900032CDE /* icon-cast-identified.png in Resources */,
+				2D2F6B9C1A66D006009724B5 /* WSButtonBackground@2x.png in Resources */,
 				2D9CD9D61A59F55000032CDE /* Images.xcassets in Resources */,
 				2D9CDA061A59F7B900032CDE /* icon-cast-identified@2x.png in Resources */,
+				2D2F6B9B1A66D006009724B5 /* WSButtonBackground.png in Resources */,
+				2D2F6B991A66D006009724B5 /* WSAssetViewSelectionIndicator.png in Resources */,
 				2D9CDA041A59F7B900032CDE /* icon-cast-connected@2x.png in Resources */,
+				2D2F6B9D1A66D006009724B5 /* WSButtonBackgroundPressed.png in Resources */,
+				2DFE82E51A5F28EC0043A150 /* movie-icon.jpg in Resources */,
 				2D9CDA031A59F7B900032CDE /* icon-cast-connected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,18 +460,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF115E61A5B77B7000734FE /* GCDWebServerStreamedResponse.m in Sources */,
+				2D2F6B911A66CFD3009724B5 /* WSAssetViewColumn.m in Sources */,
 				2DF115E11A5B77B7000734FE /* GCDWebServerMultiPartFormRequest.m in Sources */,
 				2DF115E31A5B77B7000734FE /* GCDWebServerDataResponse.m in Sources */,
 				2DF115E41A5B77B7000734FE /* GCDWebServerErrorResponse.m in Sources */,
+				2D2F6B8E1A66CFD3009724B5 /* WSAssetPickerState.m in Sources */,
 				2DF115DA1A5B77B7000734FE /* GCDWebServer.m in Sources */,
 				2DF115E51A5B77B7000734FE /* GCDWebServerFileResponse.m in Sources */,
 				2D9CD9D11A59F55000032CDE /* ViewController.m in Sources */,
 				2DF115DC1A5B77B7000734FE /* GCDWebServerFunctions.m in Sources */,
 				2DF115DE1A5B77B7000734FE /* GCDWebServerResponse.m in Sources */,
+				2D2F6B8F1A66CFD3009724B5 /* WSAssetsTableViewCell.m in Sources */,
+				2D2F6B8C1A66CFD3009724B5 /* WSAlbumTableViewController.m in Sources */,
+				2D2F6B921A66CFD3009724B5 /* WSAssetWrapper.m in Sources */,
+				2D2F6B901A66CFD3009724B5 /* WSAssetTableViewController.m in Sources */,
 				2DF115DB1A5B77B7000734FE /* GCDWebServerConnection.m in Sources */,
 				2D9CD9CE1A59F55000032CDE /* AppDelegate.m in Sources */,
 				2DF115E21A5B77B7000734FE /* GCDWebServerURLEncodedFormRequest.m in Sources */,
 				2DF115E01A5B77B7000734FE /* GCDWebServerFileRequest.m in Sources */,
+				2D2F6B8D1A66CFD3009724B5 /* WSAssetPickerController.m in Sources */,
 				2DF115DD1A5B77B7000734FE /* GCDWebServerRequest.m in Sources */,
 				2D9CD9CB1A59F55000032CDE /* main.m in Sources */,
 				2DF115DF1A5B77B7000734FE /* GCDWebServerDataRequest.m in Sources */,

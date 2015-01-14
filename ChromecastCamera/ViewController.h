@@ -7,24 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 #import <MobileCoreServices/UTCoreTypes.h>
-
 
 #import <GoogleCast/GoogleCast.h>
 #import "AppDelegate.h"
 
+#import "WSAssetPicker.h"
+
 #define SharedWebServer ((AppDelegate *)[[UIApplication sharedApplication] delegate]).webServer
 
+// TODO: Remove unneeded delegates
 @interface ViewController : UIViewController <GCKDeviceScannerListener,
 GCKDeviceManagerDelegate,
 GCKMediaControlChannelDelegate,
-UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
+UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate, WSAssetPickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelCast;
-@property (weak, nonatomic) IBOutlet UILabel *labelURL;
+- (IBAction)buttonShowLibrary:(id)sender;
 
 - (IBAction)buttonCast:(id)sender;
 - (IBAction)buttonBunny:(id)sender;
