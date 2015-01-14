@@ -30,5 +30,9 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)buttonBunny:(id)sender;
 - (IBAction)buttonWebsite:(id)sender;
 
+- (IBAction)switchSpeed:(id)sender;
+- (IBAction)switchRandomize:(id)sender;
+- (IBAction)switchRepeat:(id)sender;
+
 @end
 

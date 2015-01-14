@@ -37,6 +37,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 // Image Picker
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) WSAssetPickerController *pickerController;
+//@property (nonatomic, strong) NSMutableArray *mediaArray;
+
+// Used by NSTimer
+@property (nonatomic, assign) NSUInteger mediaIndex;
 
 @end
 
@@ -80,8 +84,11 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.mediaData = [[NSData alloc] init];
     // display the URL
 //    self.labelURL.text = [SharedWebServer.serverURL absoluteString];
+    // configure array used to store images in WSAssetPickerController delegate
+//    self.mediaArray = [[NSArray alloc] init];         // no longer used
     
-    // start server if not running (start with default image)
+    // TODO: May wish to start the server right before chromcast gets started
+    // start web server if not running (start with default image)
     UIImage *image = [UIImage imageNamed:@"movie-icon.jpg"];
     self.imageViewIcon.image = image;
     self.mediaData = UIImagePNGRepresentation(image);
@@ -403,6 +410,15 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
 }
 
+- (IBAction)switchSpeed:(id)sender {
+}
+
+- (IBAction)switchRandomize:(id)sender {
+}
+
+- (IBAction)switchRepeat:(id)sender {
+}
+
 
 #pragma mark - GCKDeviceManagerDelegate
 
@@ -601,6 +617,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+// WSAssetPicker delegate
 - (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
 {
     NSLog(@"didFinishPickingMediaWithAssets");
@@ -609,11 +626,28 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // Do something with the assets here.
         NSLog(@"dismissViewControllerAnimated: completion block");
         NSLog(@"assets: %@", assets);
+        
+        //
+//        ALAssetRepresentation *arep = [[ALAssetRepresentation alloc] init];
+        NSMutableArray *mediaArrayMutable = [[NSMutableArray alloc] init];
+        
+        for (ALAsset *asset in assets) {
+            
+            UIImage *imageA = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullScreenImage];
+            
+            [mediaArrayMutable addObject:imageA];
+            
+        }
+        NSLog(@"%lu", (unsigned long)mediaArrayMutable.count);
+        
+        // make the call to method that will iterate and cast entire array
+        [self displayImagesFromArray:[mediaArrayMutable copy]];
+        
     }];
 }
 
 
-#pragma mark - Image Picker
+#pragma mark - iOS Default Image Picker
 
 // Your delegate object’s implementation of this method should pass the specified media on to any custom code that needs it, and should then dismiss the picker view.
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -625,7 +659,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     if (SharedWebServer.serverURL) {
         [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
     } else {
-        NSLog(@"Error catch: nil SharedWebServer.serverURL");
+        NSLog(@"Error catch: SharedWebServer.serverURL nil");
         // dismiss picker
         if (self.imagePickerPopover) {
             [self.imagePickerPopover dismissPopoverAnimated:YES];
@@ -709,20 +743,86 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)displayImagesFromArray:(NSArray *)imageArray {
     
+    NSLog(@"displayImagesFromArray:");
     
-    [NSTimer scheduledTimerWithTimeInterval:2.0
-                                     target:self
-                                   selector:@selector(selectorForDisplayImagesTimer:)
-                                   userInfo:nil
-                                    repeats:YES];
+    if ([imageArray count] > 0) {
+        
+        // setup image counter incremented by NSTimer
+        self.mediaIndex = 0;
+        
+        // TODO: check if timer already running and invalidate if it is
+        
+        // start timer to walk through all array items
+        [NSTimer scheduledTimerWithTimeInterval:8.0
+                                         target:self
+                                       selector:@selector(selectorForDisplayImagesTimer:)
+                                       userInfo:imageArray
+                                        repeats:YES];
+        
+    } else {
+        // do nothing
+        NSLog(@"Oops!  No image selected, don't invoke NSTimer");
+    }
     
 }
 
 - (void)selectorForDisplayImagesTimer:(NSTimer *)timer {
 
     NSLog(@"selectorForDisplayImagesTimer");
+    NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
     
-    [timer invalidate];
+    // extract the info sent by timer & check it
+    NSArray *itemArray = [timer userInfo];
+    if (!itemArray) {
+        [timer invalidate];
+        return;
+    }
+    
+    // build image info from scratch, checking the server URL each time
+    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+    if (SharedWebServer.serverURL) {
+        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+        
+    } else {
+        NSLog(@"Error catch: SharedWebServer.serverURL nil");
+        return;
+    }
+    
+    // check media type
+    if (self.mediaIndex < [itemArray count]) {
+        
+        // a photo was taken or selected
+        NSLog(@"... All good, a photo was chosen");
+        
+        // get image picked from image directory
+        UIImage *image = itemArray[self.mediaIndex];
+        self.mediaData = UIImageJPEGRepresentation(image, 0.2);
+        self.mediaType = @"image/jpeg";
+        
+        [mediaURL appendString:@"image"];
+        // set the URL's media index to avoid getting a cached image
+        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+        [mediaURL appendString:@".jpg"];
+        
+        NSLog(@"==> mutable URL %@", mediaURL);
+        
+        // update cast
+        [self updateChromecastWithTitle:@"Image"
+                               subTitle:@"from iPhone"
+                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                               mediaURL:[mediaURL copy]
+                            contentType:self.mediaType];
+        
+    } else {
+        NSLog(@"Oop!  Something's being naughty: no mediaData");
+    }
+    
+    self.mediaIndex = self.mediaIndex + 1;
+    // let's stop the timer and not come back here if we're done
+    if (self.mediaIndex >= [itemArray count]) {
+        NSLog(@"Done streaming");
+        [timer invalidate];
+    }
     
 }
 
@@ -742,9 +842,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-// Todo: Wire speed switch to timer
-// Todo: Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer
-// Todo: wire up arrary of image URLs being select and convert them to array of UIImage
+// Debug:  What happened to the Chromecast icon?
+// Todo: Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL.
+// Todo: Add image order randomizer and wire to switch
+// Todo: Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  The people around me at Flying Star are going to notice me if I move any more.
+// Todo: Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (0.75 hours)
+// 01-15-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
+// 01-15-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
 // Todo In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon
 // 01-14-15 - Added WSAssetPickerController and wired it up (1 hour)
 // Adding UIImagePicker to UIView: http://stackoverflow.com/questions/1371446/how-to-add-uiimagepickercontroller-in-uiview
