@@ -982,6 +982,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Add iAd framework
 // todo - Add Social Sharing with icon style button
 // todo - Add Share User model with persistence (save switch preferences on exit)
+// 01-16-15 - Set up private repository on GitHub CastCamera
 // 01-16-15 - Tested that I can change random & repeat modes mid-flight.
 // 01-16-15 - Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL. (1.0 hours - 1:30 pm done)
 // 01-16-15 - Add image order randomizer and wire to switch.  Copied 'createRandomArray' from At 420. (1.5 hours - 11:00 am start, 12:30 done)
