@@ -43,10 +43,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, strong) NSTimer *timerForShow;
 @property (nonatomic, assign) NSUInteger mediaIndex;
 
+// Used to randomize image order
+@property (nonatomic, strong) NSArray *randomNumbersArray;
+
 // User preferences
 @property BOOL isOnSwitchSpeed;
 @property BOOL isOnSwitchRandomize;
-@property BOOL isOnswitchRepeat;
+@property BOOL isOnSwitchRepeat;
 
 @end
 
@@ -92,6 +95,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 //    self.labelURL.text = [SharedWebServer.serverURL absoluteString];
     // configure array used to store images in WSAssetPickerController delegate
 //    self.mediaArray = [[NSArray alloc] init];         // no longer used
+    
+    // allocate the randomizing array
+    self.randomNumbersArray = [[NSArray alloc] init];
     
     // TODO: May wish to start the server right before chromcast gets started
     // start web server if not running (start with default image)
@@ -458,9 +464,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)selectorForSwitchRepeat:(id)sender {
     
     if ([sender isOn]) {
-        self.isOnswitchRepeat = YES;
+        self.isOnSwitchRepeat = YES;
     } else {
-        self.isOnswitchRepeat = NO;
+        self.isOnSwitchRepeat = NO;
     }
 }
 
@@ -788,7 +794,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)displayImagesFromArray:(NSArray *)imageArray {
     
-    NSLog(@"displayImagesFromArray:");
+    NSLog(@"displayImagesFromArray:count: %lu", [imageArray count]);
+    
+    // create random array in case it's needed in NSTimer selector later
+    self.randomNumbersArray = [self createRandomArray:[imageArray count]];
+    
+    NSLog(@"self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
     
     if ([imageArray count] > 0) {
         
@@ -803,7 +814,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // start timer to walk through all array items
         self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 5.0 : 2.5)
+                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
                              target:self
                              selector:@selector(selectorForDisplayImagesTimer:)
                              userInfo:imageArray
@@ -813,8 +824,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // do nothing
         NSLog(@"Oops!  No image selected, don't invoke NSTimer");
     }
-    
 }
+
 
 - (void)selectorForDisplayImagesTimer:(NSTimer *)timer {
 
@@ -845,15 +856,51 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         NSLog(@"... All good, a photo was chosen");
         
         // get image picked from image directory
-        UIImage *image = itemArray[self.mediaIndex];
+        UIImage *image = [[UIImage alloc] init];
+        // are we to randomize and ... can we?
+        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+            NSLog(@"... use random index");
+            // in order to randomize we intermediate the index
+//            NSNumber *randomNum = self.randomNumbersArray[self.mediaIndex];
+//            int randomInt = [randomNum intValue];
+//            NSLog(@"... random int: %d", randomInt);
+//            image = itemArray[randomInt];
+            // or ...
+            image = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+            
+        } else {
+            // use straight index
+            NSLog(@"... use straight index");
+            image = itemArray[self.mediaIndex];
+        }
         self.mediaData = UIImageJPEGRepresentation(image, 0.2);
         self.mediaType = @"image/jpeg";
         
+        // start building the image name
         [mediaURL appendString:@"image"];
-        // set the URL's media index to avoid getting a cached image
-        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+        // check if the URL needs to be unique
+        if (self.isOnSwitchRepeat) {
+            // URLs can be cacheable
+            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+                
+                // TODO: Check that this is really necessary - probably not!
+                // we're repeating random images, so we use the random increment
+                [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
+            
+            } else {
+            
+                // we're repeating non-random images, so use simple increment
+                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+            
+            }
+            
+            
+        } else {
+            // set the URL's media index uniquely to avoid getting a cached image
+            [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+        }
+
         [mediaURL appendString:@".jpg"];
-        
         NSLog(@"==> mutable URL %@", mediaURL);
         
         // update cast
@@ -864,22 +911,61 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                             contentType:self.mediaType];
         
     } else {
-        NSLog(@"Oop!  Something's being naughty: no mediaData");
+        NSLog(@"Oop! Something's being naughty: no mediaData");
     }
     
+    // increment image index
     self.mediaIndex = self.mediaIndex + 1;
-    // let's stop the timer and not come back here if we're done
-    if (self.mediaIndex >= [itemArray count]) {
-        NSLog(@"Done streaming");
-        [timer invalidate];
-    }
     
+    // check where we're at
+    if (self.mediaIndex >= [itemArray count]) {
+        
+        // are we supposed to repeat?
+        if (self.isOnSwitchRepeat) {
+            // keep streaming, starting back at first image.
+            NSLog(@"==> Restart streaming");
+            // re-shuffle image order
+            self.randomNumbersArray = [self createRandomArray:[itemArray count]];
+            self.mediaIndex = 0;
+        } else {
+            // let's stop the timer and do not come back here if we're done
+            NSLog(@"==> Done streaming");
+            [timer invalidate];
+        }
+    }
 }
 
 
 
 #pragma mark - Helper Methods
 
+// returns a non duplicate value array of random numbers
+- (NSArray *)createRandomArray:(NSInteger)arraySize {
+    
+    NSMutableArray *randomNumbers = [[NSMutableArray alloc] initWithCapacity:arraySize];
+    if (arraySize > 0) {
+        // add random items to the array until we have number added matches desired array size
+        for (int i = 0; randomNumbers.count < arraySize; i++) {
+            
+            int temp = arc4random_uniform((uint32_t)arraySize);
+            NSNumber *randomNum = [NSNumber numberWithInt:temp];
+            
+            // check if the randomNum already in array before adding
+            if (![randomNumbers containsObject:randomNum]) {
+                [randomNumbers addObject:randomNum];
+            }
+            // check that we are not caught in an infinite loop (not likely as long as arc4random is working properly)
+            if (i > 9999) {
+                return [randomNumbers copy];
+            }
+        }
+        // convert NSMutable array to NSArray and return
+        return [randomNumbers copy];
+    }
+    return NULL;
+}
+
+// error alert view
 - (void)showError:(NSError *)error {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
                                                     message:NSLocalizedString(error.description, nil)
@@ -892,11 +978,16 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-// Debug:  What happened to the Chromecast icon?
-// Todo: Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL.
-// Todo: Add image order randomizer and wire to switch
-// Todo: Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  The people around me at Flying Star are going to notice me if I move any more.
-// Todo: Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
+// todo - Test during extended runtime using instruments
+// todo - Add iAd framework
+// todo - Add Social Sharing with icon style button
+// todo - Add Share User model with persistence (save switch preferences on exit)
+// 01-16-15 - Tested that I can change random & repeat modes mid-flight.
+// 01-16-15 - Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL. (1.0 hours - 1:30 pm done)
+// 01-16-15 - Add image order randomizer and wire to switch.  Copied 'createRandomArray' from At 420. (1.5 hours - 11:00 am start, 12:30 done)
+// 01-16-15 - What happened to the Chromecast icon?  My UIImage covered it. Duh!
+// 01-15-15 - Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  (4:45 pm - Completed control for switchSpeed.  Took 1:15)
+// 01-15-15 - Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
 // 01-15-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
 // 01-15-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
 // Todo In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon

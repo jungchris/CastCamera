@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,7 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LCj-5k-nf8"/>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C5G-hl-S36">
                                 <rect key="frame" x="35" y="379" width="108" height="30"/>
                                 <state key="normal" title="Media Library">
@@ -80,8 +80,19 @@
                                     <action selector="buttonWebsite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="viY-ui-Cbu"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LCj-5k-nf8">
+                                <rect key="frame" x="296" y="363" width="304" height="237"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="304" id="Uq9-rl-kpz"/>
+                                    <constraint firstAttribute="height" constant="237" id="hP7-0q-umq"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LCj-5k-nf8" secondAttribute="bottom" id="m3f-UE-FTn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LCj-5k-nf8" secondAttribute="trailing" constant="-16" id="zQ3-mj-FW2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
                     <connections>
