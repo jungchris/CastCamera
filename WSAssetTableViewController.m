@@ -183,6 +183,9 @@
 
 - (void)assetsTableViewCell:(WSAssetsTableViewCell *)cell didSelectAsset:(BOOL)selected atColumn:(NSUInteger)column
 {
+    
+    NSLog(@"didSelectAsset:");
+    
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     // Calculate the index of the corresponding asset.

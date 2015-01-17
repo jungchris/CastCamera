@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "CCJImageEngine.h"
 
 //static NSString * kReceiverAppID;
 static NSString *const kReceiverAppID = @"898F3A9B";
@@ -873,6 +874,15 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             NSLog(@"... use straight index");
             image = itemArray[self.mediaIndex];
         }
+        
+        // TODO: Resolve image scaling properly
+        // resize image
+//        image = [CCJImageEngine imageWithImage:image scaledToMaxWidth:256 maxHeight:128];
+        // rescale image
+//        image = [CCJImageEngine imageWithImage:image scaledToWidth:1920];
+        CGSize newSize = CGSizeMake(1280, 720);
+        image = [CCJImageEngine scaleImage:image toSize:newSize];
+    
         self.mediaData = UIImageJPEGRepresentation(image, 0.2);
         self.mediaType = @"image/jpeg";
         
@@ -965,6 +975,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     return NULL;
 }
 
+// image utilities
+
+
 // error alert view
 - (void)showError:(NSError *)error {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil)
@@ -978,21 +991,27 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
+// todo - Check for 'timer was running' condition always being true on switchSpeed change
+// feature - Allow 'select all' in media picker if feasable
+// todo - Restart NSTimer after switchSpeed turned off and former timer invalidated.
 // todo - Test during extended runtime using instruments
-// todo - Add iAd framework
+// todo - Add iAd framework and instantiate
 // todo - Add Social Sharing with icon style button
-// todo - Add Share User model with persistence (save switch preferences on exit)
-// 01-16-15 - Set up private repository on GitHub CastCamera
-// 01-16-15 - Tested that I can change random & repeat modes mid-flight.
-// 01-16-15 - Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL. (1.0 hours - 1:30 pm done)
-// 01-16-15 - Add image order randomizer and wire to switch.  Copied 'createRandomArray' from At 420. (1.5 hours - 11:00 am start, 12:30 done)
-// 01-16-15 - What happened to the Chromecast icon?  My UIImage covered it. Duh!
-// 01-15-15 - Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  (4:45 pm - Completed control for switchSpeed.  Took 1:15)
-// 01-15-15 - Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
-// 01-15-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
-// 01-15-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
+// todo - Check image landscape or portrait and properly set CGSize
+// 01-17-15 - Trying different methods to change the aspect ratio of the image for fill screen landscape fit (1.0h : 11:00 start - 12:00)  Now works for landscape images
+// 01-15-15 - Created CCJImageEngine to process image for better screen fitting.  Read about Chromecast window & view width and height (3:30 Start ... 5:30)
+// 01-15-15 - Added CCJUserModel to project and customized with switch persistence (0.5 hours)
+// 01-15-15 - Set up private repository on GitHub CastCamera
+// 01-15-15 - Tested that I can change random & repeat modes mid-flight.
+// 01-15-15 - Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL. (1.0 hours - 1:30 pm done)
+// 01-15-15 - Add image order randomizer and wire to switch.  Copied 'createRandomArray' from At 420. (1.5 hours - 11:00 am start, 12:30 done)
+// 01-15-15 - What happened to the Chromecast icon?  My UIImage covered it. Duh!
+// 01-14-15 - Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  (4:45 pm - Completed control for switchSpeed.  Took 1:15)
+// 01-14-15 - Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
+// 01-14-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
+// 01-14-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
 // Todo In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon
-// 01-14-15 - Added WSAssetPickerController and wired it up (1 hour)
+// 01-14-15 - Working at Flying Star on JT after Yoga.  1:00 pm - Added WSAssetPickerController and wired it up (1 hour)
 // Adding UIImagePicker to UIView: http://stackoverflow.com/questions/1371446/how-to-add-uiimagepickercontroller-in-uiview
 // Check the Google Cast design checklist:  https://developers.google.com/cast/docs/design_checklist#sender-control-end
 // TODO: Create HTML5 tagged video page using filename to serve video

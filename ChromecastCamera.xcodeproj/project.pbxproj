@@ -39,7 +39,11 @@
 		2D9CDA041A59F7B900032CDE /* icon-cast-connected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */; };
 		2D9CDA051A59F7B900032CDE /* icon-cast-identified.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */; };
 		2D9CDA061A59F7B900032CDE /* icon-cast-identified@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */; };
+		2D9FEFEC1A68793600D39991 /* CCJUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FEFEB1A68793600D39991 /* CCJUserModel.m */; };
+		2D9FEFEF1A687D8B00D39991 /* CCJImageEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FEFEE1A687D8B00D39991 /* CCJImageEngine.m */; };
 		2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */; };
+		2DC3D3D51A68606100EF5F9C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D41A68606100EF5F9C /* iAd.framework */; };
+		2DC3D3D71A68606F00EF5F9C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D61A68606F00EF5F9C /* Social.framework */; };
 		2DF115DA1A5B77B7000734FE /* GCDWebServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BD1A5B77B7000734FE /* GCDWebServer.m */; };
 		2DF115DB1A5B77B7000734FE /* GCDWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BF1A5B77B7000734FE /* GCDWebServerConnection.m */; };
 		2DF115DC1A5B77B7000734FE /* GCDWebServerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115C11A5B77B7000734FE /* GCDWebServerFunctions.m */; };
@@ -115,7 +119,13 @@
 		2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-connected@2x.png"; sourceTree = "<group>"; };
 		2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-identified.png"; sourceTree = "<group>"; };
 		2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-cast-identified@2x.png"; sourceTree = "<group>"; };
+		2D9FEFEA1A68793600D39991 /* CCJUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCJUserModel.h; sourceTree = "<group>"; };
+		2D9FEFEB1A68793600D39991 /* CCJUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCJUserModel.m; sourceTree = "<group>"; };
+		2D9FEFED1A687D8B00D39991 /* CCJImageEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCJImageEngine.h; sourceTree = "<group>"; };
+		2D9FEFEE1A687D8B00D39991 /* CCJImageEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCJImageEngine.m; sourceTree = "<group>"; };
 		2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		2DC3D3D41A68606100EF5F9C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		2DC3D3D61A68606F00EF5F9C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		2DF115BC1A5B77B7000734FE /* GCDWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServer.h; sourceTree = "<group>"; };
 		2DF115BD1A5B77B7000734FE /* GCDWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDWebServer.m; sourceTree = "<group>"; };
 		2DF115BE1A5B77B7000734FE /* GCDWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServerConnection.h; sourceTree = "<group>"; };
@@ -153,6 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DC3D3D71A68606F00EF5F9C /* Social.framework in Frameworks */,
+				2DC3D3D51A68606100EF5F9C /* iAd.framework in Frameworks */,
 				2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */,
 				2DF115E81A5B7D02000734FE /* libz.dylib in Frameworks */,
 				2D9CD9FB1A59F63C00032CDE /* SystemConfiguration.framework in Frameworks */,
@@ -227,6 +239,10 @@
 				2D9CD9CD1A59F55000032CDE /* AppDelegate.m */,
 				2D9CD9CF1A59F55000032CDE /* ViewController.h */,
 				2D9CD9D01A59F55000032CDE /* ViewController.m */,
+				2D9FEFED1A687D8B00D39991 /* CCJImageEngine.h */,
+				2D9FEFEE1A687D8B00D39991 /* CCJImageEngine.m */,
+				2D9FEFEA1A68793600D39991 /* CCJUserModel.h */,
+				2D9FEFEB1A68793600D39991 /* CCJUserModel.m */,
 				2D9CD9D21A59F55000032CDE /* Main.storyboard */,
 				2D9CD9D51A59F55000032CDE /* Images.xcassets */,
 				2D9CD9D71A59F55000032CDE /* LaunchScreen.xib */,
@@ -275,6 +291,8 @@
 		2D9CD9FE1A59F67800032CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2DC3D3D61A68606F00EF5F9C /* Social.framework */,
+				2DC3D3D41A68606100EF5F9C /* iAd.framework */,
 				2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */,
 				2DF115E71A5B7D02000734FE /* libz.dylib */,
 				2D9CD9FC1A59F65300032CDE /* GoogleCast.framework */,
@@ -460,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF115E61A5B77B7000734FE /* GCDWebServerStreamedResponse.m in Sources */,
+				2D9FEFEC1A68793600D39991 /* CCJUserModel.m in Sources */,
 				2D2F6B911A66CFD3009724B5 /* WSAssetViewColumn.m in Sources */,
 				2DF115E11A5B77B7000734FE /* GCDWebServerMultiPartFormRequest.m in Sources */,
 				2DF115E31A5B77B7000734FE /* GCDWebServerDataResponse.m in Sources */,
@@ -471,6 +490,7 @@
 				2DF115DC1A5B77B7000734FE /* GCDWebServerFunctions.m in Sources */,
 				2DF115DE1A5B77B7000734FE /* GCDWebServerResponse.m in Sources */,
 				2D2F6B8F1A66CFD3009724B5 /* WSAssetsTableViewCell.m in Sources */,
+				2D9FEFEF1A687D8B00D39991 /* CCJImageEngine.m in Sources */,
 				2D2F6B8C1A66CFD3009724B5 /* WSAlbumTableViewController.m in Sources */,
 				2D2F6B921A66CFD3009724B5 /* WSAssetWrapper.m in Sources */,
 				2D2F6B901A66CFD3009724B5 /* WSAssetTableViewController.m in Sources */,
