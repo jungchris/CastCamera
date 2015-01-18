@@ -10,8 +10,10 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 
 #import <GoogleCast/GoogleCast.h>
-#import "AppDelegate.h"
+#import <Social/Social.h>
+#import <iAd/iAd.h>
 
+#import "AppDelegate.h"
 #import "WSAssetPicker.h"
 
 #define SharedWebServer ((AppDelegate *)[[UIApplication sharedApplication] delegate]).webServer
@@ -20,15 +22,14 @@
 @interface ViewController : UIViewController <GCKDeviceScannerListener,
 GCKDeviceManagerDelegate,
 GCKMediaControlChannelDelegate,
-UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate, WSAssetPickerControllerDelegate>
+UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate,
+    ADBannerViewDelegate,
+    WSAssetPickerControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 
 - (IBAction)buttonShowLibrary:(id)sender;
-
-- (IBAction)buttonCast:(id)sender;
-- (IBAction)buttonBunny:(id)sender;
-- (IBAction)buttonWebsite:(id)sender;
+- (IBAction)buttonSocial:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRandomize;

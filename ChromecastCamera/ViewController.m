@@ -52,6 +52,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property BOOL isOnSwitchRandomize;
 @property BOOL isOnSwitchRepeat;
 
+// iAd
+@property (strong, nonatomic) ADBannerView *adBanner;
+
 @end
 
 @implementation ViewController
@@ -128,6 +131,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
     [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
     [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
+    
+    // iAd
+    // implement global iAd process.
+    self.adBanner = [[ADBannerView alloc] init];
+    self.adBanner.delegate = self;
+    [self addADBannerViewToBottom];
     
 }
 
@@ -432,6 +441,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     //cast video
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+}
+
+// Invoke Social Share features
+- (IBAction)buttonSocial:(id)sender {
+    
+    [self showSharingActivityView];
 }
 
 // switches
@@ -875,14 +890,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             image = itemArray[self.mediaIndex];
         }
         
-        // TODO: Resolve image scaling properly
-        // resize image
-//        image = [CCJImageEngine imageWithImage:image scaledToMaxWidth:256 maxHeight:128];
-        // rescale image
-//        image = [CCJImageEngine imageWithImage:image scaledToWidth:1920];
-        CGSize newSize = CGSizeMake(1280, 720);
-        image = [CCJImageEngine scaleImage:image toSize:newSize];
-    
+        // check if landscape for image fit
+        if (image.size.width > image.size.height) {
+            NSLog(@"landscape");
+            // scale to fill
+            // TODO: set CGSize dynamically, not hard coded
+            CGSize newSize = CGSizeMake(1280, 720);
+            image = [CCJImageEngine scaleImage:image toSize:newSize];
+        } else {
+            NSLog(@"portrait");
+        }
+        
+        // TODO: reduce compression before testing
         self.mediaData = UIImageJPEGRepresentation(image, 0.2);
         self.mediaType = @"image/jpeg";
         
@@ -898,12 +917,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                 [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
             
             } else {
-            
                 // we're repeating non-random images, so use simple increment
                 [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
-            
             }
-            
             
         } else {
             // set the URL's media index uniquely to avoid getting a cached image
@@ -988,6 +1004,104 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     [alert show];
 }
 
+#pragma mark - Social Sharing Methods
+
+//- (IBAction)shareButton:(UIBarButtonItem *)sender
+- (void)showSharingActivityView {
+    
+    NSString *textToShare = @"Chromecast slideshow app #ChromeCamera";
+    UIImage *imageToShare = [UIImage imageNamed:@"Icon-76.png"];
+    NSURL *myWebsite = [NSURL URLWithString:@"https://itunes.apple.com/us/artist/chris-jungmann/id870848514"];
+    
+    //    NSArray *objectsToShare = @[textToShare, myWebsite];
+    NSArray *objectsToShare = [NSArray arrayWithObjects:textToShare, imageToShare, myWebsite, nil];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    
+    NSArray *excludeActivities = @[UIActivityTypeAirDrop,
+                                   UIActivityTypePrint,
+                                   UIActivityTypeAssignToContact,
+                                   UIActivityTypeSaveToCameraRoll,
+                                   UIActivityTypeAddToReadingList,
+                                   UIActivityTypePostToFlickr,
+                                   UIActivityTypeCopyToPasteboard,
+                                   UIActivityTypePostToVimeo];
+    
+    activityVC.excludedActivityTypes = excludeActivities;
+    
+    [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+#pragma mark - ADBanner delegates
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    
+    [self.adBanner setHidden:YES];
+    //    NSLog(@"AboutVC: didFailToReceiveAdWithError");
+    
+    //    // show my own add image when add is hidden
+    //    // NOT USING DUE TO PLACEMENT ISSUE
+    //    UIImage *image = [UIImage imageNamed:@"incaffeine.jpg"];
+    //    self.localAdView = [[UIImageView alloc] initWithImage:image];
+    //    self.localAdView.frame = CGRectMake(0, self.view.bounds.size.height, 0, 0);
+    //
+    //    //Height will be automatically set, raise the view by its own height
+    //    self.localAdView.frame = CGRectOffset(self.adBanner.frame, 0, -self.adBanner.frame.size.height);
+    //
+    //    [self.view addSubview:self.localAdView];
+    
+}
+
+- (void)bannerViewActionDidFinish:(ADBannerView *)banner {
+    //    NSLog(@"---> MainVC: bannerViewActionDidFinish");
+}
+
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {
+    
+    [self.adBanner setHidden:NO];
+    //    NSLog(@"---> MainVC: bannerViewDidLoadAd");
+    
+}
+
+//This method adds shared adbannerview to the current view and sets its location to bottom of screen
+//Should work on all devices
+
+-(void) addADBannerViewToBottom
+{
+    //    NSLog(@"---> MainVC: addBannerViewToBottom");
+    
+    self.adBanner.delegate = self;
+    //Position banner just below the screen
+    self.adBanner.frame = CGRectMake(0, self.view.bounds.size.height, 0, 0);
+    //Height will be automatically set, raise the view by its own height
+    self.adBanner.frame = CGRectOffset(self.adBanner.frame, 0, -self.adBanner.frame.size.height -self.tabBarController.tabBar.frame.size.height);
+    [self.view addSubview:self.adBanner];
+    
+}
+
+-(void) addADBannerViewToTop
+{
+    //    NSLog(@"---> MainVC: addBannerViewToTop");
+    
+    self.adBanner.delegate = self;
+    //Position banner just below the top status bar
+    self.adBanner.frame = CGRectMake(0, 0, 0, 0);
+    //Height will be automatically set, lower the view by its own height
+    self.adBanner.frame = CGRectOffset(self.adBanner.frame, 0, +self.adBanner.frame.size.height/2.8);
+    [self.view addSubview:self.adBanner];
+    
+}
+
+
+-(void) removeADBannerView
+{
+    //    NSLog(@"---> MainVC: removeADBanner");
+    
+    self.adBanner.delegate = nil;
+    [self.adBanner removeFromSuperview];
+}
+
 
 @end
 
@@ -995,9 +1109,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // feature - Allow 'select all' in media picker if feasable
 // todo - Restart NSTimer after switchSpeed turned off and former timer invalidated.
 // todo - Test during extended runtime using instruments
-// todo - Add iAd framework and instantiate
-// todo - Add Social Sharing with icon style button
-// todo - Check image landscape or portrait and properly set CGSize
+// 01-17-15 - Add iAd framework and instantiate (0.75 hours)
+// 01-17-15 - Add Social Sharing with placeholder for icon style button
+// 01-17-15 - Check image landscape or portrait and properly set CGSize (0.1 hours)
 // 01-17-15 - Trying different methods to change the aspect ratio of the image for fill screen landscape fit (1.0h : 11:00 start - 12:00)  Now works for landscape images
 // 01-15-15 - Created CCJImageEngine to process image for better screen fitting.  Read about Chromecast window & view width and height (3:30 Start ... 5:30)
 // 01-15-15 - Added CCJUserModel to project and customized with switch persistence (0.5 hours)
