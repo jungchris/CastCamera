@@ -38,11 +38,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 // Image Picker
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) WSAssetPickerController *pickerController;
-//@property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) NSArray *mediaArray;
 
 // Used by NSTimer
 @property (nonatomic, strong) NSTimer *timerForShow;
 @property (nonatomic, assign) NSUInteger mediaIndex;
+@property (nonatomic, strong) NSString *mediaURL;
 
 // Used to randomize image order
 @property (nonatomic, strong) NSArray *randomNumbersArray;
@@ -460,12 +461,17 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.isOnSwitchSpeed = NO;
     }
     
-    if (self.timerForShow) {
-        NSLog(@"... timer was running, kill first");
+    if ([self.timerForShow isValid]) {
+        NSLog(@"... timer was running, invalidate then restart");
         [self.timerForShow invalidate];
-        // TODO: restart timer with new speed
+        // restart timer with new speed
+        self.timerForShow = [NSTimer
+                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
+                             target:self
+                             selector:@selector(selectorForDisplayImagesTimer:)
+                             userInfo:self.mediaArray
+                             repeats:YES];
     }
-    
 }
 
 - (void)selectorForSwitchRandomize:(id)sender {
@@ -706,6 +712,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
         }
         NSLog(@"%lu", (unsigned long)mediaArrayMutable.count);
+        self.mediaArray = [mediaArrayMutable copy];
         
         // make the call to method that will iterate and cast entire array
         [self displayImagesFromArray:[mediaArrayMutable copy]];
@@ -823,7 +830,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         self.mediaIndex = 0;
         
         // check if timer already running and invalidate if it is
-        if (self.timerForShow) {
+        if ([self.timerForShow isValid]) {
             NSLog(@"timer already running, kill first");
             [self.timerForShow invalidate];
         }
@@ -842,11 +849,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     }
 }
 
-
+// Selector method called by NSTimer
 - (void)selectorForDisplayImagesTimer:(NSTimer *)timer {
 
     NSLog(@"selectorForDisplayImagesTimer");
     NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
+    
+    // EXTRACT USERINFO
     
     // extract the info sent by timer & check it
     NSArray *itemArray = [timer userInfo];
@@ -854,6 +863,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         [timer invalidate];
         return;
     }
+    
+    // CHECK WEB SERVER & GET URL
     
     // build image info from scratch, checking the server URL each time
     NSMutableString *mediaURL = [[NSMutableString alloc] init];
@@ -864,6 +875,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         NSLog(@"Error catch: SharedWebServer.serverURL nil");
         return;
     }
+    
+    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
     
     // check media type
     if (self.mediaIndex < [itemArray count]) {
@@ -896,11 +909,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             // scale to fill
             // TODO: set CGSize dynamically, not hard coded
             CGSize newSize = CGSizeMake(1280, 720);
+            // TODO: optimize 'scaleImage' process
             image = [CCJImageEngine scaleImage:image toSize:newSize];
         } else {
             NSLog(@"portrait");
         }
-        
+
         // TODO: reduce compression before testing
         self.mediaData = UIImageJPEGRepresentation(image, 0.2);
         self.mediaType = @"image/jpeg";
@@ -912,7 +926,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             // URLs can be cacheable
             if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
                 
-                // TODO: Check that this is really necessary - probably not!
+                // TODO: Check if randomizing the URL is really necessary - probably not!
                 // we're repeating random images, so we use the random increment
                 [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
             
@@ -929,6 +943,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         [mediaURL appendString:@".jpg"];
         NSLog(@"==> mutable URL %@", mediaURL);
         
+        
+        // UPDATE CHROMECAST
+        
         // update cast
         [self updateChromecastWithTitle:@"Image"
                                subTitle:@"from iPhone"
@@ -939,6 +956,150 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     } else {
         NSLog(@"Oop! Something's being naughty: no mediaData");
     }
+    
+    // CHECK IF SHOULD TERMINATE
+    
+    // increment image index
+    self.mediaIndex = self.mediaIndex + 1;
+    
+    // check where we're at
+    if (self.mediaIndex >= [itemArray count]) {
+        
+        // are we supposed to repeat?
+        if (self.isOnSwitchRepeat) {
+            // keep streaming, starting back at first image.
+            NSLog(@"==> Restart streaming");
+            // re-shuffle image order
+            self.randomNumbersArray = [self createRandomArray:[itemArray count]];
+            self.mediaIndex = 0;
+        } else {
+            // let's stop the timer and do not come back here if we're done
+            NSLog(@"==> Done streaming");
+            [timer invalidate];
+        }
+    }
+}
+
+// new method that does the image processing during the NSTimer delay
+- (void)selectorForDisplayImagesTimerDuringWait:(NSTimer *)timer {
+    
+    NSLog(@"selectorForDisplayImagesTimerDuringWait");
+    NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
+    
+    // EXTRACT USERINFO
+    
+    // extract the info sent by timer & check it
+    NSArray *itemArray = [timer userInfo];
+    if (!itemArray) {
+        [timer invalidate];
+        return;
+    }
+    
+    // CHECK WEB SERVER & GET URL
+    
+    // build image info from scratch, checking the server URL each time
+    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+    if (SharedWebServer.serverURL) {
+        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+        
+    } else {
+        NSLog(@"Error catch: SharedWebServer.serverURL nil");
+        return;
+    }
+    
+    // UPDATE CHROMECAST IF AN IMAGE IS READY
+    
+    // update cast
+    if ([self.mediaType length] > 0) {
+        [self updateChromecastWithTitle:@"Image"
+                               subTitle:@"from iPhone"
+                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                               mediaURL:[mediaURL copy]
+                            contentType:self.mediaType];
+    }
+    
+    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
+    
+    // check media type
+    if (self.mediaIndex < [itemArray count]) {
+        
+        // a photo was taken or selected
+        NSLog(@"... All good, a photo was chosen");
+        
+        // get image picked from image directory
+        UIImage *image = [[UIImage alloc] init];
+        // are we to randomize and ... can we?
+        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+            NSLog(@"... use random index");
+            // in order to randomize we intermediate the index
+            //            NSNumber *randomNum = self.randomNumbersArray[self.mediaIndex];
+            //            int randomInt = [randomNum intValue];
+            //            NSLog(@"... random int: %d", randomInt);
+            //            image = itemArray[randomInt];
+            // or ...
+            image = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+            
+        } else {
+            // use straight index
+            NSLog(@"... use straight index");
+            image = itemArray[self.mediaIndex];
+        }
+        
+        // check if landscape for image fit
+        if (image.size.width > image.size.height) {
+            NSLog(@"landscape");
+            // scale to fill
+            // TODO: set CGSize dynamically, not hard coded
+            CGSize newSize = CGSizeMake(1280, 720);
+            // TODO: optimize 'scaleImage' process
+            image = [CCJImageEngine scaleImage:image toSize:newSize];
+        } else {
+            NSLog(@"portrait");
+        }
+        
+        // TODO: reduce compression before testing
+        self.mediaData = UIImageJPEGRepresentation(image, 0.2);
+        self.mediaType = @"image/jpeg";
+        
+        // start building the image name
+        [mediaURL appendString:@"image"];
+        // check if the URL needs to be unique
+        if (self.isOnSwitchRepeat) {
+            // URLs can be cacheable
+            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+                
+                // TODO: Check if randomizing the URL is really necessary - probably not!
+                // we're repeating random images, so we use the random increment
+                [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
+                
+            } else {
+                // we're repeating non-random images, so use simple increment
+                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+            }
+            
+        } else {
+            // set the URL's media index uniquely to avoid getting a cached image
+            [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+        }
+        
+        [mediaURL appendString:@".jpg"];
+        NSLog(@"==> mutable URL %@", mediaURL);
+        
+        
+        // UPDATE CHROMECAST
+        
+        // update cast
+        [self updateChromecastWithTitle:@"Image"
+                               subTitle:@"from iPhone"
+                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                               mediaURL:[mediaURL copy]
+                            contentType:self.mediaType];
+        
+    } else {
+        NSLog(@"Oop! Something's being naughty: no mediaData");
+    }
+    
+    // CHECK IF SHOULD TERMINATE
     
     // increment image index
     self.mediaIndex = self.mediaIndex + 1;
@@ -1097,7 +1258,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 -(void) removeADBannerView
 {
     //    NSLog(@"---> MainVC: removeADBanner");
-    
     self.adBanner.delegate = nil;
     [self.adBanner removeFromSuperview];
 }
@@ -1105,12 +1265,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-// todo - Check for 'timer was running' condition always being true on switchSpeed change
+// todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
-// todo - Restart NSTimer after switchSpeed turned off and former timer invalidated.
-// todo - Test during extended runtime using instruments
+// todo - Use Instruments to pinpoint CPU consumption
+// todo - Look to buffer the image for the next display cycle, one ahead. (3:30 - 4:30) +
+// todo - Noticed difference in load speeds of landscape VS portrait images due to aspect fill routine slowing landscape.
+// 01-20-15 - Set User Preferences for switch settings in ViewController (0.5 hours)
+// 01-20-15 - Finished wiring up CCJUserModel in AppDelegate to save user preferences
+// 01-20-15 - Running Instruments to determine cause of slowdown (12:20 - 1::00)
+// 01-20-15 - Restart NSTimer after switchSpeed turned off and former timer invalidated. (0.25 hours)
+// 01-20-15 - Check for 'timer was running' condition always being true on switchSpeed change (0.25 hours)
 // 01-17-15 - Add iAd framework and instantiate (0.75 hours)
-// 01-17-15 - Add Social Sharing with placeholder for icon style button
+// 01-17-15 - Add Social Sharing with placeholder for icon style button (0.25 hours)
 // 01-17-15 - Check image landscape or portrait and properly set CGSize (0.1 hours)
 // 01-17-15 - Trying different methods to change the aspect ratio of the image for fill screen landscape fit (1.0h : 11:00 start - 12:00)  Now works for landscape images
 // 01-15-15 - Created CCJImageEngine to process image for better screen fitting.  Read about Chromecast window & view width and height (3:30 Start ... 5:30)
@@ -1128,8 +1294,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // 01-14-15 - Working at Flying Star on JT after Yoga.  1:00 pm - Added WSAssetPickerController and wired it up (1 hour)
 // Adding UIImagePicker to UIView: http://stackoverflow.com/questions/1371446/how-to-add-uiimagepickercontroller-in-uiview
 // Check the Google Cast design checklist:  https://developers.google.com/cast/docs/design_checklist#sender-control-end
-// TODO: Create HTML5 tagged video page using filename to serve video
-// TODO: Save video to local file with filepath
+// Not done: Create HTML5 tagged video page using filename to serve video
+// Not done: Save video to local file with filepath
 // Checking media type: http://stackoverflow.com/questions/6276351/how-to-capture-video-in-iphone
 // Internet Media types: http://en.wikipedia.org/wiki/Internet_media_type
 // Adding video handler.  First step setup capability: http://iphonedevsdk.com/forum/iphone-sdk-development/52628-kuttypeimage-undeclared-helpp.html

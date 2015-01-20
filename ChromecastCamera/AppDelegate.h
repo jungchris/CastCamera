@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CCJUserModel.h"
 #import "GCDWebServer.h"
 #import "GCDWebServerDataResponse.h"
 
@@ -15,6 +16,9 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) GCDWebServer *webServer;
+
+// app user model to access chosen state
+@property (strong, nonatomic) CCJUserModel *userModel;
 
 @end
 
