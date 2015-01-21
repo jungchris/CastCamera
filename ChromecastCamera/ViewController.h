@@ -34,6 +34,7 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 @property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRandomize;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRepeat;
+@property (weak, nonatomic) IBOutlet UISwitch *switchLandscape;
 
 
 @end

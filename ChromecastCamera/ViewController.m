@@ -52,6 +52,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property BOOL isOnSwitchSpeed;
 @property BOOL isOnSwitchRandomize;
 @property BOOL isOnSwitchRepeat;
+@property BOOL isOnwitchLandscape;
 
 // iAd
 @property (strong, nonatomic) ADBannerView *adBanner;
@@ -127,18 +128,19 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.switchSpeed.on = NO;
     self.switchRandomize.on = NO;
     self.switchRepeat.on = NO;
+    self.switchLandscape.on = NO;
     
     // add switch listeners
     [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
     [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
     [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
+    [self.switchLandscape addTarget:self action:@selector(selectorForSwitchLandscape:) forControlEvents:UIControlEventValueChanged];
     
     // iAd
     // implement global iAd process.
     self.adBanner = [[ADBannerView alloc] init];
     self.adBanner.delegate = self;
     [self addADBannerViewToBottom];
-    
 }
 
 
@@ -239,7 +241,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)updateStatsFromDevice {
     
     NSLog(@"updateStatsFromDevice");
-
     
     if (self.mediaControlChannel && self.isConnected) {
         _mediaInformation = self.mediaControlChannel.mediaStatus.mediaInformation;
@@ -297,13 +298,11 @@ static NSString *const kReceiverAppID = @"898F3A9B";
             
         }
     }
-    
 }
 
 #pragma mark - Button & Selector Methods
 
 - (IBAction)buttonShowLibrary:(id)sender {
-    
     [self presentViewController:self.pickerController animated:YES completion:NULL];    
 }
 
@@ -492,6 +491,14 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     }
 }
 
+- (void)selectorForSwitchLandscape:(id)sender {
+    
+    if ([sender isOn]) {
+        self.isOnSwitchRepeat = YES;
+    } else {
+        self.isOnSwitchRepeat = NO;
+    }
+}
 
 #pragma mark - GCKDeviceManagerDelegate
 
@@ -913,6 +920,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             image = [CCJImageEngine scaleImage:image toSize:newSize];
         } else {
             NSLog(@"portrait");
+//            if (self.switchLandscape) {
+//                // skip this image, increment image index
+//                self.mediaIndex = self.mediaIndex + 1;
+//                return;
+//            }
         }
 
         // TODO: reduce compression before testing
@@ -981,7 +993,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 }
 
 // new method that does the image processing during the NSTimer delay
-- (void)selectorForDisplayImagesTimerDuringWait:(NSTimer *)timer {
+// This method
+- (void)selectorForDisplayImagesTimerDuringDelay:(NSTimer *)timer {
     
     NSLog(@"selectorForDisplayImagesTimerDuringWait");
     NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
@@ -995,30 +1008,30 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         return;
     }
     
+    // UPDATE CHROMECAST IF AN IMAGE IS READY
+    
+    // update cast
+    if ([self.mediaURL length] > 0) {
+        [self updateChromecastWithTitle:@"Image"
+                               subTitle:@"from iPhone"
+                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                               mediaURL:self.mediaURL
+                            contentType:self.mediaType];
+    }
+    
     // CHECK WEB SERVER & GET URL
     
     // build image info from scratch, checking the server URL each time
-    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+    NSMutableString *mediaURLMutable = [[NSMutableString alloc] init];
     if (SharedWebServer.serverURL) {
-        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+        [mediaURLMutable appendString:[SharedWebServer.serverURL absoluteString]];
         
     } else {
         NSLog(@"Error catch: SharedWebServer.serverURL nil");
         return;
     }
     
-    // UPDATE CHROMECAST IF AN IMAGE IS READY
-    
-    // update cast
-    if ([self.mediaType length] > 0) {
-        [self updateChromecastWithTitle:@"Image"
-                               subTitle:@"from iPhone"
-                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                               mediaURL:[mediaURL copy]
-                            contentType:self.mediaType];
-    }
-    
-    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
+    // WORK ON THE IMAGE
     
     // check media type
     if (self.mediaIndex < [itemArray count]) {
@@ -1055,6 +1068,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             image = [CCJImageEngine scaleImage:image toSize:newSize];
         } else {
             NSLog(@"portrait");
+//            if (self.switchLandscape) {
+//                // skip this image, increment image index
+//                self.mediaIndex = self.mediaIndex + 1;
+//                return;
+//            }
         }
         
         // TODO: reduce compression before testing
@@ -1062,7 +1080,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         self.mediaType = @"image/jpeg";
         
         // start building the image name
-        [mediaURL appendString:@"image"];
+        [mediaURLMutable appendString:@"image"];
         // check if the URL needs to be unique
         if (self.isOnSwitchRepeat) {
             // URLs can be cacheable
@@ -1070,39 +1088,29 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                 
                 // TODO: Check if randomizing the URL is really necessary - probably not!
                 // we're repeating random images, so we use the random increment
-                [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
+                [mediaURLMutable appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
                 
             } else {
                 // we're repeating non-random images, so use simple increment
-                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+                [mediaURLMutable appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
             }
             
         } else {
             // set the URL's media index uniquely to avoid getting a cached image
-            [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+            [mediaURLMutable appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
         }
         
-        [mediaURL appendString:@".jpg"];
-        NSLog(@"==> mutable URL %@", mediaURL);
-        
-        
-        // UPDATE CHROMECAST
-        
-        // update cast
-        [self updateChromecastWithTitle:@"Image"
-                               subTitle:@"from iPhone"
-                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                               mediaURL:[mediaURL copy]
-                            contentType:self.mediaType];
+        [mediaURLMutable appendString:@".jpg"];
+        NSLog(@"==> mutable URL %@", mediaURLMutable);
         
     } else {
         NSLog(@"Oop! Something's being naughty: no mediaData");
     }
     
-    // CHECK IF SHOULD TERMINATE
-    
     // increment image index
     self.mediaIndex = self.mediaIndex + 1;
+    
+    // CHECK IF SHOULD TERMINATE
     
     // check where we're at
     if (self.mediaIndex >= [itemArray count]) {
@@ -1119,6 +1127,16 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             NSLog(@"==> Done streaming");
             [timer invalidate];
         }
+        
+        // show last image
+        if ([self.mediaURL length] > 0) {
+            [self updateChromecastWithTitle:@"Image"
+                                   subTitle:@"from iPhone"
+                                   imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                                   mediaURL:self.mediaURL
+                                contentType:self.mediaType];
+        }
+        
     }
 }
 
@@ -1265,10 +1283,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
+// todo - Add landscape only option button
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to pinpoint CPU consumption
-// todo - Look to buffer the image for the next display cycle, one ahead. (3:30 - 4:30) +
+// 01-20-15 - Added switchLandscape to show only landscape images (7:45 -  )
+// 01-20-15 - Look to buffer the image for the next display cycle, one ahead. (2h 3:30-4:30, 6:30-7:30)
 // todo - Noticed difference in load speeds of landscape VS portrait images due to aspect fill routine slowing landscape.
 // 01-20-15 - Set User Preferences for switch settings in ViewController (0.5 hours)
 // 01-20-15 - Finished wiring up CCJUserModel in AppDelegate to save user preferences

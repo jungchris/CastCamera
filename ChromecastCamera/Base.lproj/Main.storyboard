@@ -72,16 +72,29 @@
                                     <action selector="buttonSocial:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ua2-L6-LrT"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="88b-Hm-mI0">
+                                <rect key="frame" x="35" y="356" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Lanscape Only" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xY1-Yy-duc">
+                                <rect key="frame" x="127" y="361" width="171" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uN4-BY-GxL" firstAttribute="top" secondItem="nNy-lk-k1g" secondAttribute="bottom" constant="29" id="05R-7T-xSN"/>
+                            <constraint firstItem="88b-Hm-mI0" firstAttribute="top" secondItem="uN4-BY-GxL" secondAttribute="bottom" constant="28" id="2Ey-Ny-kcP"/>
                             <constraint firstItem="cZT-dX-dKL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="43" id="30j-az-3Bu"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="xQg-ib-Fso" secondAttribute="bottom" constant="94" id="3RU-qi-Nsj"/>
+                            <constraint firstItem="xY1-Yy-duc" firstAttribute="top" secondItem="Mx0-Eo-bFM" secondAttribute="bottom" constant="38" id="6gz-kk-GvE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LCj-5k-nf8" secondAttribute="trailing" constant="-16" id="9wf-gl-R2P"/>
                             <constraint firstItem="Mx0-Eo-bFM" firstAttribute="leading" secondItem="uN4-BY-GxL" secondAttribute="trailing" constant="43" id="A8G-co-k9a"/>
                             <constraint firstItem="HAK-9u-0Hq" firstAttribute="top" secondItem="cZT-dX-dKL" secondAttribute="bottom" constant="41" id="GVb-YX-5iT"/>
+                            <constraint firstItem="88b-Hm-mI0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="19" id="LtC-lJ-LSr"/>
                             <constraint firstItem="LCj-5k-nf8" firstAttribute="leading" secondItem="Mx0-Eo-bFM" secondAttribute="trailing" constant="64" id="OmZ-XL-Utu"/>
+                            <constraint firstItem="xY1-Yy-duc" firstAttribute="leading" secondItem="88b-Hm-mI0" secondAttribute="trailing" constant="43" id="P6W-3n-52w"/>
                             <constraint firstItem="7gw-Tg-lta" firstAttribute="leading" secondItem="nNy-lk-k1g" secondAttribute="trailing" constant="43" id="PCQ-hK-p0n"/>
                             <constraint firstItem="xQg-ib-Fso" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="19" id="Um9-85-yj5"/>
                             <constraint firstItem="x8u-4L-kTP" firstAttribute="leading" secondItem="HAK-9u-0Hq" secondAttribute="trailing" constant="43" id="VHe-Lf-JQn"/>
@@ -101,6 +114,7 @@
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
                     <connections>
                         <outlet property="imageViewIcon" destination="LCj-5k-nf8" id="AdD-xE-IzZ"/>
+                        <outlet property="switchLandscape" destination="88b-Hm-mI0" id="ebj-rm-Ojk"/>
                         <outlet property="switchRandomize" destination="nNy-lk-k1g" id="AJx-cp-BLp"/>
                         <outlet property="switchRepeat" destination="uN4-BY-GxL" id="dge-En-Hq5"/>
                         <outlet property="switchSpeed" destination="HAK-9u-0Hq" id="fU4-Fg-9wP"/>
