@@ -27,7 +27,11 @@
     
     // this code needs to ensure userModel is not overwritten to nil when no archive file exists
     if ([userModel restoreUserPreferences]) {
+        
+        NSLog(@"> Restoring user model from user.archive");
         userModel = [userModel restoreUserPreferences];
+        
+        
     } else {
         NSLog(@"> Nothing to restore from items.archive");
     }

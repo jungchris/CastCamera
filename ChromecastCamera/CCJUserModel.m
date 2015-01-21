@@ -22,6 +22,7 @@
         self.userSpeedySwitchOn = NO;
         self.userRandomSwitchOn = NO;
         self.userRepeatSwitchOn = NO;
+        self.userLandcapeSwitchOn = NO;
     }
     return self;
 }
@@ -35,6 +36,7 @@
     self.userSpeedySwitchOn = [aDecoder decodeBoolForKey:@"userSpeedySwitchOn"];
     self.userRandomSwitchOn = [aDecoder decodeBoolForKey:@"userRandomSwitchOn"];
     self.userRepeatSwitchOn = [aDecoder decodeBoolForKey:@"userRepeatSwitchOn"];
+    self.userLandcapeSwitchOn = [aDecoder decodeBoolForKey:@"userLandcapeSwitchOn"];
     
     return self;
 }
@@ -46,13 +48,15 @@
     [aCoder encodeBool:self.userSpeedySwitchOn forKey:@"userSpeedySwitchOn"];
     [aCoder encodeBool:self.userRandomSwitchOn forKey:@"userRandomSwitchOn"];
     [aCoder encodeBool:self.userRepeatSwitchOn forKey:@"userRepeatSwitchOn"];
+    [aCoder encodeBool:self.userLandcapeSwitchOn forKey:@"userLandcapeSwitchOn"];
+    
 }
 
 #pragma mark - Persistence Methods
 
 - (BOOL)saveUserPreferences {
     
-    //    NSLog(@"CCJUserModel - saveUserPreferences");
+    NSLog(@"CCJUserModel - saveUserPreferences");
     NSString *path = [self documentDirectoryPath];
     return [NSKeyedArchiver archiveRootObject:self toFile:path];
     
@@ -65,11 +69,11 @@
     
     if ([NSKeyedUnarchiver unarchiveObjectWithFile:path]) {
         // looks good
-        //        NSLog(@"***> CCJUserModel NSKeyedUnarchiver unarchiveObjectWithFile:");
+        NSLog(@"***> CCJUserModel NSKeyedUnarchiver unarchiveObjectWithFile:");
         return [NSKeyedUnarchiver unarchiveObjectWithFile:path];
     } else {
         // it appears nothing was previously saved
-        //        NSLog(@"***> CCJUserModel NSKeyedUnarchiver nil");
+        NSLog(@"***> CCJUserModel NSKeyedUnarchiver nil");
         return nil;
     }
 }
@@ -81,7 +85,7 @@
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     NSString *documentDirectory  = [documentDirectories firstObject];
-    return [documentDirectory stringByAppendingPathComponent:@"items.archive"];
+    return [documentDirectory stringByAppendingPathComponent:@"user.archive"];
 }
 
 

@@ -15,6 +15,7 @@
 @property BOOL userSpeedySwitchOn;
 @property BOOL userRandomSwitchOn;
 @property BOOL userRepeatSwitchOn;
+@property BOOL userLandcapeSwitchOn;
 
 // initializer
 - (id)initWithIdentifier:(int)userID;

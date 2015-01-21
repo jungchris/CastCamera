@@ -18,6 +18,8 @@
 
 #define SharedWebServer ((AppDelegate *)[[UIApplication sharedApplication] delegate]).webServer
 
+#define SharedUserModel ((AppDelegate *)[[UIApplication sharedApplication] delegate]).userModel
+
 // TODO: Remove unneeded delegates
 @interface ViewController : UIViewController <GCKDeviceScannerListener,
 GCKDeviceManagerDelegate,
