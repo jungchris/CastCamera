@@ -39,6 +39,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) WSAssetPickerController *pickerController;
 @property (nonatomic, strong) NSArray *mediaArray;
+@property (nonatomic, assign) NSUInteger pickerCounter;
 
 // Used by NSTimer
 @property (nonatomic, strong) NSTimer *timerForShow;
@@ -141,6 +142,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.adBanner = [[ADBannerView alloc] init];
     self.adBanner.delegate = self;
     [self addADBannerViewToBottom];
+    
+    // used to keep track of picker controller
+    self.pickerCounter = 0;
+    
 }
 
 
@@ -663,7 +668,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // customized method
 - (void)updateChromecastWithTitle:(NSString *)title subTitle:(NSString *)subTitle imageURL:(NSString *)imageURL mediaURL:(NSString *)mediaURL contentType:(NSString *)type {
    
-    NSLog(@"Updating Chromecast with parameters");
+//    NSLog(@"Updating Chromecast with parameters");
     
     //Define Media metadata
     GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
@@ -718,13 +723,17 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             [mediaArrayMutable addObject:imageA];
             
         }
-        NSLog(@"%lu", (unsigned long)mediaArrayMutable.count);
+        NSLog(@"==> mediaArray count: %lu", (unsigned long)mediaArrayMutable.count);
         self.mediaArray = [mediaArrayMutable copy];
         
         // make the call to method that will iterate and cast entire array
         [self displayImagesFromArray:[mediaArrayMutable copy]];
         
     }];
+    
+    // increment picker counter used to create unique URL
+    self.pickerCounter = self.pickerCounter + 1;
+    
 }
 
 
@@ -824,12 +833,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)displayImagesFromArray:(NSArray *)imageArray {
     
-    NSLog(@"displayImagesFromArray:count: %lu", [imageArray count]);
+    NSLog(@"==> displayImagesFromArray:count: %lu", [imageArray count]);
     
     // create random array in case it's needed in NSTimer selector later
     self.randomNumbersArray = [self createRandomArray:[imageArray count]];
     
-    NSLog(@"self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
+    NSLog(@"... self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
     
     if ([imageArray count] > 0) {
         
@@ -859,8 +868,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // Selector method called by NSTimer
 - (void)selectorForDisplayImagesTimer:(NSTimer *)timer {
 
-    NSLog(@"selectorForDisplayImagesTimer");
-    NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
+    NSLog(@"... selector counter: %lu", (unsigned long)self.mediaIndex);
     
     // EXTRACT USERINFO
     
@@ -912,14 +920,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // check if landscape for image fit
         if (image.size.width > image.size.height) {
-            NSLog(@"landscape");
+            NSLog(@"... landscape");
             // scale to fill
             // TODO: set CGSize dynamically, not hard coded
             CGSize newSize = CGSizeMake(1280, 720);
             // TODO: optimize 'scaleImage' process
             image = [CCJImageEngine scaleImage:image toSize:newSize];
         } else {
-            NSLog(@"portrait");
+            NSLog(@"... portrait");
 //            if (self.switchLandscape) {
 //                // skip this image, increment image index
 //                self.mediaIndex = self.mediaIndex + 1;
@@ -928,14 +936,19 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         }
 
         // TODO: reduce compression before testing
-        self.mediaData = UIImageJPEGRepresentation(image, 0.2);
+        self.mediaData = UIImageJPEGRepresentation(image, 0.5);
         self.mediaType = @"image/jpeg";
         
         // start building the image name
         [mediaURL appendString:@"image"];
         // check if the URL needs to be unique
         if (self.isOnSwitchRepeat) {
-            // URLs can be cacheable
+            
+            // URLs repeat so should be cacheable
+            // first append the picker index
+            [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+            [mediaURL appendString:@"a"];
+    
             if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
                 
                 // TODO: Check if randomizing the URL is really necessary - probably not!
@@ -948,12 +961,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             }
             
         } else {
+            
             // set the URL's media index uniquely to avoid getting a cached image
             [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
         }
 
         [mediaURL appendString:@".jpg"];
-        NSLog(@"==> mutable URL %@", mediaURL);
+        NSLog(@"--> mutable URL %@", mediaURL);
         
         
         // UPDATE CHROMECAST
@@ -996,8 +1010,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // This method
 - (void)selectorForDisplayImagesTimerDuringDelay:(NSTimer *)timer {
     
-    NSLog(@"selectorForDisplayImagesTimerDuringWait");
-    NSLog(@"... counter: %lu", (unsigned long)self.mediaIndex);
+    NSLog(@"... selector counter: %lu", (unsigned long)self.mediaIndex);
     
     // EXTRACT USERINFO
     
@@ -1012,11 +1025,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     // update cast
     if ([self.mediaURL length] > 0) {
+        NSLog(@"... updateChromecastWithTitle: All good");
         [self updateChromecastWithTitle:@"Image"
                                subTitle:@"from iPhone"
                                imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
                                mediaURL:self.mediaURL
                             contentType:self.mediaType];
+    } else {
+        NSLog(@"... updateChromecastWithTitle: (Oops! no media)");
     }
     
     // CHECK WEB SERVER & GET URL
@@ -1060,14 +1076,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // check if landscape for image fit
         if (image.size.width > image.size.height) {
-            NSLog(@"landscape");
+            NSLog(@"... landscape");
             // scale to fill
             // TODO: set CGSize dynamically, not hard coded
             CGSize newSize = CGSizeMake(1280, 720);
             // TODO: optimize 'scaleImage' process
             image = [CCJImageEngine scaleImage:image toSize:newSize];
         } else {
-            NSLog(@"portrait");
+            NSLog(@"... portrait");
 //            if (self.switchLandscape) {
 //                // skip this image, increment image index
 //                self.mediaIndex = self.mediaIndex + 1;
@@ -1076,14 +1092,21 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         }
         
         // TODO: reduce compression before testing
-        self.mediaData = UIImageJPEGRepresentation(image, 0.2);
+        self.mediaData = UIImageJPEGRepresentation(image, 0.5);
         self.mediaType = @"image/jpeg";
         
         // start building the image name
         [mediaURLMutable appendString:@"image"];
         // check if the URL needs to be unique
         if (self.isOnSwitchRepeat) {
-            // URLs can be cacheable
+            
+            NSLog(@"... repeating");
+            
+            // URLs repeat so can be cached
+            // first append the picker index
+            [mediaURLMutable appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+            [mediaURLMutable appendString:@"a"];
+            
             if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
                 
                 // TODO: Check if randomizing the URL is really necessary - probably not!
@@ -1096,12 +1119,17 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             }
             
         } else {
-            // set the URL's media index uniquely to avoid getting a cached image
+            
+            NSLog(@"... non repeating");
+            
+            // no repeat, set the media index uniquely to avoid getting a cached image
             [mediaURLMutable appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
         }
         
         [mediaURLMutable appendString:@".jpg"];
-        NSLog(@"==> mutable URL %@", mediaURLMutable);
+        NSLog(@"--> mutable URL %@", mediaURLMutable);
+
+        self.mediaURL = [mediaURLMutable copy];
         
     } else {
         NSLog(@"Oop! Something's being naughty: no mediaData");
@@ -1283,11 +1311,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
+// todo - When in repeat mode, don't reprocess images.  Just loop through the URLs.
 // todo - Add landscape only option button
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to pinpoint CPU consumption
-// 01-20-15 - Added switchLandscape to show only landscape images (7:45 -  )
+// 01-21-15 - Getting old images: Add a 'run counter' incremented in didFinishPickingMedia to image URL (0.5 hour - 9:30-10:00)
+// 01-21-15 - Test new method that processes image after Chromecast update (8:45 - 9:30)
+// 01-20-15 - Added switchLandscape to show only landscape images (7:45 - 8:15 + ... )
 // 01-20-15 - Look to buffer the image for the next display cycle, one ahead. (2h 3:30-4:30, 6:30-7:30)
 // todo - Noticed difference in load speeds of landscape VS portrait images due to aspect fill routine slowing landscape.
 // 01-20-15 - Set User Preferences for switch settings in ViewController (0.5 hours)
