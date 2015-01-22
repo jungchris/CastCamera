@@ -110,7 +110,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // TODO: May wish to start the server right before chromcast gets started
     // start web server if not running (start with default image)
     UIImage *image = [UIImage imageNamed:@"movie-icon.jpg"];
-    self.imageViewIcon.image = image;
+//    self.imageViewIcon.image = image;
     self.mediaData = UIImagePNGRepresentation(image);
     self.mediaType = @"image/jpeg";
     if (!SharedWebServer.isRunning) {
@@ -749,6 +749,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 #pragma mark - iOS Default Image Picker
 
+// TODO: Comment this out since replaced
 // Your delegate object’s implementation of this method should pass the specified media on to any custom code that needs it, and should then dismiss the picker view.
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
@@ -798,7 +799,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // a video was taken
         NSLog(@"a video or movie was chosen");
         
-        self.imageViewIcon.image = [UIImage imageNamed:@"movie-icon.jpg"];
+//        self.imageViewIcon.image = [UIImage imageNamed:@"movie-icon.jpg"];
         
         // save video to NSData mediaData
             // movie != video
@@ -1536,11 +1537,24 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 }
 
 
+- (IBAction)buttonStartStop:(id)sender {
+}
+
+- (IBAction)buttonBack:(id)sender {
+}
+
+- (IBAction)buttonPause:(id)sender {
+}
+
+- (IBAction)buttonNext:(id)sender {
+}
 @end
 
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to pinpoint CPU consumption
+// 01-22-15 - UI Redesign Work on look & feel using Auto Layout (12:00 - 
+// 01-22-15 - Add buttons to manually control slideshow, pause, forward, back (9:00 - 9:30)
 // 01-21-15 - Set switches from CCJUserModel preferences on launch: UNABLE TO DEBUG (3:20 - 4:05)
 // 01-21-15 - Add switchLandscape to CCJUserModel for serialization (3:15 - 3:20)
 // 01-21-15 - When in repeat mode, don't reprocess images.  Just loop through the URLs.  Redoing logic using a method to pre-process images.  (1.5 hours / 1:45 - 3:15)
