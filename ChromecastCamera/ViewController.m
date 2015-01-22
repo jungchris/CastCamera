@@ -1553,7 +1553,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to pinpoint CPU consumption
-// 01-22-15 - UI Redesign Work on look & feel using Auto Layout (12:00 - 
+// todo - Complete Wenderlich's Beginning AutoLayout Tutorial
+// 01-22-15 - Look & Feel.  Making background image.
+// 01-22-15 - UI Redesign Work on look & feel using Auto Layout.  A struggle! (12:00 - 2:45)
 // 01-22-15 - Add buttons to manually control slideshow, pause, forward, back (9:00 - 9:30)
 // 01-21-15 - Set switches from CCJUserModel preferences on launch: UNABLE TO DEBUG (3:20 - 4:05)
 // 01-21-15 - Add switchLandscape to CCJUserModel for serialization (3:15 - 3:20)
