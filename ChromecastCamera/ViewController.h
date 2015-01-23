@@ -30,21 +30,30 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 
-// general controls
-- (IBAction)buttonShowLibrary:(id)sender;
-- (IBAction)buttonSocial:(id)sender;
-
-// media playback controls
-- (IBAction)buttonStartStop:(id)sender;
-- (IBAction)buttonBack:(id)sender;
-- (IBAction)buttonPause:(id)sender;
-- (IBAction)buttonNext:(id)sender;
-
 // switches
 @property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRandomize;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRepeat;
 @property (weak, nonatomic) IBOutlet UISwitch *switchLandscape;
+
+// button properties
+@property (weak, nonatomic) IBOutlet UIButton *buttonShowLibrary;
+@property (weak, nonatomic) IBOutlet UIButton *buttonStartStop;
+@property (weak, nonatomic) IBOutlet UIButton *buttonBack;
+@property (weak, nonatomic) IBOutlet UIButton *buttonPause;
+@property (weak, nonatomic) IBOutlet UIButton *buttonNext;
+
+// button actions
+- (IBAction)buttonShowLibraryTouch:(id)sender;
+- (IBAction)buttonSocialTouch:(id)sender;
+
+// media playback controls
+- (IBAction)buttonStartStopTouch:(id)sender;
+- (IBAction)buttonBackTouch:(id)sender;
+- (IBAction)buttonPauseTouch:(id)sender;
+- (IBAction)buttonNextTouch:(id)sender;
+
+
 
 
 
