@@ -1745,9 +1745,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Use Instruments to pinpoint CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - Debug buttons:  Only show back button when index == 1.
-// todo - Test the new buttons, start/stop, pause, back, forward. (12:30-2:00)
-// todo - Setup buttons to be greyed out when their functions are not enabled (11:30-12:15)
+// todo - When pressing 'pause' button, should replace 'pause' with play & enable restart
+// todo - Debug: When manually back to first slide, pressing 'next' redisplays same slide
+// 01-23-15 - Debug buttons:  Only show back button when index == 1 (2:15-3:00)
+// 01-23-15 - Test the new buttons, start/stop, pause, back, forward. (12:30-2:00)
+// 01-23-15 - Setup buttons to be greyed out when their functions are not enabled (11:30-12:15)
 // 01-23-15 - Reset button constraints in Autolayout (11:00-11:30)
 // 01-23-15 - BackToSchool: Figure out how to set alpha on an (IBAction)button (9:30-10:15)
 // 01-23-15 - Add graphics assets in place of buttons on UI into xcassets sets (8:30-9:30)
