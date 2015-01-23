@@ -320,6 +320,15 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 #pragma mark - Button & Selector Methods
 
+- (void)initializeButtonIcons {
+    
+    
+    
+    
+    
+}
+
+
 - (IBAction)buttonShowLibrary:(id)sender {
     [self presentViewController:self.pickerController animated:YES completion:NULL];    
 }
@@ -1573,11 +1582,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
+// todo - Static testing
+// todo - Wrap up up code TODOs
+// todo - Clean up code comments
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to pinpoint CPU consumption
+// todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - New bug [UIImage length] unrecognized selector
+// todo - Setup buttons to be greyed out when their functions are not enabled
+// todo - Add graphics in place of buttons on UI
+// 01-23-15 - Test the new buttons, start/stop, pause, back, forward. (8:30-
+// 01-22-15 - New bug [UIImage length] unrecognized selector.  Found wrong return: (0.1)
 // 01-22-15 - Had to refactor control methods to allow manual stepping through images (6:00-8:30)
 // 01-22-15 - Wire the new stop-start, pause, forward, back switches (5:30-6:00)
 // 01-22-15 - Background-image, edited photo from SnowAwesome archives (3:45-4:45)
