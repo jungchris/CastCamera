@@ -1536,6 +1536,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             }
         }
         self.isOnModeForward = FALSE;
+    } else {
+        // handle unique case where we've moved back to beginning and image repeats
+        if (!self.isOnModeForward && self.mediaIndex == 0) {
+            self.mediaIndex = self.mediaIndex + 1;
+        }
     }
     
     NSLog(@"*** post showNext mediaIndex: %lu", self.mediaIndex);
@@ -1575,7 +1580,15 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         [mediaURL appendString:@"image"];
             
         // set the URL's media index uniquely to avoid getting a cached image
-        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+//        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+        
+        // checking to a straight indexed image to improve forward<->back performance
+        // first append the picker index
+        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+        [mediaURL appendString:@"a"];
+
+        // we're repeating non-random images, so use simple increment
+        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
         
         [mediaURL appendString:@".jpg"];
         NSLog(@"--> mutable URL %@", mediaURL);
@@ -1850,6 +1863,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 // todo - Important: If selecting 'play', or 'next' but not connected, bring up Chromecast devices
 // todo - Static testing
+// todo - Handle WSAssetTableViewController deprecations
 // todo - Wrap up up code TODOs
 // todo - Clean up code comments
 // todo - Test during extended runtime using instruments to watch for memory leaks
@@ -1857,8 +1871,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Use Instruments to pinpoint CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - Debug: When manually back to first slide, pressing 'next' redisplays same slide
-// todo - Wire boolean tracker when play button is "active", since pause stops NSTimer (1:50-
+// 01-26-15 - Debug: When manually back to first slide, pressing 'next' redisplays same slide (3:10-3:20)
+// 01-26-15 - Debug: Noticed that when 'repeat' switch is selected image index is not simple in the manual mode, but it is in slideshow mode. (2:45-3:10)
+// 01-26-15 - Wire boolean tracker when play button is "active", since pause stops NSTimer.  Refactored method with better logic in discrete method (1:50-2:40)
 // 01-26-15 - Debug: When pressing 'pause' button, should replace 'pause' with play & enable restart (0.5 hours = 1:20-1:50)
 // 01-26-15 - Debug: Stopping a running slideshow does not remove the pause button and display 'next' button.  This is done Ok, when slideshow ends normally though. (5 minutes 1:15-1:20)
 // 01-23-15 - Debug buttons:  Only show back button when index == 1 (2:15-3:00)
