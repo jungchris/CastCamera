@@ -47,6 +47,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, assign) NSUInteger mediaIndex;
 @property (nonatomic, strong) NSString *mediaURL;
 @property BOOL isOnModeForward;
+@property BOOL isOnPlayActive;
 
 // Used to randomize image order
 @property (nonatomic, strong) NSArray *randomNumbersArray;
@@ -133,6 +134,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.switchRandomize.on = NO;
     self.switchRepeat.on = NO;
     self.switchLandscape.on = NO;
+    
+    // set mode trackers to be used later
+    self.isOnModeForward = YES;
+    self.isOnPlayActive  = NO;
     
     // load switch settings from user model if able
     [self restorePropertiesFromSharedUserModel];
@@ -355,6 +360,28 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // check if can enable media buttons
     if ([self.mediaArray count] > 0) {
         
+        // TRY: Move this code here from buttonStartStop
+        // BEGIN CODE RFACTOR
+        // enable and show pause
+        self.buttonPause.alpha = 1.0;
+        self.buttonPause.enabled = YES;
+        
+        // hide the manual next button
+        self.buttonNext.alpha = 0.3;
+        self.buttonNext.enabled = NO;
+        
+        // hide the manual back button
+        self.buttonBack.alpha = 0.3;
+        self.buttonBack.enabled = NO;
+        
+        // change button icon to 'stop'
+        [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
+        
+        // set pause button back to 'pause' icon
+        [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
+        // END OF CODE REFACTOR
+        
+        
         // highlight the media button
         UIImage *buttonImage = [UIImage imageNamed:@"icon-picker-highlight"];
         [self.buttonShowLibrary setImage:buttonImage forState:UIControlStateNormal];
@@ -371,10 +398,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         [self disableMediaControlButtons];
     }
     
-    // check if timer is running so we can enable 'paws' button
-    if ([self.timerForShow isValid]) {
+    // check if show is running so we can enable 'paws' button
+    if (self.isOnPlayActive) {
         
-        // timer is running
+        // show is running
         // disable the forward and back buttons
         self.buttonPause.alpha      = 0.30;
         self.buttonNext.alpha       = 0.30;
@@ -387,7 +414,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
     } else {
         
-        // timer is not running
+        // show is not running
         // disable the pause button
         self.buttonPause.alpha      = 0.3;
         self.buttonPause.enabled    = NO;
@@ -400,8 +427,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         [self updateNextButtonUsingBounds];
         
     }
-    
-    
 }
 
 - (void)updateBackButtonUsingBounds {
@@ -443,36 +468,58 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 - (IBAction)buttonStartStopTouch:(id)sender {
     
+    // no matter what, check if the timer is running and if yes, stop the timer
     if ([self.timerForShow isValid]) {
-        
         [self.timerForShow invalidate];
         self.timerForShow = nil;
+    }
+    
+    // toggle play on/off
+    if (self.isOnPlayActive) {
+        
+        // we are in active play mode, so stop the show
+        self.isOnPlayActive = NO;
+        
+        // change 'stop' icon to 'play', disable 'pause', enable 'next'
+        [self updateMediaControlButtons];
         
         // change button icon to 'play'
         UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
         [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
         
+        
     } else {
         
+        // we are hard stopped (not paused), let's start the show
+        self.isOnPlayActive = YES;
+        
+        // check if we can start the show
         // check if array is ready
         if ([self.mediaArray count] > 0) {
             
-            // enable and show pause
-            self.buttonPause.alpha = 1.0;
-            self.buttonPause.enabled = YES;
+//            // enable and show pause
+//            self.buttonPause.alpha = 1.0;
+//            self.buttonPause.enabled = YES;
+//            
+//            // hide the manual next button
+//            self.buttonNext.alpha = 0.3;
+//            self.buttonNext.enabled = NO;
+//            
+//            // hide the manual back button
+//            self.buttonBack.alpha = 0.3;
+//            self.buttonBack.enabled = NO;
+//            
+//            // change button icon to 'stop'
+//            [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
+//            
+//            // set pause button back to 'pause' icon
+//            [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
             
-            // hide the manual next button
-            self.buttonNext.alpha = 0.3;
-            self.buttonNext.enabled = NO;
+            // call method instead of doing all the above
+            [self updateMediaControlButtons];
             
-            // hide the manual back button
-            self.buttonBack.alpha = 0.3;
-            self.buttonBack.enabled = NO;
-            
-            // change button icon to 'stop'
-            UIImage *buttonImage = [UIImage imageNamed:@"icon-stop"];
-            [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
-            
+            // set show to start at beginning
+            self.mediaIndex = 0;
             // make the call to method that will iterate and cast entire array
             [self displayImagesFromArray:self.mediaArray];
             
@@ -482,6 +529,55 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
     }
     
+//    if ([self.timerForShow isValid]) {
+//        
+//        // timer was running, so stop the show
+//
+//        [self.timerForShow invalidate];
+//        self.timerForShow = nil;
+//        
+//        // restore buttons to restart next show, or play manually
+//        // change 'stop' icon to 'play', disable 'pause', enable 'next'
+//        [self updateMediaControlButtons];
+//        
+//        // change button icon to 'play'
+//        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+//        [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
+//        
+//    } else {
+//        
+//        // check if array is ready
+//        if ([self.mediaArray count] > 0) {
+//            
+//            // enable and show pause
+//            self.buttonPause.alpha = 1.0;
+//            self.buttonPause.enabled = YES;
+//            
+//            // hide the manual next button
+//            self.buttonNext.alpha = 0.3;
+//            self.buttonNext.enabled = NO;
+//            
+//            // hide the manual back button
+//            self.buttonBack.alpha = 0.3;
+//            self.buttonBack.enabled = NO;
+//            
+//            // change button icon to 'stop'
+//            [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
+//            
+//            // set pause button back to 'pause' icon
+//            [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
+//            
+//            // set show to start at beginning
+//            self.mediaIndex = 0;
+//            // make the call to method that will iterate and cast entire array
+//            [self displayImagesFromArray:self.mediaArray];
+//            
+//        } else {
+//            NSLog(@"Error catch: Nothing to start playing");
+//        }
+//        
+//    }
+    
 }
 
 - (IBAction)buttonBackTouch:(id)sender {
@@ -490,7 +586,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     if ([self.timerForShow isValid]) {
         
         [self.timerForShow invalidate];
+        self.timerForShow = nil;
+
         // todo: change button icon to 'stopped'
+        
         
     }
     
@@ -504,13 +603,22 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // first check is we are playing slideshow
     if ([self.timerForShow isValid]) {
         
+        // stop timer to pause
         [self.timerForShow invalidate];
+        self.timerForShow = nil;
         
-        // todo: change button icon to 'stopped'
+        // change 'pause' button icon to 'play'
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+        [self.buttonPause setImage:buttonImage forState:UIControlStateNormal];
         
     } else {
         
-        NSLog(@"Error catch: nothing to pause");
+        // change pause btton from 'play' icon to 'pause'
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-pause"];
+        [self.buttonPause setImage:buttonImage forState:UIControlStateNormal];
+        
+        // restart timer without resetting index
+        [self displayImagesFromArray:self.mediaArray];
     }
 }
 
@@ -520,6 +628,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     if ([self.timerForShow isValid]) {
         
         [self.timerForShow invalidate];
+        self.timerForShow = nil;
         
         // todo: change button icon to 'stopped'
         
@@ -1098,8 +1207,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     if ([imageArray count] > 0) {
         
-        // setup image counter incremented by NSTimer
-        self.mediaIndex = 0;
+        // setup image counter incremented by NSTimer --> MOVED OUTSIDE METHOD
+//        self.mediaIndex = 0;
         
         // check if timer already running and invalidate if it is
         if ([self.timerForShow isValid]) {
@@ -1398,6 +1507,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
             // reset media index in case user wants to manualy view images
             self.mediaIndex = 0;
+            
+            // let controler know that we're stopped
+            self.isOnPlayActive = NO;
             
             // change 'stop' icon to 'play', disable 'pause', enable 'next'
             [self updateMediaControlButtons];
@@ -1745,8 +1857,10 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Use Instruments to pinpoint CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - When pressing 'pause' button, should replace 'pause' with play & enable restart
 // todo - Debug: When manually back to first slide, pressing 'next' redisplays same slide
+// todo - Wire boolean tracker when play button is "active", since pause stops NSTimer (1:50-
+// 01-26-15 - Debug: When pressing 'pause' button, should replace 'pause' with play & enable restart (0.5 hours = 1:20-1:50)
+// 01-26-15 - Debug: Stopping a running slideshow does not remove the pause button and display 'next' button.  This is done Ok, when slideshow ends normally though. (5 minutes 1:15-1:20)
 // 01-23-15 - Debug buttons:  Only show back button when index == 1 (2:15-3:00)
 // 01-23-15 - Test the new buttons, start/stop, pause, back, forward. (12:30-2:00)
 // 01-23-15 - Setup buttons to be greyed out when their functions are not enabled (11:30-12:15)
