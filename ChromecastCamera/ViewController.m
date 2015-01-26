@@ -111,14 +111,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // allocate the randomizing array
     self.randomNumbersArray = [[NSArray alloc] init];
     
-    // TODO: May wish to start the server right before chromcast gets started instead
     // start web server if not running (start with default image)
     UIImage *image = [UIImage imageNamed:@"movie-icon.jpg"];
 //    self.imageViewIcon.image = image;
     self.mediaData = UIImagePNGRepresentation(image);
     self.mediaType = @"image/jpeg";
     if (!SharedWebServer.isRunning) {
-        NSLog(@"-> Starting Web Server");
         [self webServerAddHandlerForData:self.mediaData type:self.mediaType];
         [self webServerStart];
     }
@@ -173,6 +171,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    NSLog(@"***** DID RECEIVE MEMORY WARNING!!! *****");
+    
 }
 
 #pragma mark - GCKDeviceScannerListener Device Listeners
@@ -219,7 +220,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 - (void)chooseDevice:(id)sender {
     
-    NSLog(@"chooseDevice:");
     //Choose device
     if (self.selectedDevice == nil) {
         //Choose device
@@ -274,7 +274,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 }
 
 - (BOOL)isConnected {
-    NSLog(@"isConnected");
 
     return self.deviceManager.isConnected;
 }
@@ -493,27 +492,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         // we are hard stopped (not paused), let's start the show
         self.isOnPlayActive = YES;
         
-        // check if we can start the show
         // check if array is ready
         if ([self.mediaArray count] > 0) {
-            
-//            // enable and show pause
-//            self.buttonPause.alpha = 1.0;
-//            self.buttonPause.enabled = YES;
-//            
-//            // hide the manual next button
-//            self.buttonNext.alpha = 0.3;
-//            self.buttonNext.enabled = NO;
-//            
-//            // hide the manual back button
-//            self.buttonBack.alpha = 0.3;
-//            self.buttonBack.enabled = NO;
-//            
-//            // change button icon to 'stop'
-//            [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
-//            
-//            // set pause button back to 'pause' icon
-//            [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
             
             // call method instead of doing all the above
             [self updateMediaControlButtons];
@@ -526,58 +506,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         } else {
             NSLog(@"Error catch: Nothing to start playing");
         }
-        
     }
-    
-//    if ([self.timerForShow isValid]) {
-//        
-//        // timer was running, so stop the show
-//
-//        [self.timerForShow invalidate];
-//        self.timerForShow = nil;
-//        
-//        // restore buttons to restart next show, or play manually
-//        // change 'stop' icon to 'play', disable 'pause', enable 'next'
-//        [self updateMediaControlButtons];
-//        
-//        // change button icon to 'play'
-//        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
-//        [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
-//        
-//    } else {
-//        
-//        // check if array is ready
-//        if ([self.mediaArray count] > 0) {
-//            
-//            // enable and show pause
-//            self.buttonPause.alpha = 1.0;
-//            self.buttonPause.enabled = YES;
-//            
-//            // hide the manual next button
-//            self.buttonNext.alpha = 0.3;
-//            self.buttonNext.enabled = NO;
-//            
-//            // hide the manual back button
-//            self.buttonBack.alpha = 0.3;
-//            self.buttonBack.enabled = NO;
-//            
-//            // change button icon to 'stop'
-//            [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
-//            
-//            // set pause button back to 'pause' icon
-//            [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
-//            
-//            // set show to start at beginning
-//            self.mediaIndex = 0;
-//            // make the call to method that will iterate and cast entire array
-//            [self displayImagesFromArray:self.mediaArray];
-//            
-//        } else {
-//            NSLog(@"Error catch: Nothing to start playing");
-//        }
-//        
-//    }
-    
 }
 
 - (IBAction)buttonBackTouch:(id)sender {
@@ -587,10 +516,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
         [self.timerForShow invalidate];
         self.timerForShow = nil;
-
-        // todo: change button icon to 'stopped'
-        
-        
     }
     
     // backwards direction = FALSE
@@ -630,8 +555,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         [self.timerForShow invalidate];
         self.timerForShow = nil;
         
-        // todo: change button icon to 'stopped'
-        
     }
     
     // forward direction = TRUE
@@ -639,144 +562,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
 }
 
-
-
-//- (IBAction)buttonCast:(id)sender {
-//    NSLog(@"Casting Video");
-//    
-//    //Show alert if not connected
-//    if (!self.deviceManager || !self.deviceManager.isConnected) {
-//        UIAlertView *alert =
-//        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Not Connected", nil)
-//                                   message:NSLocalizedString(@"Please connect to Cast device", nil)
-//                                  delegate:nil
-//                         cancelButtonTitle:NSLocalizedString(@"OK", nil)
-//                         otherButtonTitles:nil];
-//        [alert show];
-//        return;
-//    }
-//    
-//    // avoid crash
-//    if ([self.imagePickerPopover isPopoverVisible]) {
-//        
-//        // if already there get rid of it
-//        [self.imagePickerPopover dismissPopoverAnimated:YES];
-//        self.imagePickerPopover = nil;
-//        return;
-//    }
-//    
-//    // page 217
-//    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-//    
-//    //    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-//    //
-//    //        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-//    //
-//    //    } else {
-//    //
-//    //        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//    //    }
-//    
-//    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-//        
-//        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//        imagePicker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie, nil];
-//        
-//    } else {
-//        // TODO: a better else handler
-//        NSLog(@"Error catch: No Photo or Video Library");
-//    }
-//    
-//    imagePicker.delegate = self;
-//    //    [self presentViewController:imagePicker animated:YES completion:nil];
-//    
-//    // present popover controller for iPad
-//    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-//        self.imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
-//        self.imagePickerPopover.delegate = self;
-//        
-//        [self.imagePickerPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//        
-//    } else {
-//        
-//        [self presentViewController:imagePicker animated:YES completion:nil];
-//    }
-//    
-//    // prior location of init chromecast code, refactored as startChromeCasting
-////    [self startChromeCasting];
-//
-//    // streaming local files:
-//    // http://stackoverflow.com/questions/21631673/how-to-stream-a-local-file-to-the-chromecast
-//}
-//
-//- (IBAction)buttonBunny:(id)sender {
-//    
-//    NSLog(@"Updating Chromecast with Bunny");
-//    
-//    //Define Media metadata
-//    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
-//    
-//    [metadata setString:@"Crazy Bunny" forKey:kGCKMetadataKeyTitle];
-//    
-//    [metadata setString:@"Big Buck Bunny is Sweet"
-//                 forKey:kGCKMetadataKeySubtitle];
-//    
-//    [metadata addImage:[[GCKImage alloc]
-//                         initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
-//                                      "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
-//                         width:480
-//                         height:360]];
-//    
-//    // define Media information
-//    GCKMediaInformation *mediaInformation =
-//    [[GCKMediaInformation alloc] initWithContentID:@"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-//                                        streamType:GCKMediaStreamTypeNone
-//                                       contentType:@"video/mp4"
-//                                          metadata:metadata
-//                                    streamDuration:0
-//                                        customData:nil];
-//    
-//    //cast video
-//    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
-//    
-//}
-//
-//- (IBAction)buttonWebsite:(id)sender {
-//    
-//    NSLog(@"Updating Chromecast with Web Image");
-//    
-//    //Define Media metadata
-//    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
-//    
-//    [metadata setString:@"iOS Videos and Pictures" forKey:kGCKMetadataKeyTitle];
-//    
-//    [metadata setString:@"Chris tells the story of a ship sailing in a sea of mercury"
-//                 forKey:kGCKMetadataKeySubtitle];
-//    
-//    [metadata addImage:[[GCKImage alloc]
-//                        initWithURL:[[NSURL alloc] initWithString:@"http://incaffeine.com/img/slides/slide-bg.jpg"]
-//                        width:480
-//                        height:360]];
-//    
-//    GCKMediaInformation *mediaInformation =
-//    [[GCKMediaInformation alloc] initWithContentID:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-//                                        streamType:GCKMediaStreamTypeNone
-//                                       contentType:@"image/jpeg"
-//                                          metadata:metadata
-//                                    streamDuration:0
-//                                        customData:nil];
-//    
-////    GCKMediaInformation *mediaInformation =
-////    [[GCKMediaInformation alloc] initWithContentID:@"http://tympanus.net/Tutorials/FullscreenSlideshowAudio/"
-////                                        streamType:GCKMediaStreamTypeNone
-////                                       contentType:@"image/jpeg"
-////                                          metadata:metadata
-////                                    streamDuration:0
-////                                        customData:nil];
-//    
-//    //cast video
-//    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
-//}
 
 // Invoke Social Share features
 - (IBAction)buttonSocialTouch:(id)sender {
@@ -788,15 +573,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)selectorForSwitchSpeed:(id)sender {
     
     if ([sender isOn]) {
-        NSLog(@"switch selector ON");
         self.isOnSwitchSpeed = YES;
     } else {
-        NSLog(@"switch selector OFF");
         self.isOnSwitchSpeed = NO;
     }
     
     if ([self.timerForShow isValid]) {
-        NSLog(@"... timer was running, invalidate then restart");
         [self.timerForShow invalidate];
         self.timerForShow = nil;
         // restart timer with new speed
@@ -840,7 +622,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
     NSLog(@"connected!!");
-    
     [self updateButtonStates];
     [self.deviceManager launchApplication:kReceiverAppID];
 }
@@ -917,10 +698,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)webServerStart {
     
-    NSLog(@"Starting Web Server");
     // Start server on port 8080
     [SharedWebServer startWithPort:80 bonjourName:nil];
-    NSLog(@"Visit %@ in your web browser", SharedWebServer.serverURL);
+    NSLog(@"Web server started, visit %@", SharedWebServer.serverURL);
     
 //    self.labelCast.text = @"Now Chromecasting";
 //    self.labelURL.text  = [SharedWebServer.serverURL absoluteString];
@@ -949,57 +729,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
 }
 
-//- (void)startChromeCasting {
-//    
-//    NSLog(@"Starting Chromecast");
-//    
-//    //Define Media metadata
-//    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
-//    
-//    [metadata setString:@"iOS Videos and Pictures" forKey:kGCKMetadataKeyTitle];
-//    
-//    [metadata setString:@"Chris tells the story of a ship sailing in a sea of mercury"
-//                 forKey:kGCKMetadataKeySubtitle];
-//    
-//    //    [metadata addImage:[[GCKImage alloc]
-//    //                        initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
-//    //                                     "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
-//    //                        width:480
-//    //                        height:360]];
-//    
-//    [metadata addImage:[[GCKImage alloc]
-//                        initWithURL:[[NSURL alloc] initWithString:@"http://incaffeine.com/img/slides/slide-bg.jpg"]
-//                        width:480
-//                        height:360]];
-//    
-//    //define Media information
-//    //    GCKMediaInformation *mediaInformation =
-//    //    [[GCKMediaInformation alloc] initWithContentID:
-//    //     @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-//    //                                        streamType:GCKMediaStreamTypeNone
-//    //                                       contentType:@"video/mp4"
-//    //                                          metadata:metadata
-//    //                                    streamDuration:0
-//    //                                        customData:nil];
-//    
-//    GCKMediaInformation *mediaInformation =
-//    [[GCKMediaInformation alloc] initWithContentID:@"http://192.168.3.211/image1.jpg"
-//                                        streamType:GCKMediaStreamTypeNone
-//                                       contentType:@"image/jpeg"
-//                                          metadata:metadata
-//                                    streamDuration:0
-//                                        customData:nil];
-//    
-//    //cast video
-//    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
-//    
-//}
-
-
 // customized method
 - (void)updateChromecastWithTitle:(NSString *)title subTitle:(NSString *)subTitle imageURL:(NSString *)imageURL mediaURL:(NSString *)mediaURL contentType:(NSString *)type {
-   
-//    NSLog(@"Updating Chromecast with parameters");
     
     //Define Media metadata
     GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
@@ -1028,7 +759,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
 {
-    NSLog(@"assetPickerControllerDidCancel");
     // Dismiss the WSAssetPickerController.
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -1036,15 +766,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // WSAssetPicker delegate
 - (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
 {
-    NSLog(@"didFinishPickingMediaWithAssets");
     // Dismiss the WSAssetPickerController.
     [self dismissViewControllerAnimated:YES completion:^{
         // Do something with the assets here.
-        NSLog(@"dismissViewControllerAnimated: completion block");
-        NSLog(@"assets: %@", assets);
+//        NSLog(@"assets: %@", assets);
         
         //
-//        ALAssetRepresentation *arep = [[ALAssetRepresentation alloc] init];
         NSMutableArray *mediaArrayMutable = [[NSMutableArray alloc] init];
         
         for (ALAsset *asset in assets) {
@@ -1054,7 +781,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             [mediaArrayMutable addObject:imageA];
             
         }
-        NSLog(@"==> mediaArray count: %lu", (unsigned long)mediaArrayMutable.count);
+        NSLog(@"... mediaArray count: %lu", (unsigned long)mediaArrayMutable.count);
 
         // process the mutable array into an nsdata array
         self.mediaArray = [self prepareImagesFromArray:[mediaArrayMutable copy]];
@@ -1070,105 +797,10 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 }
 
 
-#pragma mark - iOS Default Image Picker
-
-// TODO: Comment this out since replaced
-// Your delegate object’s implementation of this method should pass the specified media on to any custom code that needs it, and should then dismiss the picker view.
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    NSLog(@"didFinishPickingMediaWithInfo:");
-
-    // set the URL's media index to avoid getting a cached image
-    NSMutableString *mediaURL = [[NSMutableString alloc] init];
-    if (SharedWebServer.serverURL) {
-        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
-    } else {
-        NSLog(@"Error catch: SharedWebServer.serverURL nil");
-        // dismiss picker
-        if (self.imagePickerPopover) {
-            [self.imagePickerPopover dismissPopoverAnimated:YES];
-            self.imagePickerPopover = nil;
-            
-        } else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        return;
-    }
-    
-    // adding 1-7-15
-    // check if photo or video (Uses <MobileCoreServices/UTCoreTypes.h>)
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-    // check media type
-    if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        
-        // a photo was taken or selected
-        NSLog(@"a photo was chosen");
-        
-        // get image picked from image directory
-        UIImage *image = info[UIImagePickerControllerOriginalImage];
-        //    self.imageData = UIImagePNGRepresentation(image);
-//        self.imageViewIcon.image = image;
-        
-        self.mediaData = UIImageJPEGRepresentation(image, 0.2);
-        self.mediaType = @"image/jpeg";
-        
-        [mediaURL appendString:@"image"];
-        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
-        [mediaURL appendString:@".jpg"];
-        
-    } else if ([mediaType isEqualToString:(NSString *)kUTTypeVideo] || [mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
-        
-        // a video was taken
-        NSLog(@"a video or movie was chosen");
-        
-//        self.imageViewIcon.image = [UIImage imageNamed:@"movie-icon.jpg"];
-        
-        // save video to NSData mediaData
-            // movie != video
-        NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
-        NSLog(@"mediaURL %@", videoURL);
-        self.mediaData  = [NSData dataWithContentsOfURL:videoURL];
-        self.mediaType  = @"video/mp4";
-        
-        [mediaURL appendString:@"video"];
-        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
-        [mediaURL appendString:@".mp4"];
-
-    } else {
-        
-        NSLog(@"media type unknown");
-    }
-    
-//    NSLog(@"NSDictionary image info: %@", info);
-    // process image based on type
-    
-    NSLog(@"==> mutable URL %@", mediaURL);
-    
-    // update it if already casting
-    [self updateChromecastWithTitle:@"Image"
-                           subTitle:@"from iPhone"
-                           imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                           mediaURL:[mediaURL copy]
-                        contentType:self.mediaType];
-    
-    // dismiss picker
-    if (self.imagePickerPopover) {
-        [self.imagePickerPopover dismissPopoverAnimated:YES];
-        self.imagePickerPopover = nil;
-        
-    } else {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    
-}
-
 #pragma mark - Main Methods
 
 // used in asset picker to populate self.mediaArray
 - (NSArray *)prepareImagesFromArray:(NSArray *)imageArray {
-    
-    NSLog(@"==> prepareImagesFromArray:count: %lu", [imageArray count]);
     
     if (!imageArray) {
         return nil;
@@ -1181,11 +813,10 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // Pre-process images here creating array of JPEG NSData
         imageProcessedArray = [self createNSDataArrayFromUIImageArray:imageArray];
         
-        NSLog(@"... imageProcessedArray count: %lu", [imageProcessedArray count]);
-        
+//        NSLog(@"... imageProcessedArray count: %lu", [imageProcessedArray count]);
         // create random array in case it's needed in NSTimer selector later
         self.randomNumbersArray = [self createRandomArray:[imageProcessedArray count]];
-        NSLog(@"... self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
+//        NSLog(@"... self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
         
     } else {
         // do nothing
@@ -1217,16 +848,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             self.timerForShow = nil;
         }
         
-//        // TODO: Get an imageArray count before making this call
-//        // Pre-process images here creating array of JPEG NSData
-//        NSArray *imageProcessedArray = [self createNSDataArrayFromUIImageArray:imageArray];
-//        
-//        NSLog(@"imageProcessedArray count: %lu", [imageProcessedArray count]);
-//        
-//        // create random array in case it's needed in NSTimer selector later
-//        self.randomNumbersArray = [self createRandomArray:[imageProcessedArray count]];
-//        NSLog(@"... self.randomNumbersArray:count: %lu", [self.randomNumbersArray count]);
-        
         // start timer to walk through all array items
         self.timerForShow = [NSTimer
                              scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
@@ -1243,7 +864,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 
 // Selector method called by NSTimer
-// TODO: Delete after ensuring no longer used
 //- (void)selectorForDisplayImagesTimer:(NSTimer *)timer {
 //
 //    NSLog(@"... selector counter: %lu", (unsigned long)self.mediaIndex);
@@ -1302,7 +922,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 //            // scale to fill
 //            // TODO: set CGSize dynamically, not hard coded
 //            CGSize newSize = CGSizeMake(1280, 720);
-//            // TODO: optimize 'scaleImage' process
 //            image = [CCJImageEngine scaleImage:image toSize:newSize];
 //        } else {
 //            NSLog(@"... portrait");
@@ -1313,8 +932,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 ////            }
 //        }
 //
-//        // TODO: reduce compression before testing
-//        self.mediaData = UIImageJPEGRepresentation(image, 0.5);
+//        self.mediaData = UIImageJPEGRepresentation(image, 0.6);
 //        self.mediaType = @"image/jpeg";
 //        
 //        // start building the image name
@@ -1388,8 +1006,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 //    }
 //}
 
-
-
 // more sophisticated selector
 - (void)selectorForTimerForShow:(NSTimer *)timer {
 
@@ -1427,13 +1043,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // are we to randomize and ... can we?
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
             
-            NSLog(@"... use random index");
             // in order to randomize we intermediate the index
             self.mediaData = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             
         } else {
             // use straight index
-            NSLog(@"... use straight index");
             self.mediaData = itemArray[self.mediaIndex];
         }
         
@@ -1468,7 +1082,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         [mediaURL appendString:@".jpg"];
         NSLog(@"--> mutable URL %@", mediaURL);
-        
         
         // UPDATE CHROMECAST
         
@@ -1519,7 +1132,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)manuallyDisplayNextImage:(BOOL)showNext {
     
-    NSLog(@"*** entry mediaIndex: %lu", self.mediaIndex);
+//    NSLog(@"*** entry mediaIndex: %lu", self.mediaIndex);
     
     // check if we're to decrement first
     if (!showNext) {
@@ -1543,8 +1156,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         }
     }
     
-    NSLog(@"*** post showNext mediaIndex: %lu", self.mediaIndex);
-
+//    NSLog(@"*** post showNext mediaIndex: %lu", self.mediaIndex);
     
     // build image info from scratch, checking the server URL each time
     NSMutableString *mediaURL = [[NSMutableString alloc] init];
@@ -1564,13 +1176,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // are we to randomize and ... can we?
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
             
-            NSLog(@"... use random index");
+//            NSLog(@"... use random index");
             // in order to randomize we intermediate the index
             self.mediaData = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             
         } else {
             // use straight index
-            NSLog(@"... use straight index");
+//            NSLog(@"... use straight index");
             self.mediaData = self.mediaArray[self.mediaIndex];
         }
         
@@ -1618,7 +1230,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         self.isOnModeForward = FALSE;
     }
     
-    NSLog(@"*** exit mediaIndex: %lu", self.mediaIndex);
+//    NSLog(@"*** exit mediaIndex: %lu", self.mediaIndex);
     
     // update buttons if necessary
     [self updateNextButtonUsingBounds];
@@ -1652,7 +1264,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // check image orientation
         if (image.size.width > image.size.height) {
             
-            NSLog(@"... landscape");
+//            NSLog(@"... landscape");
             // scale to fill
             // TODO: set CGSize dynamically, not hard coded
             CGSize newSize = CGSizeMake(1280, 720);
@@ -1660,7 +1272,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
         } else {
             
-            NSLog(@"... portrait");
+//            NSLog(@"... portrait");
             if (self.switchLandscape) {
                 // skip this image
                 continue;
@@ -1861,18 +1473,21 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-// todo - Important: If selecting 'play', or 'next' but not connected, bring up Chromecast devices
+
 // todo - Static testing
 // todo - Handle WSAssetTableViewController deprecations
-// todo - Wrap up up code TODOs
 // todo - Clean up code comments
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
-// todo - Use Instruments to pinpoint CPU consumption
+// todo - Use Instruments to analyze CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// 01-26-15 - Debug: When manually back to first slide, pressing 'next' redisplays same slide (3:10-3:20)
-// 01-26-15 - Debug: Noticed that when 'repeat' switch is selected image index is not simple in the manual mode, but it is in slideshow mode. (2:45-3:10)
+// todo - Important: If selecting 'play', or 'next' but not connected, bring up Chromecast devices
+// todo - Debug: Picked 76+ images.  Crashed app due to memory error.
+// 01-26-15 - Clean up NSLog statements (0.25 hours - 3:45-4:00)
+// 01-26-15 - Clean up code TODOs (0.25 hours - 3:30-3:45)
+// 01-26-15 - Debug: When manually back to first slide, pressing 'next' redisplays same slide (0.2 hours - 3:10-3:20)
+// 01-26-15 - Debug: Noticed that when 'repeat' switch is selected image index is not simple in the manual mode, but it is in slideshow mode. (0.5 hours - 2:45-3:10)
 // 01-26-15 - Wire boolean tracker when play button is "active", since pause stops NSTimer.  Refactored method with better logic in discrete method (1:50-2:40)
 // 01-26-15 - Debug: When pressing 'pause' button, should replace 'pause' with play & enable restart (0.5 hours = 1:20-1:50)
 // 01-26-15 - Debug: Stopping a running slideshow does not remove the pause button and display 'next' button.  This is done Ok, when slideshow ends normally though. (5 minutes 1:15-1:20)
@@ -1918,7 +1533,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // 01-14-15 - Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
 // 01-14-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
 // 01-14-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
-// Todo In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon
+// In WSAssetTableViewController.h will need to replace rightBarButtonItem 'Done' with Chromecast icon
 // 01-14-15 - Working at Flying Star on JT after Yoga.  1:00 pm - Added WSAssetPickerController and wired it up (1 hour)
 // Adding UIImagePicker to UIView: http://stackoverflow.com/questions/1371446/how-to-add-uiimagepickercontroller-in-uiview
 // Check the Google Cast design checklist:  https://developers.google.com/cast/docs/design_checklist#sender-control-end
