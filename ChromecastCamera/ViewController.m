@@ -473,6 +473,11 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.timerForShow = nil;
     }
     
+    // check if that a device is already selected
+    if (self.selectedDevice == nil) {
+        [self chooseDevice:self];
+    }
+    
     // toggle play on/off
     if (self.isOnPlayActive) {
         
@@ -492,19 +497,20 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         // we are hard stopped (not paused), let's start the show
         self.isOnPlayActive = YES;
         
-        // check if array is ready
-        if ([self.mediaArray count] > 0) {
+        // check if array is ready & cast device ready
+        if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
             
             // call method instead of doing all the above
             [self updateMediaControlButtons];
             
             // set show to start at beginning
             self.mediaIndex = 0;
+            
             // make the call to method that will iterate and cast entire array
             [self displayImagesFromArray:self.mediaArray];
             
         } else {
-            NSLog(@"Error catch: Nothing to start playing");
+            NSLog(@"Error catch: Nothing to start playing, or device no selected");
         }
     }
 }
@@ -554,11 +560,18 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
         [self.timerForShow invalidate];
         self.timerForShow = nil;
-        
     }
     
-    // forward direction = TRUE
-    [self manuallyDisplayNextImage:TRUE];
+    // check if that a device is already selected
+    if (self.selectedDevice == nil) {
+        [self chooseDevice:self];
+    }
+    
+    // check if array is ready & cast device ready
+    if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
+        // forward direction = TRUE
+        [self manuallyDisplayNextImage:TRUE];
+    }
     
 }
 
@@ -1474,15 +1487,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 @end
 
 
-// todo - Static testing
-// todo - Handle WSAssetTableViewController deprecations
 // todo - Clean up code comments
 // todo - Test during extended runtime using instruments to watch for memory leaks
 // feature - Allow 'select all' in media picker if feasable
 // todo - Use Instruments to analyze CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - Important: If selecting 'play', or 'next' but not connected, bring up Chromecast devices
+// todo - Use method that does in-delay processing when more than 'n' images selected.
+// todo - Limit pre-processing when more than 'n' images have been selected.
+// 01-27-15 - Static 'Analyze' found 'dead stores'.
+// 01-27-15 - Static 'Analyze' found multiple "Potential null dereference" in GCDWebServer (1 hours - 1:30 - 2:30)
+// 01-27-15 - Handle WSAssetTableViewController deprecations (0.5 hours 1:00-1:30)
+// 01-27-15 - Important: If selecting 'play', or 'next' but not connected, bring up Chromecast devices (0.25 hours - 8:30-8:45)
 // todo - Debug: Picked 76+ images.  Crashed app due to memory error.
 // 01-26-15 - Clean up NSLog statements (0.25 hours - 3:45-4:00)
 // 01-26-15 - Clean up code TODOs (0.25 hours - 3:30-3:45)

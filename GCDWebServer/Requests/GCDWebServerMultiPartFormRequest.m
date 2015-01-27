@@ -383,21 +383,27 @@ static NSData* _dashNewlineData = nil;
 }
 
 - (BOOL)writeData:(NSData*)data error:(NSError**)error {
-  if (![_parser appendBytes:data.bytes length:data.length]) {
-    *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed continuing to parse multipart form data"}];
-    return NO;
-  }
-  return YES;
+    
+    if (![_parser appendBytes:data.bytes length:data.length]) {
+        
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed continuing to parse multipart form data"}];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)close:(NSError**)error {
-  BOOL atEnd = [_parser isAtEnd];
-  _parser = nil;
-  if (!atEnd) {
-    *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed finishing to parse multipart form data"}];
-    return NO;
-  }
-  return YES;
+    BOOL atEnd = [_parser isAtEnd];
+    _parser = nil;
+    if (!atEnd) {
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed finishing to parse multipart form data"}];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (GCDWebServerMultiPartArgument*)firstArgumentForControlName:(NSString*)name {

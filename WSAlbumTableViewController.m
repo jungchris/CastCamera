@@ -52,7 +52,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.wantsFullScreenLayout = YES;
+//    self.wantsFullScreenLayout = YES;
     
     self.assetPickerState.state = WSAssetPickerStatePickingAlbum;
 }
@@ -130,7 +130,8 @@
     [group setAssetsFilter:[ALAssetsFilter allPhotos]]; // TODO: Make this a delegate choice.
     
     // Setup the cell.
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%d)", [group valueForProperty:ALAssetsGroupPropertyName], [group numberOfAssets]];
+    // CJAdded (long) cast as 'values of NSInteger should not be used as format arguments'
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%ld)", [group valueForProperty:ALAssetsGroupPropertyName], (long)[group numberOfAssets]];
     cell.imageView.image = [UIImage imageWithCGImage:[group posterImage]];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     

@@ -54,44 +54,51 @@
 }
 
 - (BOOL)open:(NSError**)error {
-  _file = open([_temporaryPath fileSystemRepresentation], O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-  if (_file <= 0) {
-    *error = GCDWebServerMakePosixError(errno);
-    return NO;
-  }
-  return YES;
+    _file = open([_temporaryPath fileSystemRepresentation], O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    if (_file <= 0) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)writeData:(NSData*)data error:(NSError**)error {
-  if (write(_file, data.bytes, data.length) != (ssize_t)data.length) {
-    *error = GCDWebServerMakePosixError(errno);
-    return NO;
-  }
-  return YES;
+    if (write(_file, data.bytes, data.length) != (ssize_t)data.length) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)close:(NSError**)error {
-  if (close(_file) < 0) {
-    *error = GCDWebServerMakePosixError(errno);
-    return NO;
-  }
+    if (close(_file) < 0) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        return NO;
+    }
+    
 #ifdef __GCDWEBSERVER_ENABLE_TESTING__
-  NSString* creationDateHeader = [self.headers objectForKey:@"X-GCDWebServer-CreationDate"];
-  if (creationDateHeader) {
-    NSDate* date = GCDWebServerParseISO8601(creationDateHeader);
-    if (!date || ![[NSFileManager defaultManager] setAttributes:@{NSFileCreationDate: date} ofItemAtPath:_temporaryPath error:error]) {
-      return NO;
+    NSString* creationDateHeader = [self.headers objectForKey:@"X-GCDWebServer-CreationDate"];
+    if (creationDateHeader) {
+        NSDate* date = GCDWebServerParseISO8601(creationDateHeader);
+        if (!date || ![[NSFileManager defaultManager] setAttributes:@{NSFileCreationDate: date} ofItemAtPath:_temporaryPath error:error]) {
+            return NO;
+        }
     }
-  }
-  NSString* modifiedDateHeader = [self.headers objectForKey:@"X-GCDWebServer-ModifiedDate"];
-  if (modifiedDateHeader) {
-    NSDate* date = GCDWebServerParseRFC822(modifiedDateHeader);
-    if (!date || ![[NSFileManager defaultManager] setAttributes:@{NSFileModificationDate: date} ofItemAtPath:_temporaryPath error:error]) {
-      return NO;
+    NSString* modifiedDateHeader = [self.headers objectForKey:@"X-GCDWebServer-ModifiedDate"];
+    if (modifiedDateHeader) {
+        NSDate* date = GCDWebServerParseRFC822(modifiedDateHeader);
+        if (!date || ![[NSFileManager defaultManager] setAttributes:@{NSFileModificationDate: date} ofItemAtPath:_temporaryPath error:error]) {
+            return NO;
+        }
     }
-  }
 #endif
-  return YES;
+    return YES;
 }
 
 - (NSString*)description {

@@ -116,7 +116,10 @@
     
     self.originalStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    
+    // http://stackoverflow.com/questions/18953879/how-to-set-status-bars-content-color-to-white-on-ios-7
     
     // Start observing state changes and selectedCount changes.
     [_assetPickerState addObserver:self forKeyPath:STATE_KEY options:NSKeyValueObservingOptionNew context:NULL];

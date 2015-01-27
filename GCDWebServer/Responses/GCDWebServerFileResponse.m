@@ -140,32 +140,38 @@ static inline NSDate* _NSDateFromTimeSpec(const struct timespec* t) {
 }
 
 - (BOOL)open:(NSError**)error {
-  _file = open([_path fileSystemRepresentation], O_NOFOLLOW | O_RDONLY);
-  if (_file <= 0) {
-    *error = GCDWebServerMakePosixError(errno);
-    return NO;
-  }
-  if (lseek(_file, _offset, SEEK_SET) != (off_t)_offset) {
-    *error = GCDWebServerMakePosixError(errno);
-    close(_file);
-    return NO;
-  }
-  return YES;
+    _file = open([_path fileSystemRepresentation], O_NOFOLLOW | O_RDONLY);
+    if (_file <= 0) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        return NO;
+    }
+    if (lseek(_file, _offset, SEEK_SET) != (off_t)_offset) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        close(_file);
+        return NO;
+    }
+    return YES;
 }
 
 - (NSData*)readData:(NSError**)error {
-  size_t length = MIN((NSUInteger)kFileReadBufferSize, _size);
-  NSMutableData* data = [[NSMutableData alloc] initWithLength:length];
-  ssize_t result = read(_file, data.mutableBytes, length);
-  if (result < 0) {
-    *error = GCDWebServerMakePosixError(errno);
-    return nil;
-  }
-  if (result > 0) {
-    [data setLength:result];
-    _size -= result;
-  }
-  return data;
+    size_t length = MIN((NSUInteger)kFileReadBufferSize, _size);
+    NSMutableData* data = [[NSMutableData alloc] initWithLength:length];
+    ssize_t result = read(_file, data.mutableBytes, length);
+    if (result < 0) {
+        if (error != NULL) {
+            *error = GCDWebServerMakePosixError(errno);
+        }
+        return nil;
+    }
+    if (result > 0) {
+        [data setLength:result];
+        _size -= result;
+    }
+    return data;
 }
 
 - (void)close {

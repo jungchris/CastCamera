@@ -46,7 +46,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.wantsFullScreenLayout = YES;
+//    self.wantsFullScreenLayout = YES;
     
     // Setup the toolbar if there are items in the navigationController's toolbarItems.
     if (self.navigationController.toolbarItems.count > 0) {
@@ -200,7 +200,8 @@
     // Update navigation bar with selected count and limit variables 
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.assetPickerState.selectionLimit) {
-            self.navigationItem.title = [NSString stringWithFormat:@"%@ (%u/%u)", [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName], self.assetPickerState.selectedCount, self.assetPickerState.selectionLimit];
+//            self.navigationItem.title = [NSString stringWithFormat:@"%@ (%u/%u)", [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName], self.assetPickerState.selectedCount, self.assetPickerState.selectionLimit];
+            self.navigationItem.title = [NSString stringWithFormat:@"%@ (%lu/%ld)", [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName], (unsigned long)self.assetPickerState.selectedCount, (long)self.assetPickerState.selectionLimit];
         }
     });
 }

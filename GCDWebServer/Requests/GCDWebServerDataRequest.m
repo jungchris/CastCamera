@@ -45,16 +45,18 @@
 @synthesize data=_data;
 
 - (BOOL)open:(NSError**)error {
-  if (self.contentLength != NSUIntegerMax) {
-    _data = [[NSMutableData alloc] initWithCapacity:self.contentLength];
-  } else {
-    _data = [[NSMutableData alloc] init];
-  }
-  if (_data == nil) {
-    *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed allocating memory"}];
-    return NO;
-  }
-  return YES;
+    if (self.contentLength != NSUIntegerMax) {
+        _data = [[NSMutableData alloc] initWithCapacity:self.contentLength];
+    } else {
+        _data = [[NSMutableData alloc] init];
+    }
+    if (_data == nil) {
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:kGCDWebServerErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey: @"Failed allocating memory"}];
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (BOOL)writeData:(NSData*)data error:(NSError**)error {
