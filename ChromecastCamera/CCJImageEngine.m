@@ -10,8 +10,7 @@
 
 @implementation CCJImageEngine
 
-
-
+// CJ DEPRECATED
 // Resize but keep the aspect ratio: http://stackoverflow.com/questions/7645454/resize-uiimage-by-keeping-aspect-ratio-and-width
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)size {
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
@@ -26,6 +25,7 @@
     return newImage;
 }
 
+// CJ DEPRECATED
 + (UIImage *)imageWithImage:(UIImage *)image scaledToMaxWidth:(CGFloat)width maxHeight:(CGFloat)height {
     CGFloat oldWidth = image.size.width;
     CGFloat oldHeight = image.size.height;
@@ -39,6 +39,7 @@
     return [self imageWithImage:image scaledToSize:newSize];
 }
 
+// CJ DEPRECATED
 // this allows me to scale to a width, without caring about height
 + (UIImage*)imageWithImage:(UIImage*)sourceImage scaledToWidth:(float)i_width
 {
@@ -55,7 +56,7 @@
     return newImage;
 }
 
-// Works!
+// Perfect for landscape.  Change MAX to MIN to use fit instead of fill
 // process from https://gist.github.com/tomasbasham/10533743
 + (UIImage *)scaleImage:(UIImage *)sourceImage toSize:(CGSize)newSize {
     
@@ -76,7 +77,6 @@
     UIGraphicsEndImageContext();
     
     return scaledImage;
-    
 }
 
 

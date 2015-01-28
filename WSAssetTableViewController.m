@@ -70,14 +70,14 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     self.navigationItem.title = @"Loading";
     
     // TODO: move this to left, leaving room for Chromecast icon on top right
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
                                                                                            target:self 
                                                                                            action:@selector(doneButtonAction:)];
-    
-    
     // TableView configuration.
     self.tableView.contentInset = TABLEVIEW_INSETS;
     self.tableView.separatorColor = [UIColor clearColor];
