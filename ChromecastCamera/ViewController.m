@@ -954,7 +954,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // get image picked from image directory
         UIImage *image;
         
-        // new extractor
+        // ALAsset extractor moved here from loop in assetPicker delegate
         ALAsset *asset;
         
         // are we to randomize and ... can we?
@@ -974,6 +974,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             // use straight index
             NSLog(@"... use straight index");
             
+            // TODO: TEST THIS ...
 //            image = itemArray[self.mediaIndex];
             asset = itemArray[self.mediaIndex];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
@@ -1076,7 +1077,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 }
 
 // more sophisticated selector
-- (void)selectorForTimerForShow:(NSTimer *)timer {
+- (void)selectorForTimerForShowFromNSDataArray:(NSTimer *)timer {
 
     // where we at?
     NSLog(@"... selector counter: %lu", (unsigned long)self.mediaIndex);
@@ -1352,17 +1353,22 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         UIImage *image;
         
+        ALAsset *asset;
+        
         // are we to randomize and ... can we?
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
             
             //            NSLog(@"... use random index");
             // in order to randomize we intermediate the index
-            image = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+            asset = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+            image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
             
         } else {
             // use straight index
             //            NSLog(@"... use straight index");
-            image = self.mediaArray[self.mediaIndex];
+            
+            asset = self.mediaArray[self.mediaIndex];
+            image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
         }
         
         // check image orientation
@@ -1673,12 +1679,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 
 // todo - Clean up code comments
-// todo - Test during extended runtime using instruments to watch for memory leaks
+// todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // feature - Allow 'select all' in media picker if feasable
-// todo - Use Instruments to analyze CPU consumption
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Wenderlich's Beginning AutoLayout Tutorial
-// todo - Consider accessing image reference from outside of imagePicker.  Also looked at using file-system; http://stackoverflow.com/questions/16050393/memory-issue-when-using-large-nsarray-of-uiimage
+// 01-28-15 - Changed design to access image reference from outside of imagePicker, and ran test with 264 images. (0.75 hours 7:30-8:15)
+// 01-27-15 - Looked at using file-system; http://stackoverflow.com/questions/16050393/memory-issue-when-using-large-nsarray-of-uiimage
 // 01-27-15 - Critical Debug: Memory force close again when selected 189 images. Researching solutions. (8:30-9:15)
 // 01-27-15 - Rewrite methods that do in-delay processing.  New methods process UIImage array instead of NSData array (1.75 hours - 6:30 - 8:15)
 // 01-27-15 - Test pre-processing when more than 'n' images have been selected.  Noted large memory buildup, then release if no crash happens. (1 hour - 5:30-6:30)
