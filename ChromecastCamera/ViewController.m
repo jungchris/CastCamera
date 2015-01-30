@@ -1687,10 +1687,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Clean up code comments
 // tofo - Final cleanup of NSLogs
 // todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
-// todo - Create app icon, load image, screenshots, app store images.
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Sam Davies Beginning Adaptive Auto Layout
 // todo - Debug: On buttonStart without first Chromecasting results in not playing.
+// consider - Replacing UISwitches with better interfaces
+// 01-30-15 - Upload completed artwork to iTunes Connect and write app descriptions, URLs etc (1.0 hours 08:30-9:30)
+// 01-30-15 - Revised app icons for better contrast and used makeappicon.com to set sizes. (0.5 hours 08:00-08:25)
 // 01-29-15 - Learning different best practices to configure Launch images in their own storyboard (0.75 hours - 19:00 - 19:45)
 // 01-29-15 - Purchased prefered image and formatted to 2x, 3x for background, prepared app icons. (4.5 hours - 12:30-5:00)
 // 01-28-15 - Downloaded images from Dreamstime for background image and app colors (1.0 hours)
@@ -1749,8 +1751,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // 01-15-15 - Tested that I can change random & repeat modes mid-flight.
 // 01-15-15 - Add repeat loop logic and wire to switch.  Challenge:  Take advantage of cache instead of using image time stamps as part of URL. (1.0 hours - 1:30 pm done)
 // 01-15-15 - Add image order randomizer and wire to switch.  Copied 'createRandomArray' from At 420. (1.5 hours - 11:00 am start, 12:30 done)
-// 01-15-15 - What happened to the Chromecast icon?  My UIImage covered it. Duh!
-// 01-14-15 - Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  (4:45 pm - Completed control for switchSpeed.  Took 1:15)
+// 01-15-15 - What happened to the Chromecast icon?  My UIImage covered it. Duh! (0.10 hours)
+// 01-14-15 - Wire speed switch to timer.  Wow Ringo by Joris Voorn is insane perfect!  (4:45 pm - Completed control for switchSpeed.  Took 1:15 hours)
 // 01-14-15 - Loop array of UIImages with a timer.  http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer Got it woking with NSTime (Done at 3:15 using 0.75 hours)
 // 01-14-15 - Cast first image from new picker array 2:29 pm while in the groove with Rachel Row - Follow The Step (Justin Martin Remix) - Deep House!  (2.5 hours to this point)
 // 01-14-15 - Wire up array of image URLs being select and convert them to array of UIImage (2 hours - as of 14:15)
@@ -1783,4 +1785,5 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // Moved server config and start code from AppDelegate to ViewController
 // added GCDWebServer to project root (copied entire subfolder per instruction)
 // Stream a local file to Chromecast: http://stackoverflow.com/questions/21631673/how-to-stream-a-local-file-to-the-chromecast
+// 01-04-15 - Created project
 
