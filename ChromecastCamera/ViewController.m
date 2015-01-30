@@ -1690,8 +1690,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Create app icon, load image, screenshots, app store images.
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Sam Davies Beginning Adaptive Auto Layout
-// 01-29-15 - Configure Launchimage in it's own storyboard
-// 01-29-15 - Purchased prefered image and formatted to 2x, 3x for background, prepared app icons. (12:30-5:00)
+// todo - Debug: On buttonStart without first Chromecasting results in not playing.
+// 01-29-15 - Learning different best practices to configure Launch images in their own storyboard (0.75 hours - 19:00 - 19:45)
+// 01-29-15 - Purchased prefered image and formatted to 2x, 3x for background, prepared app icons. (4.5 hours - 12:30-5:00)
 // 01-28-15 - Downloaded images from Dreamstime for background image and app colors (1.0 hours)
 // 01-28-15 - Complete Wenderlich's Beginning AutoLayout Video Tutorial (0.5 hours - 3:30-4:00)
 // 01-28-15 - Changed design to access image reference from outside of imagePicker, and ran test with 264 images. (0.75 hours 7:30-8:15)

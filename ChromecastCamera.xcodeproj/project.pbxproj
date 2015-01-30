@@ -41,6 +41,7 @@
 		2D9CDA061A59F7B900032CDE /* icon-cast-identified@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D9CDA021A59F7B900032CDE /* icon-cast-identified@2x.png */; };
 		2D9FEFEC1A68793600D39991 /* CCJUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FEFEB1A68793600D39991 /* CCJUserModel.m */; };
 		2D9FEFEF1A687D8B00D39991 /* CCJImageEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9FEFEE1A687D8B00D39991 /* CCJImageEngine.m */; };
+		2DADFB5B1A7B26DB00F54041 /* CCLaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2DADFB5A1A7B26DB00F54041 /* CCLaunchScreen.xib */; };
 		2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */; };
 		2DC3D3D51A68606100EF5F9C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D41A68606100EF5F9C /* iAd.framework */; };
 		2DC3D3D71A68606F00EF5F9C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D61A68606F00EF5F9C /* Social.framework */; };
@@ -123,6 +124,7 @@
 		2D9FEFEB1A68793600D39991 /* CCJUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCJUserModel.m; sourceTree = "<group>"; };
 		2D9FEFED1A687D8B00D39991 /* CCJImageEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCJImageEngine.h; sourceTree = "<group>"; };
 		2D9FEFEE1A687D8B00D39991 /* CCJImageEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCJImageEngine.m; sourceTree = "<group>"; };
+		2DADFB5A1A7B26DB00F54041 /* CCLaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CCLaunchScreen.xib; path = ../CCLaunchScreen.xib; sourceTree = "<group>"; };
 		2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2DC3D3D41A68606100EF5F9C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		2DC3D3D61A68606F00EF5F9C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -245,6 +247,7 @@
 				2D9FEFEB1A68793600D39991 /* CCJUserModel.m */,
 				2D9CD9D21A59F55000032CDE /* Main.storyboard */,
 				2D9CD9D51A59F55000032CDE /* Images.xcassets */,
+				2DADFB5A1A7B26DB00F54041 /* CCLaunchScreen.xib */,
 				2D9CD9D71A59F55000032CDE /* LaunchScreen.xib */,
 				2D9CD9C81A59F55000032CDE /* Supporting Files */,
 			);
@@ -449,6 +452,7 @@
 				2D9CD9D41A59F55000032CDE /* Main.storyboard in Resources */,
 				2D2F6B9A1A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
 				2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */,
+				2DADFB5B1A7B26DB00F54041 /* CCLaunchScreen.xib in Resources */,
 				2D9CD9D91A59F55000032CDE /* LaunchScreen.xib in Resources */,
 				2D9CDA051A59F7B900032CDE /* icon-cast-identified.png in Resources */,
 				2D2F6B9C1A66D006009724B5 /* WSButtonBackground@2x.png in Resources */,
