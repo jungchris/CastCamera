@@ -74,6 +74,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     //You can add your own app id here that you get by registering with the Google Cast SDK Developer Console https://cast.google.com/publish
 //    kReceiverAppID=kGCKMediaDefaultReceiverApplicationID;
     
+    // set the status bar appearance
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    
     //Create chromecast button
     _btnImage = [UIImage imageNamed:@"icon-cast-identified.png"];
     _btnImageSelected = [UIImage imageNamed:@"icon-cast-connected.png"];
@@ -1677,12 +1680,20 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 @end
 
-
-// todo - Clean up code comments
-// todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
+// FUTURE VERSION:
 // feature - Allow 'select all' in media picker if feasable
+
+// CURRENT VERSION:
+// todo - Clean up code comments
+// tofo - Final cleanup of NSLogs
+// todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
+// todo - Create app icon, load image, screenshots, app store images.
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
-// todo - Complete Wenderlich's Beginning AutoLayout Tutorial
+// todo - Complete Sam Davies Beginning Adaptive Auto Layout
+// 01-29-15 - Configure Launchimage in it's own storyboard
+// 01-29-15 - Purchased prefered image and formatted to 2x, 3x for background, prepared app icons. (12:30-5:00)
+// 01-28-15 - Downloaded images from Dreamstime for background image and app colors (1.0 hours)
+// 01-28-15 - Complete Wenderlich's Beginning AutoLayout Video Tutorial (0.5 hours - 3:30-4:00)
 // 01-28-15 - Changed design to access image reference from outside of imagePicker, and ran test with 264 images. (0.75 hours 7:30-8:15)
 // 01-27-15 - Looked at using file-system; http://stackoverflow.com/questions/16050393/memory-issue-when-using-large-nsarray-of-uiimage
 // 01-27-15 - Critical Debug: Memory force close again when selected 189 images. Researching solutions. (8:30-9:15)

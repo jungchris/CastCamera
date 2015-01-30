@@ -31,7 +31,6 @@
         NSLog(@"> Restoring user model from user.archive");
         userModel = [userModel restoreUserPreferences];
         
-        
     } else {
         NSLog(@"> Nothing to restore from items.archive");
     }
@@ -76,13 +75,14 @@
 - (void)customizeUserInterface {
     
     // set nav bar backgound
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.95 green:0.52 blue:0.01 alpha:1.0]];     // 0.8,0.9,1.0
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.77 green:0.69 blue:0.99 alpha:1.0]];     // 0.95,0.52,0.01
     
     // set nav bar title color
     [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
     
     // set nav bar other text labels and buttons color
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:0.25f green:0.45f blue:0.90f alpha:1]];
+    
 }
 
 @end
