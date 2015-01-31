@@ -55,7 +55,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, strong) NSArray *randomNumbersArray;
 
 // User preferences
-@property BOOL isOnSwitchSpeed;
+// TODO: delete switchSpeed
+//@property BOOL isOnSwitchSpeed;
+
+@property double timerSpeed;
 @property BOOL isOnSwitchRandomize;
 @property BOOL isOnSwitchRepeat;
 @property BOOL isOnSwitchLandscape;
@@ -136,7 +139,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.pickerController.delegate = self;
     
     // set switch defaults
-    self.switchSpeed.on = NO;
+//    self.switchSpeed.on = NO;
+    self.timerSpeed = 5.0;
     self.switchRandomize.on = NO;
     self.switchRepeat.on = NO;
     self.switchLandscape.on = NO;
@@ -149,10 +153,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [self restorePropertiesFromSharedUserModel];
     
     // add switch listeners
-    [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
-    [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
-    [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
-    [self.switchLandscape addTarget:self action:@selector(selectorForSwitchLandscape:) forControlEvents:UIControlEventValueChanged];
+//    [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
+//    [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
+//    [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
+//    [self.switchLandscape addTarget:self action:@selector(selectorForSwitchLandscape:) forControlEvents:UIControlEventValueChanged];
     
     // iAd
     // implement global iAd process.
@@ -166,31 +170,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // disble media control buttons until image picker had been selected
     [self disableMediaControlButtons];
     
-    
-    // HMSegmentedControl
-//    CGFloat viewWidth = CGRectGetWidth(self.view.frame);
-//    
-//    // Minimum code required to use the segmented control with the default styling.
-//    HMSegmentedControl *segmentedControl = [[HMSegmentedControl alloc] initWithSectionTitles:@[@"Trending News", @"Library Books"]];
-//    segmentedControl.frame = CGRectMake(0, 20, viewWidth, 40);
-//    segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-//    segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-//    
-//    segmentedControl.verticalDividerEnabled = YES;
-//    segmentedControl.verticalDividerColor = [UIColor blackColor];
-//    segmentedControl.verticalDividerWidth = 1.0f;
-//    
-//    [segmentedControl addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
-//    [self.view addSubview:segmentedControl];
-    
-//    self.hmsSegmentSpeed.sectionTitles = @[@"Trending News", @"Library Books"];
-//    self.hmsSegmentSpeed.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-//    self.hmsSegmentSpeed.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-//    self.hmsSegmentSpeed.verticalDividerEnabled = YES;
-//    self.hmsSegmentSpeed.verticalDividerColor = [UIColor blackColor];
-//    self.hmsSegmentSpeed.verticalDividerWidth = 1.0f;
-//    self.hmsSegmentSpeed.backgroundColor = [UIColor clearColor];
-    
+    // set HMSegmentedControl
     [self configureSegmentedControls];
     
 }
@@ -667,27 +647,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     [self showSharingActivityView];
 }
 
-// switches
-- (void)selectorForSwitchSpeed:(id)sender {
-    
-    if ([sender isOn]) {
-        self.isOnSwitchSpeed = YES;
-    } else {
-        self.isOnSwitchSpeed = NO;
-    }
-    
-    if ([self.timerForShow isValid]) {
-        [self.timerForShow invalidate];
-        self.timerForShow = nil;
-        // restart timer with new speed
-        self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
-                             target:self
-                             selector:@selector(selectorForDisplayImagesTimer:)
-                             userInfo:self.mediaArray
-                             repeats:YES];
-    }
-}
 
 // segemt controls
 
@@ -704,60 +663,121 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
         
         NSLog(@"hmsSegmentSpeedTouch-0");
+        self.timerSpeed = 3.0;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 1) {
         
         NSLog(@"hmsSegmentSpeedTouch-1");
+        self.timerSpeed = 5.0;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 2) {
 
         NSLog(@"hmsSegmentSpeedTouch-2");
-        
+        self.timerSpeed = 8.0;
     }
+    
+    
+    //
+//    if ([sender isOn]) {
+//        self.isOnSwitchSpeed = YES;
+//    } else {
+//        self.isOnSwitchSpeed = NO;
+//    }
+    
+    if ([self.timerForShow isValid]) {
+        [self.timerForShow invalidate];
+        self.timerForShow = nil;
+        // restart timer with new speed
+        self.timerForShow = [NSTimer
+                             scheduledTimerWithTimeInterval:self.timerSpeed
+                             target:self
+                             selector:@selector(selectorForDisplayImagesTimer:)
+                             userInfo:self.mediaArray
+                             repeats:YES];
+    }
+    //
+    
     
 }
 
 - (void)hmsSegmentRandomTouch:(id)sender {
     
+    if (self.hmsSegmentedRandom.selectedSegmentIndex == 0) {
+        self.isOnSwitchRandomize = YES;
+    } else if (self.hmsSegmentedRandom.selectedSegmentIndex == 1) {
+        self.isOnSwitchRandomize = NO;
+    }
     
 }
 
 - (void)hmsSegmentRepeatTouch:(id)sender {
     
+    if (self.hmsSegmentedRepeat.selectedSegmentIndex == 0) {
+        self.isOnSwitchRepeat = YES;
+    } else if (self.hmsSegmentedRepeat.selectedSegmentIndex == 1) {
+        self.isOnSwitchRepeat = NO;
+    }
     
 }
 
 - (void)hmsSegmentLandscapeTouch:(id)sender {
     
-    
-}
-
-- (void)selectorForSwitchRandomize:(id)sender {
-    
-    if ([sender isOn]) {
-        self.isOnSwitchRandomize = YES;
-    } else {
-        self.isOnSwitchRandomize = NO;
-    }
-}
-
-- (void)selectorForSwitchRepeat:(id)sender {
-    
-    if ([sender isOn]) {
-        self.isOnSwitchRepeat = YES;
-    } else {
-        self.isOnSwitchRepeat = NO;
-    }
-}
-
-- (void)selectorForSwitchLandscape:(id)sender {
-    
-    if ([sender isOn]) {
+    if (self.hmsSegmentedLandscape.selectedSegmentIndex == 0) {
         self.isOnSwitchLandscape = YES;
-    } else {
+    } else if (self.hmsSegmentedLandscape.selectedSegmentIndex == 1) {
         self.isOnSwitchLandscape = NO;
     }
+    
 }
+
+// switches
+//- (void)selectorForSwitchSpeed:(id)sender {
+//    
+//    if ([sender isOn]) {
+//        self.isOnSwitchSpeed = YES;
+//    } else {
+//        self.isOnSwitchSpeed = NO;
+//    }
+//    
+//    if ([self.timerForShow isValid]) {
+//        [self.timerForShow invalidate];
+//        self.timerForShow = nil;
+//        // restart timer with new speed
+//        self.timerForShow = [NSTimer
+//                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
+//                             target:self
+//                             selector:@selector(selectorForDisplayImagesTimer:)
+//                             userInfo:self.mediaArray
+//                             repeats:YES];
+//    }
+//}
+
+//- (void)selectorForSwitchRandomize:(id)sender {
+//    
+//    if ([sender isOn]) {
+//        self.isOnSwitchRandomize = YES;
+//    } else {
+//        self.isOnSwitchRandomize = NO;
+//    }
+//}
+//
+//- (void)selectorForSwitchRepeat:(id)sender {
+//    
+//    if ([sender isOn]) {
+//        self.isOnSwitchRepeat = YES;
+//    } else {
+//        self.isOnSwitchRepeat = NO;
+//    }
+//}
+//
+//- (void)selectorForSwitchLandscape:(id)sender {
+//    
+//    if ([sender isOn]) {
+//        self.isOnSwitchLandscape = YES;
+//    } else {
+//        self.isOnSwitchLandscape = NO;
+//    }
+//}
 
 // segmented controls
 
@@ -1003,7 +1023,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // start timer to walk through all array items
         self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
+                             scheduledTimerWithTimeInterval:self.timerSpeed
                              target:self
                              selector:@selector(selectorForDisplayImagesTimer:)
                              userInfo:self.mediaArray
@@ -1037,7 +1057,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // start timer to walk through all array items
         self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
+                             scheduledTimerWithTimeInterval:self.timerSpeed
                              target:self
                              selector:@selector(selectorForDisplayImagesTimer:)
                              userInfo:self.mediaArray
@@ -1696,7 +1716,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 //save SharedUserModel
 - (void)saveSharedUserModelUsingProperties {
     
-    SharedUserModel.userSpeedySwitchOn   = self.isOnSwitchSpeed;
+    // todo: update model
+//    SharedUserModel.userSpeedySwitchOn   = self.isOnSwitchSpeed;
     SharedUserModel.userRandomSwitchOn   = self.isOnSwitchRandomize;
     SharedUserModel.userRepeatSwitchOn   = self.isOnSwitchRepeat;
     SharedUserModel.userLandcapeSwitchOn = self.isOnSwitchLandscape;
@@ -1706,17 +1727,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // restore from SharedUserModel
 - (void)restorePropertiesFromSharedUserModel {
     
-    self.isOnSwitchSpeed        = SharedUserModel.userSpeedySwitchOn;
+    // todo: update model
+//    self.isOnSwitchSpeed        = SharedUserModel.userSpeedySwitchOn;
     self.isOnSwitchRandomize    = SharedUserModel.userRandomSwitchOn;
     self.isOnSwitchRepeat       = SharedUserModel.userRepeatSwitchOn;
     self.isOnSwitchLandscape    = SharedUserModel.userLandcapeSwitchOn;
     
     // set the switch states
-    if (self.isOnSwitchSpeed) {
-        self.switchSpeed.on = YES;
-    } else {
-        self.switchSpeed.on = NO;
-    }
     
     if (self.isOnSwitchRandomize) {
         self.switchRandomize.on = YES;
@@ -1819,7 +1836,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
 // todo - Complete Sam Davies Beginning Adaptive Auto Layout
 // todo - Debug: On buttonStart without first Chromecasting results in not playing.
-// 01-30-15 - Convert UISwitch and test connections moved to HMSSegmentedControl
+// 01-30-15 - Convert UISwitch and test connections moved to HMSSegmentedControl (19:45-
 // 01-30-15 - Implement HMSegmentedControl (16:15-18:00)
 // 01-30-15 - Review open source options for UISwitches and Segmented Controls with better interfaces (1.0 hours - 13:30-14:30)
 // 01-30-15 - Upload completed artwork to iTunes Connect and write app descriptions, URLs etc (1.0 hours 08:30-9:30)
