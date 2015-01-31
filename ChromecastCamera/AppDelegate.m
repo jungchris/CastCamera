@@ -26,14 +26,12 @@
     userModel = [[CCJUserModel alloc] initWithIdentifier:0];
     
     // this code needs to ensure userModel is not overwritten to nil when no archive file exists
-    if ([userModel restoreUserPreferences]) {
-        
-        NSLog(@"> Restoring user model from user.archive");
-        userModel = [userModel restoreUserPreferences];
-        
-    } else {
-        NSLog(@"> Nothing to restore from items.archive");
-    }
+//    if ([userModel restoreUserPreferences]) {
+//        NSLog(@"> Restoring user model from user.archive");
+//        userModel = [userModel restoreUserPreferences];
+//    } else {
+//        NSLog(@"> Nothing to restore from items.archive");
+//    }
     
     // set the nav bar and nav item colors
     [self customizeUserInterface];
@@ -52,10 +50,10 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     // save the user (preferences) model
-    BOOL success = [userModel saveUserPreferences];
-    if (!success) {
-        NSLog(@"(CCJAppDelegate) Error: Unable to save user preferences");
-    }
+//    BOOL success = [userModel saveUserPreferences];
+//    if (!success) {
+//        NSLog(@"(CCJAppDelegate) Error: Unable to save user preferences");
+//    }
     
 }
 

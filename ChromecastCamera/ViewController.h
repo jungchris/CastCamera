@@ -30,7 +30,9 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
     ADBannerViewDelegate,
     WSAssetPickerControllerDelegate>
 
+//image views
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewBackground;
 
 // switches
 @property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;

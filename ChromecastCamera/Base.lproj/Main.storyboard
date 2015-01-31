@@ -198,24 +198,6 @@
                                     <action selector="buttonSocialTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oJB-hY-VSC"/>
                                 </connections>
                             </button>
-                            <adBannerView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="9c2-Fz-U2t">
-                                <rect key="frame" x="140" y="550" width="320" height="50"/>
-                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="140" y="350" width="320" height="50"/>
-                                </variation>
-                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="40" y="550" width="320" height="50"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="40" y="350" width="320" height="50"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="240" y="350" width="320" height="50"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="40" y="730" width="320" height="50"/>
-                                </variation>
-                            </adBannerView>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9un-On-byM" customClass="HMSegmentedControl">
                                 <rect key="frame" x="127" y="125" width="300" height="45"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -270,12 +252,13 @@
                             <constraint firstItem="cZT-dX-dKL" firstAttribute="leading" secondItem="uKV-E4-YZP" secondAttribute="leading" id="CtV-ip-i4f"/>
                             <constraint firstAttribute="centerX" secondItem="yjw-rR-qDy" secondAttribute="centerX" id="DuK-WD-HZV"/>
                             <constraint firstItem="cZT-dX-dKL" firstAttribute="baseline" secondItem="xQg-ib-Fso" secondAttribute="baseline" id="GkU-DX-pD0"/>
-                            <constraint firstItem="9c2-Fz-U2t" firstAttribute="top" secondItem="GBV-uH-VAW" secondAttribute="bottom" constant="27" id="HIM-GC-kuf"/>
                             <constraint firstItem="FXM-U4-PI8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Ipv-Yq-IUB"/>
                             <constraint firstItem="uKV-E4-YZP" firstAttribute="top" secondItem="cZT-dX-dKL" secondAttribute="bottom" constant="8" id="J8w-gM-1xR"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="GBV-uH-VAW" secondAttribute="bottom" constant="77" id="NdH-vc-G5y"/>
                             <constraint firstItem="KSZ-YS-gZh" firstAttribute="top" secondItem="8p0-HY-vx8" secondAttribute="bottom" constant="8" symbolic="YES" id="OTy-QO-NY8"/>
                             <constraint firstItem="3XJ-Vq-1qc" firstAttribute="top" secondItem="xQg-ib-Fso" secondAttribute="bottom" constant="8" id="Trb-Av-oaP"/>
-                            <constraint firstItem="9c2-Fz-U2t" firstAttribute="top" secondItem="3XJ-Vq-1qc" secondAttribute="bottom" constant="27" id="VOZ-NY-rCH"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uKV-E4-YZP" secondAttribute="bottom" constant="77" id="Y84-pL-ziA"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pp4-lA-3Ys" secondAttribute="bottom" constant="77" id="Zju-kj-3gS"/>
                             <constraint firstItem="9un-On-byM" firstAttribute="top" secondItem="yjw-rR-qDy" secondAttribute="bottom" constant="8" symbolic="YES" id="a7N-Wa-kvh"/>
                             <constraint firstItem="yjw-rR-qDy" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="b9r-VM-5GP"/>
                             <constraint firstAttribute="centerX" secondItem="9un-On-byM" secondAttribute="centerX" id="bDV-Dw-a10"/>
@@ -284,15 +267,11 @@
                             <constraint firstAttribute="centerX" secondItem="Pp4-lA-3Ys" secondAttribute="centerX" constant="23" id="eRS-x9-5Ue"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FXM-U4-PI8" secondAttribute="bottom" id="fJA-9g-pBd"/>
                             <constraint firstItem="xQg-ib-Fso" firstAttribute="leading" secondItem="3XJ-Vq-1qc" secondAttribute="leading" id="gRK-BQ-f6y"/>
-                            <constraint firstItem="9c2-Fz-U2t" firstAttribute="top" secondItem="uKV-E4-YZP" secondAttribute="bottom" constant="27" id="iSN-Ta-IiV"/>
                             <constraint firstAttribute="centerX" secondItem="GBV-uH-VAW" secondAttribute="centerX" constant="-23" id="k1g-D0-JW1"/>
-                            <constraint firstAttribute="centerX" secondItem="9c2-Fz-U2t" secondAttribute="centerX" id="kv3-se-ND2"/>
                             <constraint firstItem="cZT-dX-dKL" firstAttribute="firstBaseline" secondItem="xQg-ib-Fso" secondAttribute="firstBaseline" id="lY1-p8-9lR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="FXM-U4-PI8" secondAttribute="trailing" constant="-16" id="le9-9M-6Z3"/>
                             <constraint firstItem="3XJ-Vq-1qc" firstAttribute="leading" secondItem="GBV-uH-VAW" secondAttribute="trailing" constant="8" id="rmK-cL-cfu"/>
                             <constraint firstItem="Pp4-lA-3Ys" firstAttribute="leading" secondItem="uKV-E4-YZP" secondAttribute="trailing" constant="8" id="tf1-Ye-2Tg"/>
-                            <constraint firstItem="9c2-Fz-U2t" firstAttribute="top" secondItem="Pp4-lA-3Ys" secondAttribute="bottom" constant="27" id="um0-ih-CXW"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="9c2-Fz-U2t" secondAttribute="bottom" id="xNw-TP-TsE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
@@ -306,6 +285,7 @@
                         <outlet property="hmsSegmentedLandscape" destination="KSZ-YS-gZh" id="TCK-0N-Hft"/>
                         <outlet property="hmsSegmentedRandom" destination="9un-On-byM" id="05f-Y5-gJH"/>
                         <outlet property="hmsSegmentedRepeat" destination="8p0-HY-vx8" id="0pL-T6-Z8J"/>
+                        <outlet property="imageViewBackground" destination="FXM-U4-PI8" id="ngk-VH-J8Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

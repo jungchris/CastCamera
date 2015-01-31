@@ -50,6 +50,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, strong) NSString *mediaURL;
 @property BOOL isOnModeForward;
 @property BOOL isOnPlayActive;
+@property BOOL isOnWaitingForChromecastStart;
 
 // Used to randomize image order
 @property (nonatomic, strong) NSArray *randomNumbersArray;
@@ -69,6 +70,25 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @end
 
 @implementation ViewController
+
+#pragma mark - Constants
+
+// NSTimer based slideshow speeds in seconds
+#define kTimerSlow      8.0
+#define kTimerMedium    5.0
+#define kTimerFast      3.0
+
+// Background alpha changes
+#define kBackgroundAnimationSpeed   0.75
+#define kBackgroundSubtleAlpha      0.4
+#define kBackgroundStrongAlpha      1.0
+
+// Button alpha changes
+#define kButtonAnimationSpeed       0.3
+#define kButtonSubtleAlpha          0.3
+#define kButtonStrongAlpha          1.0
+
+#pragma mark - View Methods
 
 - (void)viewDidLoad {
     
@@ -148,21 +168,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // set mode trackers to be used later
     self.isOnModeForward = YES;
     self.isOnPlayActive  = NO;
+    self.isOnWaitingForChromecastStart = NO;
     
     // load switch settings from user model if able
     [self restorePropertiesFromSharedUserModel];
     
-    // add switch listeners
-//    [self.switchSpeed addTarget:self action:@selector(selectorForSwitchSpeed:) forControlEvents:UIControlEventValueChanged];
-//    [self.switchRandomize addTarget:self action:@selector(selectorForSwitchRandomize:) forControlEvents:UIControlEventValueChanged];
-//    [self.switchRepeat addTarget:self action:@selector(selectorForSwitchRepeat:) forControlEvents:UIControlEventValueChanged];
-//    [self.switchLandscape addTarget:self action:@selector(selectorForSwitchLandscape:) forControlEvents:UIControlEventValueChanged];
-    
     // iAd
     // implement global iAd process.
-    self.adBanner = [[ADBannerView alloc] init];
-    self.adBanner.delegate = self;
-    [self addADBannerViewToBottom];
+//    self.adBanner = [[ADBannerView alloc] init];
+//    self.adBanner.delegate = self;
+//    [self addADBannerViewToBottom];
     
     // used to keep track of picker controller
     self.pickerCounter = 0;
@@ -173,12 +188,15 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // set HMSegmentedControl
     [self configureSegmentedControls];
     
+    // set image background alpha, will animate into view when running
+    self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     
     [super viewWillDisappear:animated];
-    [self saveSharedUserModelUsingProperties];
+//    [self saveSharedUserModelUsingProperties];
     
 }
 
@@ -254,6 +272,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
         //show device selection
         [sheet showInView:_chromecastButton];
+        
     } else {
         // Gather stats from device.
         [self updateStatsFromDevice];
@@ -353,10 +372,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.hmsSegmentSpeed.verticalDividerColor = [UIColor blackColor];
     self.hmsSegmentSpeed.verticalDividerWidth = 1.0f;
     self.hmsSegmentSpeed.backgroundColor = [UIColor clearColor];
+    // set default speed position
+    self.hmsSegmentSpeed.selectedSegmentIndex = 1;
     
     // randomize control
     
-    self.hmsSegmentedRandom.sectionTitles = @[@"Straight", @"Random order"];
+    self.hmsSegmentedRandom.sectionTitles = @[@"Straight", @"Random"];
     self.hmsSegmentedRandom.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     self.hmsSegmentedRandom.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     self.hmsSegmentedRandom.verticalDividerEnabled = YES;
@@ -366,7 +387,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // repeat control
     
-    self.hmsSegmentedRepeat.sectionTitles = @[@"Run Once", @"Repeat"];
+    self.hmsSegmentedRepeat.sectionTitles = @[@"Once", @"Repeat"];
     self.hmsSegmentedRepeat.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     self.hmsSegmentedRepeat.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     self.hmsSegmentedRepeat.verticalDividerEnabled = YES;
@@ -390,10 +411,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)disableMediaControlButtons {
     
     // grey them out
-    self.buttonStartStop.alpha  = 0.30;
-    self.buttonBack.alpha       = 0.30;
-    self.buttonPause.alpha      = 0.30;
-    self.buttonNext.alpha       = 0.30;
+    self.buttonStartStop.alpha  = kButtonSubtleAlpha;
+    self.buttonBack.alpha       = kButtonSubtleAlpha;
+    self.buttonPause.alpha      = kButtonSubtleAlpha;
+    self.buttonNext.alpha       = kButtonSubtleAlpha;
     
     // disable them
     self.buttonStartStop.enabled    = NO;
@@ -406,8 +427,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)enableMediaControlButtons {
     
     // fill them in
-    self.buttonStartStop.alpha  = 1.0;
-    self.buttonNext.alpha       = 1.0;
+    self.buttonStartStop.alpha  = kButtonStrongAlpha;
+    self.buttonNext.alpha       = kButtonStrongAlpha;
     
     // enable them
     self.buttonStartStop.enabled    = YES;
@@ -422,15 +443,15 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         // TRY: Move this code here from buttonStartStop
         // BEGIN CODE RFACTOR
         // enable and show pause
-        self.buttonPause.alpha = 1.0;
+        self.buttonPause.alpha = kButtonStrongAlpha;
         self.buttonPause.enabled = YES;
         
         // hide the manual next button
-        self.buttonNext.alpha = 0.3;
+        self.buttonNext.alpha = kButtonSubtleAlpha;
         self.buttonNext.enabled = NO;
         
         // hide the manual back button
-        self.buttonBack.alpha = 0.3;
+        self.buttonBack.alpha = kButtonSubtleAlpha;
         self.buttonBack.enabled = NO;
         
         // change button icon to 'stop'
@@ -462,20 +483,20 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         
         // show is running
         // disable the forward and back buttons
-        self.buttonPause.alpha      = 0.30;
-        self.buttonNext.alpha       = 0.30;
+        self.buttonPause.alpha      = kButtonSubtleAlpha;
+        self.buttonNext.alpha       = kButtonSubtleAlpha;
         self.buttonPause.enabled    = NO;
         self.buttonNext.enabled     = NO;
         
         // enable the pause button
-        self.buttonPause.alpha      = 1.0;
+        self.buttonPause.alpha      = kButtonStrongAlpha;
         self.buttonPause.enabled    = YES;
         
     } else {
         
         // show is not running
         // disable the pause button
-        self.buttonPause.alpha      = 0.3;
+        self.buttonPause.alpha      = kButtonSubtleAlpha;
         self.buttonPause.enabled    = NO;
         
         // replace the 'stop' icon with 'run'
@@ -498,10 +519,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // check back button
     if (self.mediaIndex <= backLimit) {
-        self.buttonBack.alpha = 0.3;
+        self.buttonBack.alpha = kButtonSubtleAlpha;
         self.buttonBack.enabled = NO;
     } else {
-        self.buttonBack.alpha = 1.0;
+        self.buttonBack.alpha = kButtonStrongAlpha;
         self.buttonBack.enabled = YES;
     }
 }
@@ -510,10 +531,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // check next button
     if (self.mediaIndex >= [self.mediaArray count]) {
-        self.buttonNext.alpha = 0.3;
+        self.buttonNext.alpha = kButtonSubtleAlpha;
         self.buttonNext.enabled = NO;
     } else {
-        self.buttonNext.alpha = 1.0;
+        self.buttonNext.alpha = kButtonStrongAlpha;
         self.buttonNext.enabled = YES;
     }
 }
@@ -536,45 +557,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // check if that a device is already selected
     if (self.selectedDevice == nil) {
         [self chooseDevice:self];
+        self.isOnWaitingForChromecastStart = YES;
+        return;
     }
     
-    // toggle play on/off
-    if (self.isOnPlayActive) {
-        
-        // we are in active play mode, so stop the show
-        self.isOnPlayActive = NO;
-        
-        // change 'stop' icon to 'play', disable 'pause', enable 'next'
-        [self updateMediaControlButtons];
-        
-        // change button icon to 'play'
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
-        [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
-        
-        
-    } else {
-        
-        // we are hard stopped (not paused), let's start the show
-        self.isOnPlayActive = YES;
-        
-        // check if array is ready & cast device ready
-        if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
-            
-            // call method instead of doing all the above
-            [self updateMediaControlButtons];
-            
-            // set show to start at beginning
-            self.mediaIndex = 0;
-            
-            // make the call to method that will iterate and cast entire array
-//            [self displayImagesFromNSDataArray:self.mediaArray];
-            [self displayImagesFromUIImageArray:self.mediaArray];
-
-            
-        } else {
-            NSLog(@"Error catch: Nothing to start playing, or device no selected");
-        }
-    }
+    [self handlerForStartStopButton];
+    
 }
 
 - (IBAction)buttonBackTouch:(id)sender {
@@ -586,9 +574,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.timerForShow = nil;
     }
     
-    // backwards direction = FALSE
-//    [self manuallyDisplayNextImageFromNSDataArray:FALSE];
-    [self manuallyDisplayNextImageFromUIImageArray:FALSE];
+    // check if that a device is already selected
+    if (self.selectedDevice == nil) {
+        [self chooseDevice:self];
+        return;
+    }
+    
+    if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
+        // backwards direction = FALSE
+        [self manuallyDisplayNextImageFromUIImageArray:FALSE];
+    }
 }
 
 - (IBAction)buttonPauseTouch:(id)sender {
@@ -629,12 +624,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // check if that a device is already selected
     if (self.selectedDevice == nil) {
         [self chooseDevice:self];
+        return;
     }
     
     // check if array is ready & cast device ready
     if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
         // forward direction = TRUE
-//        [self manuallyDisplayNextImageFromNSDataArray:TRUE];
         [self manuallyDisplayNextImageFromUIImageArray:TRUE];
     }
     
@@ -658,22 +653,14 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 - (void)hmsSegmentSpeedTouch:(id)sender {
     
-    NSLog(@"hmsSegmentSpeedTouch");
-    
     if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
-        
-        NSLog(@"hmsSegmentSpeedTouch-0");
-        self.timerSpeed = 3.0;
+        self.timerSpeed = 8.0;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 1) {
-        
-        NSLog(@"hmsSegmentSpeedTouch-1");
         self.timerSpeed = 5.0;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 2) {
-
-        NSLog(@"hmsSegmentSpeedTouch-2");
-        self.timerSpeed = 8.0;
+        self.timerSpeed = 3.0;
     }
     
     
@@ -703,9 +690,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)hmsSegmentRandomTouch:(id)sender {
     
     if (self.hmsSegmentedRandom.selectedSegmentIndex == 0) {
-        self.isOnSwitchRandomize = YES;
-    } else if (self.hmsSegmentedRandom.selectedSegmentIndex == 1) {
         self.isOnSwitchRandomize = NO;
+    } else if (self.hmsSegmentedRandom.selectedSegmentIndex == 1) {
+        self.isOnSwitchRandomize = YES;
     }
     
 }
@@ -713,9 +700,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)hmsSegmentRepeatTouch:(id)sender {
     
     if (self.hmsSegmentedRepeat.selectedSegmentIndex == 0) {
-        self.isOnSwitchRepeat = YES;
-    } else if (self.hmsSegmentedRepeat.selectedSegmentIndex == 1) {
         self.isOnSwitchRepeat = NO;
+    } else if (self.hmsSegmentedRepeat.selectedSegmentIndex == 1) {
+        self.isOnSwitchRepeat = YES;
     }
     
 }
@@ -723,9 +710,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)hmsSegmentLandscapeTouch:(id)sender {
     
     if (self.hmsSegmentedLandscape.selectedSegmentIndex == 0) {
-        self.isOnSwitchLandscape = YES;
-    } else if (self.hmsSegmentedLandscape.selectedSegmentIndex == 1) {
         self.isOnSwitchLandscape = NO;
+    } else if (self.hmsSegmentedLandscape.selectedSegmentIndex == 1) {
+        self.isOnSwitchLandscape = YES;
     }
     
 }
@@ -804,12 +791,18 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
             sessionID:(NSString *)sessionID
   launchedApplication:(BOOL)launchedApplication {
     
-    NSLog(@"application has launched");
+    NSLog(@"Cast application has launched");
     self.mediaControlChannel = [[GCKMediaControlChannel alloc] init];
     self.mediaControlChannel.delegate = self;
     [self.deviceManager addChannel:self.mediaControlChannel];
     [self.mediaControlChannel requestStatus];
     
+    // handle previous cast request that may have been delayed
+    if (self.isOnWaitingForChromecastStart) {
+        self.isOnWaitingForChromecastStart = NO;
+        // request slideshow start
+        [self handlerForStartStopButton];
+    }
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager
@@ -975,6 +968,56 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 #pragma mark - Main Methods
 
+- (void)handlerForStartStopButton {
+    
+    // toggle play on/off
+    if (self.isOnPlayActive) {
+        
+        // we are in active play mode, so stop the show
+        self.isOnPlayActive = NO;
+        
+        // change 'stop' icon to 'play', disable 'pause', enable 'next'
+        [self updateMediaControlButtons];
+        
+        // change button icon to 'play'
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+        [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
+        
+        // change background alpha
+        //            self.imageViewBackground.alpha = 0.0;
+        [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+            self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+        }];
+        
+    } else {
+        
+        // we are hard stopped (not paused), let's start the show
+        self.isOnPlayActive = YES;
+        
+        // check if array is ready & cast device ready
+        if (([self.mediaArray count] > 0) && (self.selectedDevice != nil)) {
+            
+            // call method instead of doing all the above
+            [self updateMediaControlButtons];
+            
+            // set show to start at beginning
+            self.mediaIndex = 0;
+            
+            // make the call to method that will iterate and cast entire array
+            [self displayImagesFromUIImageArray:self.mediaArray];
+            
+            // change background alpha
+            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+                self.imageViewBackground.alpha = kButtonStrongAlpha;
+            }];
+            
+        } else {
+            NSLog(@"Error catch: Nothing to start playing, or device no selected");
+        }
+    }
+}
+
+
 // CJ DEPRECATED
 // used in asset picker to populate self.mediaArray
 - (NSArray *)prepareImagesFromArray:(NSArray *)imageArray {
@@ -1113,21 +1156,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
             NSLog(@"... use random index");
             // in order to randomize we intermediate the index
-//            NSNumber *randomNum = self.randomNumbersArray[self.mediaIndex];
-//            int randomInt = [randomNum intValue];
-//            NSLog(@"... random int: %d", randomInt);
-//            image = itemArray[randomInt];
-            // or ...
-//            image = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             asset = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
             
         } else {
             // use straight index
             NSLog(@"... use straight index");
-            
-            // TODO: TEST THIS ...
-//            image = itemArray[self.mediaIndex];
             asset = itemArray[self.mediaIndex];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
         }
@@ -1143,8 +1177,38 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             NSLog(@"... portrait");
             if (self.isOnSwitchLandscape) {
                 // skip this image, increment image index
-                self.mediaIndex = self.mediaIndex + 1;
-                return;
+                // loop through current position to next non-portrait image
+                for (long i = self.mediaIndex; i < [itemArray count]; i++) {
+                    
+                    self.mediaIndex = self.mediaIndex + 1;
+                    
+                    // get next image
+                    if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+                        NSLog(@"... LOOP: use random index");
+                        // in order to randomize we intermediate the index
+                        asset = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+                        image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+                        
+                    } else {
+                        // use straight index
+                        NSLog(@"... LOOP: use straight index");
+                        asset = itemArray[self.mediaIndex];
+                        image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+                    }
+                    // check image
+                    if (image.size.width > image.size.height) {
+                        NSLog(@"... LOOP: landscape");
+                        // scale to fill
+                        // TODO: set CGSize dynamically, not hard coded
+                        CGSize newSize = CGSizeMake(1280, 720);
+                        image = [CCJImageEngine scaleImage:image toSize:newSize];
+                        // get out of for loop and show image
+                        break;
+                    } else {
+                        NSLog(@"... LOOP: skip another image");
+                    }
+                    
+                }
             }
         }
 
@@ -1221,6 +1285,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
             // let controler know that we're stopped
             self.isOnPlayActive = NO;
+            
+            // animate stop
+            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+                self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+            }];
             
             // change 'stop' icon to 'play', disable 'pause', enable 'next'
             [self updateMediaControlButtons];
@@ -1345,6 +1414,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
             // let controler know that we're stopped
             self.isOnPlayActive = NO;
+            
+            // animate stop view
+            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+                self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+            }];
             
             // change 'stop' icon to 'play', disable 'pause', enable 'next'
             [self updateMediaControlButtons];
@@ -1733,24 +1807,34 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     self.isOnSwitchRepeat       = SharedUserModel.userRepeatSwitchOn;
     self.isOnSwitchLandscape    = SharedUserModel.userLandcapeSwitchOn;
     
-    // set the switch states
+    // set the switch states manually
+    // todo: restore from used model
+    if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
+        self.timerSpeed = 8.0;
+        
+    } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 1) {
+        self.timerSpeed = 5.0;
+        
+    } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 2) {
+        self.timerSpeed = 3.0;
+    }
     
     if (self.isOnSwitchRandomize) {
-        self.switchRandomize.on = YES;
+        self.hmsSegmentedRandom.selectedSegmentIndex = 1;
     } else {
-        self.switchRandomize.on = NO;
+        self.hmsSegmentedRandom.selectedSegmentIndex = 0;
     }
     
     if (self.isOnSwitchRepeat) {
-        self.switchRepeat.on = YES;
+        self.hmsSegmentedRepeat.selectedSegmentIndex = 1;
     } else {
-        self.switchRepeat.on = NO;
+        self.hmsSegmentedRepeat.selectedSegmentIndex = 0;
     }
     
     if (self.isOnSwitchLandscape) {
-        self.switchLandscape.on = YES;
+        self.hmsSegmentedLandscape.selectedSegmentIndex = 1;
     } else {
-        self.switchLandscape.on = NO;
+        self.hmsSegmentedLandscape.selectedSegmentIndex = 0;
     }
 }
 
@@ -1834,8 +1918,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // tofo - Final cleanup of NSLogs
 // todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
+// 01-31-15 - Resolve Auto Layout landscape presentation
 // todo - Complete Sam Davies Beginning Adaptive Auto Layout
-// todo - Debug: On buttonStart without first Chromecasting results in not playing.
+// 01-31-15 - Testing: Debug: "'NSRangeException', reason: '*** -[__NSArrayI objectAtIndex:]: index 7 beyond bounds" when switched from 'slow' to 'fast' while in 'repeat'+''random' slideshow view. 
+// 01-31-15 - Testing: Debug: Found landscape only pauses on portrait images (0.75 hours 10:15-11:00)
+// 01-31-15 - Cleaned up some loose ends in UISwitch to Segmented Control conversion (0.5 hours 9:45-10:15)
+// 01-31-15 - Debug: On buttonStart without first Chromecasting not playing after Chromecast start.  Also removed iAd, and updated layout. (0.75 hours - 09:00-9:45)
+// 01-31-15 - Animate background alpha on start/stop (0.5 hours 08:30-09:00
 // 01-30-15 - Convert UISwitch and test connections moved to HMSSegmentedControl (19:45-
 // 01-30-15 - Implement HMSegmentedControl (16:15-18:00)
 // 01-30-15 - Review open source options for UISwitches and Segmented Controls with better interfaces (1.0 hours - 13:30-14:30)
