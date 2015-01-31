@@ -16,6 +16,8 @@
 #import "AppDelegate.h"
 #import "WSAssetPicker.h"
 
+#import "HMSegmentedControl.h"
+
 #define SharedWebServer ((AppDelegate *)[[UIApplication sharedApplication] delegate]).webServer
 
 #define SharedUserModel ((AppDelegate *)[[UIApplication sharedApplication] delegate]).userModel
@@ -53,9 +55,20 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)buttonPauseTouch:(id)sender;
 - (IBAction)buttonNextTouch:(id)sender;
 
+// segmented controls
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentSpeed;
+- (IBAction)segmentSpeedTouch:(id)sender;
 
+// HMSSegmentedControls
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *hmsSegmentSpeed;
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *hmsSegmentedRandom;
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *hmsSegmentedRepeat;
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *hmsSegmentedLandscape;
 
-
+- (IBAction)hmsSegmentSpeedTouch:(id)sender;
+- (IBAction)hmsSegmentRandomTouch:(id)sender;
+- (IBAction)hmsSegmentRepeatTouch:(id)sender;
+- (IBAction)hmsSegmentLandscapeTouch:(id)sender;
 
 @end
 
