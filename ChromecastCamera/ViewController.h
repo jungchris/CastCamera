@@ -34,12 +34,6 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBackground;
 
-// switches
-@property (weak, nonatomic) IBOutlet UISwitch *switchSpeed;
-@property (weak, nonatomic) IBOutlet UISwitch *switchRandomize;
-@property (weak, nonatomic) IBOutlet UISwitch *switchRepeat;
-@property (weak, nonatomic) IBOutlet UISwitch *switchLandscape;
-
 // button properties
 @property (weak, nonatomic) IBOutlet UIButton *buttonShowLibrary;
 @property (weak, nonatomic) IBOutlet UIButton *buttonStartStop;
@@ -57,9 +51,9 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)buttonPauseTouch:(id)sender;
 - (IBAction)buttonNextTouch:(id)sender;
 
-// segmented controls
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentSpeed;
-- (IBAction)segmentSpeedTouch:(id)sender;
+//// segmented controls
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentSpeed;
+//- (IBAction)segmentSpeedTouch:(id)sender;
 
 // HMSSegmentedControls
 @property (weak, nonatomic) IBOutlet HMSegmentedControl *hmsSegmentSpeed;

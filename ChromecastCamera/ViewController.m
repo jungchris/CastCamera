@@ -56,9 +56,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 @property (nonatomic, strong) NSArray *randomNumbersArray;
 
 // User preferences
-// TODO: delete switchSpeed
-//@property BOOL isOnSwitchSpeed;
-
 @property double timerSpeed;
 @property BOOL isOnSwitchRandomize;
 @property BOOL isOnSwitchRepeat;
@@ -88,15 +85,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 #define kButtonSubtleAlpha          0.3
 #define kButtonStrongAlpha          1.0
 
+// Chromecast screen size
+#define kScreenWidth    1280
+#define kScreenHeight   720
+
 #pragma mark - View Methods
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad");
-    
-    //You can add your own app id here that you get by registering with the Google Cast SDK Developer Console https://cast.google.com/publish
 //    kReceiverAppID=kGCKMediaDefaultReceiverApplicationID;
     
     // set the status bar appearance
@@ -121,10 +119,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.deviceScanner = [[GCKDeviceScanner alloc] init];
     
     // prepare to Chromecast
-//    GCKFilterCriteria *filterCriteria = [[GCKFilterCriteria alloc] init];
-//    filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"898F3A9B"];
-//    self.deviceScanner.filterCriteria = filterCriteria;
-    // revised above to avoid 'Dead store'
     self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"898F3A9B"];
     
     [self.deviceScanner addListener:self];
@@ -159,11 +153,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.pickerController.delegate = self;
     
     // set switch defaults
-//    self.switchSpeed.on = NO;
     self.timerSpeed = 5.0;
-    self.switchRandomize.on = NO;
-    self.switchRepeat.on = NO;
-    self.switchLandscape.on = NO;
     
     // set mode trackers to be used later
     self.isOnModeForward = YES;
@@ -204,9 +194,22 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    NSLog(@"MEMORY WARNING!");
+    [self.timerForShow invalidate];
+    self.timerForShow   = nil;
     
-    NSLog(@"***** DID RECEIVE MEMORY WARNING!!! *****");
+    // clear app's selections
+    self.isOnPlayActive = NO;
+    self.assetsLibrary  = nil;
     
+    // update app UI
+    [self updateMediaControlButtons];
+    self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+    
+    // Chromecast app to stop
+    [self.deviceManager leaveApplication];
+    [self.deviceManager disconnect];
+    [self updateButtonStates];
 }
 
 #pragma mark - GCKDeviceScannerListener Device Listeners
@@ -220,6 +223,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)deviceDidGoOffline:(GCKDevice *)device {
     NSLog(@"device did go offline!!!");
     [self updateButtonStates];
+    // TODO: Handle this by stopping slideshow
 }
 
 #pragma mark UIActionSheetDelegate
@@ -301,7 +305,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)updateStatsFromDevice {
     
     NSLog(@"updateStatsFromDevice");
-    
     if (self.mediaControlChannel && self.isConnected) {
         _mediaInformation = self.mediaControlChannel.mediaStatus.mediaInformation;
     }
@@ -313,8 +316,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 }
 
 - (void)connectToDevice {
+    
     NSLog(@"connectToDevice");
-
     if (self.selectedDevice == nil)
         return;
     
@@ -645,12 +648,6 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 // segemt controls
 
-- (void)segmentSpeedTouch:(id)sender {
-    
-    NSLog(@"segmentSpeedTouch");
-    
-}
-
 - (void)hmsSegmentSpeedTouch:(id)sender {
     
     if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
@@ -663,28 +660,24 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.timerSpeed = 3.0;
     }
     
-    
-    //
-//    if ([sender isOn]) {
-//        self.isOnSwitchSpeed = YES;
-//    } else {
-//        self.isOnSwitchSpeed = NO;
-//    }
-    
+    // stop the show
     if ([self.timerForShow isValid]) {
         [self.timerForShow invalidate];
         self.timerForShow = nil;
-        // restart timer with new speed
-        self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:self.timerSpeed
-                             target:self
-                             selector:@selector(selectorForDisplayImagesTimer:)
-                             userInfo:self.mediaArray
-                             repeats:YES];
+        
+        // check if we're in a position to restart the show
+        if (self.mediaIndex < [self.mediaArray count]) {
+        
+            // restart timer with new speed
+            self.timerForShow = [NSTimer
+                                 scheduledTimerWithTimeInterval:self.timerSpeed
+                                 target:self
+                                 selector:@selector(selectorForDisplayImagesTimer:)
+                                 userInfo:self.mediaArray
+                                 repeats:YES];
+        }
     }
-    //
-    
-    
+
 }
 
 - (void)hmsSegmentRandomTouch:(id)sender {
@@ -717,65 +710,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
 }
 
-// switches
-//- (void)selectorForSwitchSpeed:(id)sender {
-//    
-//    if ([sender isOn]) {
-//        self.isOnSwitchSpeed = YES;
-//    } else {
-//        self.isOnSwitchSpeed = NO;
-//    }
-//    
-//    if ([self.timerForShow isValid]) {
-//        [self.timerForShow invalidate];
-//        self.timerForShow = nil;
-//        // restart timer with new speed
-//        self.timerForShow = [NSTimer
-//                             scheduledTimerWithTimeInterval:(self.isOnSwitchSpeed ? 3.0 : 6.0)
-//                             target:self
-//                             selector:@selector(selectorForDisplayImagesTimer:)
-//                             userInfo:self.mediaArray
-//                             repeats:YES];
-//    }
-//}
-
-//- (void)selectorForSwitchRandomize:(id)sender {
-//    
-//    if ([sender isOn]) {
-//        self.isOnSwitchRandomize = YES;
-//    } else {
-//        self.isOnSwitchRandomize = NO;
-//    }
-//}
-//
-//- (void)selectorForSwitchRepeat:(id)sender {
-//    
-//    if ([sender isOn]) {
-//        self.isOnSwitchRepeat = YES;
-//    } else {
-//        self.isOnSwitchRepeat = NO;
-//    }
-//}
-//
-//- (void)selectorForSwitchLandscape:(id)sender {
-//    
-//    if ([sender isOn]) {
-//        self.isOnSwitchLandscape = YES;
-//    } else {
-//        self.isOnSwitchLandscape = NO;
-//    }
-//}
-
 // segmented controls
 
-- (void)segmentedControlChangedValue:(HMSegmentedControl *)segmentedControl {
-    NSLog(@"Selected index %ld (via UIControlEventValueChanged)", (long)segmentedControl.selectedSegmentIndex);
-}
-
-- (void)uisegmentedControlChangedValue:(UISegmentedControl *)segmentedControl {
-    NSLog(@"Selected index %ld", (long)segmentedControl.selectedSegmentIndex);
-    
-}
+//- (void)segmentedControlChangedValue:(HMSegmentedControl *)segmentedControl {
+//    NSLog(@"Selected index %ld (via UIControlEventValueChanged)", (long)segmentedControl.selectedSegmentIndex);
+//}
+//
+//- (void)uisegmentedControlChangedValue:(UISegmentedControl *)segmentedControl {
+//    NSLog(@"Selected index %ld", (long)segmentedControl.selectedSegmentIndex);
+//    
+//}
 
 
 #pragma mark - GCKDeviceManagerDelegate
@@ -851,12 +795,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 #pragma mark - GCKMediaControlChannelDelegate
 
 - (void)mediaControlChannelDidUpdateMetadata:(GCKMediaControlChannel *)mediaControlChannel {
-    NSLog(@"mediaControlChannelDidUpdateMetadata");
+//    NSLog(@"mediaControlChannelDidUpdateMetadata");
     
 }
 
 - (void)mediaControlChannelDidUpdateStatus:(GCKMediaControlChannel *)mediaControlChannel {
-    NSLog(@"mediaControlChannelDidUpdateStatus:");
+//    NSLog(@"mediaControlChannelDidUpdateStatus:");
     
 }
 
@@ -864,12 +808,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)webServerStart {
     
-    // Start server on port 8080
+    // Start server on port 80
     [SharedWebServer startWithPort:80 bonjourName:nil];
     NSLog(@"Web server started, visit %@", SharedWebServer.serverURL);
-    
-//    self.labelCast.text = @"Now Chromecasting";
-//    self.labelURL.text  = [SharedWebServer.serverURL absoluteString];
     
 }
 
@@ -934,30 +875,11 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 {
     // Dismiss the WSAssetPickerController.
     [self dismissViewControllerAnimated:YES completion:^{
-        // Do something with the assets here.
-        NSLog(@"assets count: %lu", (unsigned long)assets.count);
-        
-        //
-        NSMutableArray *mediaArrayMutable = [[NSMutableArray alloc] init];
-        
-        // this is where we memory crash
-//        for (ALAsset *asset in assets) {
-//            // CRITICAL BUG: this eats memory!!!
-//            [mediaArrayMutable addObject:[UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage]];
-//        }
-        
-        // possible solution:  grab reference to the NSArray assets and dynamically process the image later
-        
-        NSLog(@"... mediaArray count: %lu", (unsigned long)mediaArrayMutable.count);
-
-        // process the mutable array into an nsdata array
-//        self.mediaArray = [self prepareImagesFromArray:[mediaArrayMutable copy]];
-//        self.mediaArray = [mediaArrayMutable copy];
+        // handle the assets here.
         self.mediaArray = assets;
         
         // update the UI
         [self updateMediaControlButtons];
-        
     }];
     
     // increment picker counter used to create unique URL
@@ -1000,10 +922,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             // call method instead of doing all the above
             [self updateMediaControlButtons];
             
-            // set show to start at beginning
+            // display first image without delay
             self.mediaIndex = 0;
+            [self manuallyDisplayNextImageFromUIImageArray:YES];
             
-            // make the call to method that will iterate and cast entire array
+            // set timed show to start after first image
+            self.mediaIndex = 1;
+            
+            // call method that will NSTimer iterate and cast entire array
             [self displayImagesFromUIImageArray:self.mediaArray];
             
             // change background alpha
@@ -1020,33 +946,31 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 // CJ DEPRECATED
 // used in asset picker to populate self.mediaArray
-- (NSArray *)prepareImagesFromArray:(NSArray *)imageArray {
-    
-    if (!imageArray) {
-        return nil;
-    }
-    // resolved "Dead store" warning
-//    NSArray *imageProcessedArray = [[NSArray alloc] init];
-    if ([imageArray count] > 0) {
-        // Pre-process images here creating array of JPEG NSData
-//        imageProcessedArray = [self createNSDataArrayFromUIImageArray:imageArray];
-        // create random array in case it's needed in NSTimer selector later
-        self.randomNumbersArray = [self createRandomArray:[[self createNSDataArrayFromUIImageArray:imageArray] count]];
-        // return direcly to avoid 'Dead store'
-        return [self createNSDataArrayFromUIImageArray:imageArray];
-        
-    } else {
-        // do nothing
-        NSLog(@"Oops!  No image to process");
-        return nil;
-    }
-//    return imageProcessedArray;
-}
+//- (NSArray *)prepareImagesFromArray:(NSArray *)imageArray {
+//    
+//    if (!imageArray) {
+//        return nil;
+//    }
+//    // resolved "Dead store" warning
+////    NSArray *imageProcessedArray = [[NSArray alloc] init];
+//    if ([imageArray count] > 0) {
+//        // Pre-process images here creating array of JPEG NSData
+////        imageProcessedArray = [self createNSDataArrayFromUIImageArray:imageArray];
+//        // create random array in case it's needed in NSTimer selector later
+//        self.randomNumbersArray = [self createRandomArray:[[self createNSDataArrayFromUIImageArray:imageArray] count]];
+//        // return direcly to avoid 'Dead store'
+//        return [self createNSDataArrayFromUIImageArray:imageArray];
+//        
+//    } else {
+//        // do nothing
+//        NSLog(@"Oops!  No image to process");
+//        return nil;
+//    }
+////    return imageProcessedArray;
+//}
 
 // CJ DEPRECATED
 - (void)displayImagesFromNSDataArray:(NSArray *)imageArray {
-    
-    NSLog(@"==> displayImagesFromNSDataArray:count: %lu", [imageArray count]);
     
     if (!imageArray) {
         return;
@@ -1054,12 +978,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     if ([imageArray count] > 0) {
         
-        // setup image counter incremented by NSTimer --> MOVED OUTSIDE METHOD
-//        self.mediaIndex = 0;
-        
         // check if timer already running and invalidate if it is
         if ([self.timerForShow isValid]) {
-            NSLog(@"timer already running, kill first");
             [self.timerForShow invalidate];
             self.timerForShow = nil;
         }
@@ -1080,8 +1000,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 - (void)displayImagesFromUIImageArray:(NSArray *)imageArray {
     
-    NSLog(@"==> displayImagesFromUIImageArray:count: %lu", [imageArray count]);
-    
     if (!imageArray) {
         return;
     }
@@ -1093,7 +1011,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // check if timer already running and invalidate if it is
         if ([self.timerForShow isValid]) {
-            NSLog(@"timer already running, kill first");
             [self.timerForShow invalidate];
             self.timerForShow = nil;
         }
@@ -1143,9 +1060,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     // check media type
     if (self.mediaIndex < [itemArray count]) {
         
-        // a photo was taken or selected
-        NSLog(@"... All good, a photo was chosen");
-        
         // get image picked from image directory
         UIImage *image;
         
@@ -1154,63 +1068,63 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // are we to randomize and ... can we?
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
-            NSLog(@"... use random index");
             // in order to randomize we intermediate the index
             asset = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
             
         } else {
             // use straight index
-            NSLog(@"... use straight index");
             asset = itemArray[self.mediaIndex];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
         }
         
         // check if landscape for image fit
         if (image.size.width > image.size.height) {
-            NSLog(@"... landscape");
             // scale to fill
-            // TODO: set CGSize dynamically, not hard coded
-            CGSize newSize = CGSizeMake(1280, 720);
+            CGSize newSize = CGSizeMake(kScreenWidth, kScreenHeight);
             image = [CCJImageEngine scaleImage:image toSize:newSize];
+            
         } else {
-            NSLog(@"... portrait");
+            
             if (self.isOnSwitchLandscape) {
-                // skip this image, increment image index
+                
+                BOOL foundLandscapeImage = FALSE;
+                
                 // loop through current position to next non-portrait image
                 for (long i = self.mediaIndex; i < [itemArray count]; i++) {
                     
-                    self.mediaIndex = self.mediaIndex + 1;
-                    
                     // get next image
                     if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
-                        NSLog(@"... LOOP: use random index");
                         // in order to randomize we intermediate the index
-                        asset = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+                        asset = itemArray[[self.randomNumbersArray[i] intValue]];
                         image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
                         
                     } else {
                         // use straight index
-                        NSLog(@"... LOOP: use straight index");
-                        asset = itemArray[self.mediaIndex];
+                        asset = itemArray[i];
                         image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
                     }
                     // check image
                     if (image.size.width > image.size.height) {
-                        NSLog(@"... LOOP: landscape");
                         // scale to fill
-                        // TODO: set CGSize dynamically, not hard coded
-                        CGSize newSize = CGSizeMake(1280, 720);
+                        CGSize newSize = CGSizeMake(kScreenWidth, kScreenHeight);
                         image = [CCJImageEngine scaleImage:image toSize:newSize];
+                        
+                        foundLandscapeImage = TRUE;
                         // get out of for loop and show image
                         break;
-                    } else {
-                        NSLog(@"... LOOP: skip another image");
                     }
-                    
+                
+                    self.mediaIndex = i;
+                } // for loop
+                
+                // avoid showing the last image loaded if it's not landscape
+                if (!foundLandscapeImage) {
+                    return;
                 }
-            }
-        }
+                
+            } // isOnSwitchLandscape
+        } // width > height
 
         self.mediaData = UIImageJPEGRepresentation(image, 0.6);
         self.mediaType = @"image/jpeg";
@@ -1225,12 +1139,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
             [mediaURL appendString:@"a"];
     
-            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
-                
-                // TODO: Check if randomizing the URL is really necessary - probably not!
-                // we're repeating random images, so we use the random increment
+            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count]) && (self.mediaIndex < [itemArray count])) {
+                // we're repeating random images, so we use the random increment, necessary because of image caching
                 [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
-            
             } else {
                 // we're repeating non-random images, so use simple increment
                 [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
@@ -1243,7 +1154,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         }
 
         [mediaURL appendString:@".jpg"];
-        NSLog(@"--> mutable URL %@", mediaURL);
         
         // UPDATE CHROMECAST
         
@@ -1276,7 +1186,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         } else {
             // let's stop the timer and do not come back here if we're done
             NSLog(@"==> Done streaming");
-//            [timer invalidate];
             [self.timerForShow invalidate];
             self.timerForShow = nil;
             
@@ -1297,247 +1206,230 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     }
 }
 
-// more sophisticated selector
-- (void)selectorForTimerForShowFromNSDataArray:(NSTimer *)timer {
+//// more sophisticated selector
+//- (void)selectorForTimerForShowFromNSDataArray:(NSTimer *)timer {
+//    
+//    // EXTRACT USERINFO
+//    
+//    // extract the info sent by timer & check it
+//    NSArray *itemArray = [timer userInfo];
+//    if (!itemArray) {
+//        // [timer invalidate];
+//        [self.timerForShow invalidate];
+//        self.timerForShow = nil;
+//        return;
+//    }
+//    
+//    // CHECK WEB SERVER & GET URL TO BUILD
+//    
+//    // build image info from scratch, checking the server URL each time
+//    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+//    if (SharedWebServer.serverURL) {
+//        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+//        
+//    } else {
+//        NSLog(@"Error catch: SharedWebServer.serverURL nil");
+//        return;
+//    }
+//    
+//    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
+//    
+//    // check media type
+//    if (self.mediaIndex < [itemArray count]) {
+//        
+//        // are we to randomize and ... can we?
+//        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+//            
+//            // in order to randomize we intermediate the index
+//            self.mediaData = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+//            
+//        } else {
+//            // use straight index
+//            self.mediaData = itemArray[self.mediaIndex];
+//        }
+//        
+//        self.mediaType = @"image/jpeg";
+//        
+//        // start building the image name
+//        [mediaURL appendString:@"image"];
+//        // check if the URL needs to be unique
+//        if (self.isOnSwitchRepeat) {
+//            
+//            // URLs repeat so should be cacheable
+//            // first append the picker index
+//            [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+//            [mediaURL appendString:@"a"];
+//            
+//            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
+//                
+//                // we're repeating random images, so we use the random increment
+//                [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
+//                
+//            } else {
+//                // we're repeating non-random images, so use simple increment
+//                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+//            }
+//            
+//        } else {
+//            
+//            // set the URL's media index uniquely to avoid getting a cached image
+//            [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+//        }
+//        
+//        [mediaURL appendString:@".jpg"];
+//        
+//        // UPDATE CHROMECAST
+//        
+//        // update cast
+//        [self updateChromecastWithTitle:@"Image"
+//                               subTitle:@"from iPhone"
+//                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+//                               mediaURL:[mediaURL copy]
+//                            contentType:self.mediaType];
+//        
+//    } else {
+//        NSLog(@"Oop! Something's being naughty: no mediaData");
+//    }
+//    
+//    // CHECK IF SHOULD TERMINATE
+//    
+//    // increment image index
+//    self.mediaIndex = self.mediaIndex + 1;
+//    
+//    // check where we're at
+//    if (self.mediaIndex >= [itemArray count]) {
+//        
+//        // are we supposed to repeat?
+//        if (self.isOnSwitchRepeat) {
+//            // keep streaming, starting back at first image.
+//            NSLog(@"==> Restart streaming");
+//            // re-shuffle image order
+//            self.randomNumbersArray = [self createRandomArray:[itemArray count]];
+//            self.mediaIndex = 0;
+//        } else {
+//            // let's stop the timer and do not come back here if we're done
+//            NSLog(@"==> Done streaming");
+//            [self.timerForShow invalidate];
+//            self.timerForShow = nil;
+//            
+//            // reset media index in case user wants to manualy view images
+//            self.mediaIndex = 0;
+//            
+//            // let controler know that we're stopped
+//            self.isOnPlayActive = NO;
+//            
+//            // animate stop view
+//            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+//                self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+//            }];
+//            
+//            // change 'stop' icon to 'play', disable 'pause', enable 'next'
+//            [self updateMediaControlButtons];
+//        }
+//    }
+//}
 
-    // where we at?
-    NSLog(@"... selector counter: %lu", (unsigned long)self.mediaIndex);
-    
-    // EXTRACT USERINFO
-    
-    // extract the info sent by timer & check it
-    NSArray *itemArray = [timer userInfo];
-    if (!itemArray) {
-        // [timer invalidate];
-        [self.timerForShow invalidate];
-        self.timerForShow = nil;
-        return;
-    }
-    
-    // CHECK WEB SERVER & GET URL TO BUILD
-    
-    // build image info from scratch, checking the server URL each time
-    NSMutableString *mediaURL = [[NSMutableString alloc] init];
-    if (SharedWebServer.serverURL) {
-        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
-        
-    } else {
-        NSLog(@"Error catch: SharedWebServer.serverURL nil");
-        return;
-    }
-    
-    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
-    
-    // check media type
-    if (self.mediaIndex < [itemArray count]) {
-        
-        // are we to randomize and ... can we?
-        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
-            
-            // in order to randomize we intermediate the index
-            self.mediaData = itemArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
-            
-        } else {
-            // use straight index
-            self.mediaData = itemArray[self.mediaIndex];
-        }
-        
-        self.mediaType = @"image/jpeg";
-        
-        // start building the image name
-        [mediaURL appendString:@"image"];
-        // check if the URL needs to be unique
-        if (self.isOnSwitchRepeat) {
-            
-            // URLs repeat so should be cacheable
-            // first append the picker index
-            [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
-            [mediaURL appendString:@"a"];
-            
-            if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count])) {
-                
-                // TODO: Check if randomizing the URL is really necessary - probably not!
-                // we're repeating random images, so we use the random increment
-                [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
-                
-            } else {
-                // we're repeating non-random images, so use simple increment
-                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
-            }
-            
-        } else {
-            
-            // set the URL's media index uniquely to avoid getting a cached image
-            [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
-        }
-        
-        [mediaURL appendString:@".jpg"];
-        NSLog(@"--> mutable URL %@", mediaURL);
-        
-        // UPDATE CHROMECAST
-        
-        // update cast
-        [self updateChromecastWithTitle:@"Image"
-                               subTitle:@"from iPhone"
-                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                               mediaURL:[mediaURL copy]
-                            contentType:self.mediaType];
-        
-    } else {
-        NSLog(@"Oop! Something's being naughty: no mediaData");
-    }
-    
-    // CHECK IF SHOULD TERMINATE
-    
-    // increment image index
-    self.mediaIndex = self.mediaIndex + 1;
-    
-    // check where we're at
-    if (self.mediaIndex >= [itemArray count]) {
-        
-        // are we supposed to repeat?
-        if (self.isOnSwitchRepeat) {
-            // keep streaming, starting back at first image.
-            NSLog(@"==> Restart streaming");
-            // re-shuffle image order
-            self.randomNumbersArray = [self createRandomArray:[itemArray count]];
-            self.mediaIndex = 0;
-        } else {
-            // let's stop the timer and do not come back here if we're done
-            NSLog(@"==> Done streaming");
-//            [timer invalidate];
-            [self.timerForShow invalidate];
-            self.timerForShow = nil;
-            
-            // reset media index in case user wants to manualy view images
-            self.mediaIndex = 0;
-            
-            // let controler know that we're stopped
-            self.isOnPlayActive = NO;
-            
-            // animate stop view
-            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
-                self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
-            }];
-            
-            // change 'stop' icon to 'play', disable 'pause', enable 'next'
-            [self updateMediaControlButtons];
-        }
-    }
-}
-
-- (void)manuallyDisplayNextImageFromNSDataArray:(BOOL)showNext {
-    
-//    NSLog(@"*** entry mediaIndex: %lu", self.mediaIndex);
-    
-    // check if we're to decrement first
-    if (!showNext) {
-        // check what we did last time we were here
-        if (self.isOnModeForward) {
-            // last time here we moved forward, so go back two
-            if (self.mediaIndex > 1) {
-                self.mediaIndex = self.mediaIndex - 2;
-            }
-        } else {
-            // last time we were going backwards
-            if (self.mediaIndex > 0) {
-                self.mediaIndex = self.mediaIndex - 1;
-            }
-        }
-        self.isOnModeForward = FALSE;
-    } else {
-        // handle unique case where we've moved back to beginning and image repeats
-        if (!self.isOnModeForward && self.mediaIndex == 0) {
-            self.mediaIndex = self.mediaIndex + 1;
-        }
-    }
-    
-//    NSLog(@"*** post showNext mediaIndex: %lu", self.mediaIndex);
-    
-    // build image info from scratch, checking the server URL each time
-    NSMutableString *mediaURL = [[NSMutableString alloc] init];
-    if (SharedWebServer.serverURL) {
-        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
-        
-    } else {
-        NSLog(@"Error catch: SharedWebServer.serverURL nil");
-        return;
-    }
-    
-    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
-    
-    // check index bounds
-    if (self.mediaIndex < [self.mediaArray count]) {
-        
-        // are we to randomize and ... can we?
-        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
-            
-//            NSLog(@"... use random index");
-            // in order to randomize we intermediate the index
-            self.mediaData = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
-            
-        } else {
-            // use straight index
-//            NSLog(@"... use straight index");
-            self.mediaData = self.mediaArray[self.mediaIndex];
-        }
-        
-        self.mediaType = @"image/jpeg";
-        
-        // start building the image name
-        [mediaURL appendString:@"image"];
-            
-        // set the URL's media index uniquely to avoid getting a cached image
-//        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
-        
-        // checking to a straight indexed image to improve forward<->back performance
-        // first append the picker index
-        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
-        [mediaURL appendString:@"a"];
-
-        // we're repeating non-random images, so use simple increment
-        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
-        
-        [mediaURL appendString:@".jpg"];
-        NSLog(@"--> mutable URL %@", mediaURL);
-        
-        // UPDATE CHROMECAST
-        
-        // update cast
-        [self updateChromecastWithTitle:@"Image"
-                               subTitle:@"from iPhone"
-                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                               mediaURL:[mediaURL copy]
-                            contentType:self.mediaType];
-        
-    } else {
-        NSLog(@"Catch! index exceeding bounds");
-    }
-    
-    if (showNext) {
-        self.isOnModeForward = TRUE;
-        if (self.mediaIndex >= [self.mediaArray count]) {
-            // we've trying to get past end of array
-            return;
-        } else {
-            self.mediaIndex = self.mediaIndex + 1;
-        }
-    } else {
-        self.isOnModeForward = FALSE;
-    }
-    
-//    NSLog(@"*** exit mediaIndex: %lu", self.mediaIndex);
-    
-    // update buttons if necessary
-    [self updateNextButtonUsingBounds];
-    [self updateBackButtonUsingBounds];
-    
-}
+//- (void)manuallyDisplayNextImageFromNSDataArray:(BOOL)showNext {
+//    
+//    // check if we're to decrement first
+//    if (!showNext) {
+//        // check what we did last time we were here
+//        if (self.isOnModeForward) {
+//            // last time here we moved forward, so go back two
+//            if (self.mediaIndex > 1) {
+//                self.mediaIndex = self.mediaIndex - 2;
+//            }
+//        } else {
+//            // last time we were going backwards
+//            if (self.mediaIndex > 0) {
+//                self.mediaIndex = self.mediaIndex - 1;
+//            }
+//        }
+//        self.isOnModeForward = FALSE;
+//    } else {
+//        // handle unique case where we've moved back to beginning and image repeats
+//        if (!self.isOnModeForward && self.mediaIndex == 0) {
+//            self.mediaIndex = self.mediaIndex + 1;
+//        }
+//    }
+//    
+//    // build image info from scratch, checking the server URL each time
+//    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+//    if (SharedWebServer.serverURL) {
+//        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+//        
+//    } else {
+//        NSLog(@"Error catch: SharedWebServer.serverURL nil");
+//        return;
+//    }
+//    
+//    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
+//    
+//    // check index bounds
+//    if (self.mediaIndex < [self.mediaArray count]) {
+//        
+//        // are we to randomize and ... can we?
+//        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
+//            
+//            // in order to randomize we intermediate the index
+//            self.mediaData = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
+//            
+//        } else {
+//            // use straight index
+//            self.mediaData = self.mediaArray[self.mediaIndex];
+//        }
+//        
+//        self.mediaType = @"image/jpeg";
+//        
+//        // start building the image name
+//        [mediaURL appendString:@"image"];
+//            
+//        // set the URL's media index uniquely to avoid getting a cached image
+////        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
+//        
+//        // checking to a straight indexed image to improve forward<->back performance
+//        // first append the picker index
+//        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+//        [mediaURL appendString:@"a"];
+//
+//        // we're repeating non-random images, so use simple increment
+//        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+//        
+//        [mediaURL appendString:@".jpg"];
+//        
+//        // UPDATE CHROMECAST
+//        
+//        // update cast
+//        [self updateChromecastWithTitle:@"Image"
+//                               subTitle:@"from iPhone"
+//                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+//                               mediaURL:[mediaURL copy]
+//                            contentType:self.mediaType];
+//        
+//    } else {
+//        NSLog(@"Catch! index exceeding bounds");
+//    }
+//    
+//    if (showNext) {
+//        self.isOnModeForward = TRUE;
+//        if (self.mediaIndex >= [self.mediaArray count]) {
+//            // we've trying to get past end of array
+//            return;
+//        } else {
+//            self.mediaIndex = self.mediaIndex + 1;
+//        }
+//    } else {
+//        self.isOnModeForward = FALSE;
+//    }
+//    
+//    // update buttons if necessary
+//    [self updateNextButtonUsingBounds];
+//    [self updateBackButtonUsingBounds];
+//    
+//}
 
 - (void)manuallyDisplayNextImageFromUIImageArray:(BOOL)showNext {
     
-    //    NSLog(@"*** entry mediaIndex: %lu", self.mediaIndex);
-    
     // check if we're to decrement first
     if (!showNext) {
         // check what we did last time we were here
@@ -1559,8 +1451,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             self.mediaIndex = self.mediaIndex + 1;
         }
     }
-    
-    //    NSLog(@"*** post showNext mediaIndex: %lu", self.mediaIndex);
     
     // build image info from scratch, checking the server URL each time
     NSMutableString *mediaURL = [[NSMutableString alloc] init];
@@ -1578,20 +1468,17 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     if (self.mediaIndex < [self.mediaArray count]) {
         
         UIImage *image;
-        
         ALAsset *asset;
         
         // are we to randomize and ... can we?
         if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
             
-            //            NSLog(@"... use random index");
             // in order to randomize we intermediate the index
             asset = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
             
         } else {
             // use straight index
-            //            NSLog(@"... use straight index");
             
             asset = self.mediaArray[self.mediaIndex];
             image = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
@@ -1600,15 +1487,12 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // check image orientation
         if (image.size.width > image.size.height) {
             
-            NSLog(@"... landscape");
             // scale to fill
-            // TODO: set CGSize dynamically, not hard coded
-            CGSize newSize = CGSizeMake(1280, 720);
+            CGSize newSize = CGSizeMake(kScreenWidth, kScreenHeight);
             image = [CCJImageEngine scaleImage:image toSize:newSize];
             
         } else {
             
-            NSLog(@"... portrait");
             if (self.isOnSwitchLandscape) {
                 // skip this image
                 return;
@@ -1633,7 +1517,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
         
         [mediaURL appendString:@".jpg"];
-        NSLog(@"--> mutable URL %@", mediaURL);
         
         // UPDATE CHROMECAST
         
@@ -1682,27 +1565,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     for (int i = 0; i < [imageArray count]; i++) {
         
-        // prepare data store
-//        NSData *mediaData = [[NSData alloc] init];
-        
-        // get image picked from image directory by index
-//        UIImage *image = [[UIImage alloc] init];
-        // changed to eliminate 'Dead store' warning.
         UIImage *image;
         image = imageArray[i];
         
         // check image orientation
         if (image.size.width > image.size.height) {
             
-//            NSLog(@"... landscape");
             // scale to fill
-            // TODO: set CGSize dynamically, not hard coded
-            CGSize newSize = CGSizeMake(1280, 720);
+            CGSize newSize = CGSizeMake(kScreenWidth, kScreenHeight);
             image = [CCJImageEngine scaleImage:image toSize:newSize];
             
         } else {
             
-//            NSLog(@"... portrait");
             if (self.isOnSwitchLandscape) {
                 // skip this image
                 continue;
@@ -1843,7 +1717,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
     
     [self.adBanner setHidden:YES];
-    //    NSLog(@"AboutVC: didFailToReceiveAdWithError");
     
     //    // show my own add image when add is hidden
     //    // NOT USING DUE TO PLACEMENT ISSUE
@@ -1866,7 +1739,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner {
     
     [self.adBanner setHidden:NO];
-    //    NSLog(@"---> MainVC: bannerViewDidLoadAd");
     
 }
 
@@ -1875,8 +1747,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 -(void) addADBannerViewToBottom
 {
-    //    NSLog(@"---> MainVC: addBannerViewToBottom");
-    
     self.adBanner.delegate = self;
     //Position banner just below the screen
     self.adBanner.frame = CGRectMake(0, self.view.bounds.size.height, 0, 0);
@@ -1888,8 +1758,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 -(void) addADBannerViewToTop
 {
-    //    NSLog(@"---> MainVC: addBannerViewToTop");
-    
     self.adBanner.delegate = self;
     //Position banner just below the top status bar
     self.adBanner.frame = CGRectMake(0, 0, 0, 0);
@@ -1902,7 +1770,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 -(void) removeADBannerView
 {
-    //    NSLog(@"---> MainVC: removeADBanner");
     self.adBanner.delegate = nil;
     [self.adBanner removeFromSuperview];
 }
@@ -1914,13 +1781,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // feature - Allow 'select all' in media picker if feasable
 
 // CURRENT VERSION:
-// todo - Clean up code comments
-// tofo - Final cleanup of NSLogs
 // todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
+// todo - Test app's response to 'Received notification that device disconnected'
 // todo - Clean up Autolayout presentations for landscape and 3.5" screen portrait
-// 01-31-15 - Resolve Auto Layout landscape presentation
+// todo - Resolve Auto Layout landscape presentation
 // todo - Complete Sam Davies Beginning Adaptive Auto Layout
-// 01-31-15 - Testing: Debug: "'NSRangeException', reason: '*** -[__NSArrayI objectAtIndex:]: index 7 beyond bounds" when switched from 'slow' to 'fast' while in 'repeat'+''random' slideshow view. 
+// todo - Hide manual 'next' button when starting slideshow from 'buttonStartStop'.
+// 01-31-15 - debug: Find why I'm displaying one portrait image, while others are being squelched. (0.25 h = 19:45-20:00)
+// 01-31-15 - debug: Caught another 'NSRangeException' occurence. 'Fast''Random'Repeat''Landscape'.  Traced, found and remediated. (0.5 h 18:45-19:15)
+// 01-31-15 - Modify code to show first slide without delay (0.25 h = 18:15-18:30)
+// 01-31-15 - Final cleanup of comments and any loitering NSLogs (0.5 h = 17:15-17:45)
+// 01-31-15 - Testing response to 'didReceiveMemoryWarning' conditions. (0.75 hours = 16:30-17:15)
+// 01-31-15 - Testing: Debug: "'NSRangeException', reason: '*** -[__NSArrayI objectAtIndex:]: index 7 beyond bounds" when switched from 'slow' to 'fast' while in 'repeat'+''random' slideshow view. (0.5 hours 16:00-16:30)
 // 01-31-15 - Testing: Debug: Found landscape only pauses on portrait images (0.75 hours 10:15-11:00)
 // 01-31-15 - Cleaned up some loose ends in UISwitch to Segmented Control conversion (0.5 hours 9:45-10:15)
 // 01-31-15 - Debug: On buttonStart without first Chromecasting not playing after Chromecast start.  Also removed iAd, and updated layout. (0.75 hours - 09:00-9:45)
