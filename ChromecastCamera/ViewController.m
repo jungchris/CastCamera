@@ -1785,7 +1785,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // todo - Test app's response to 'Received notification that device disconnected'
 // todo - Hide manual 'next' button when starting slideshow from 'buttonStartStop'.
 // todo - Set up Autolayout presentations for iPads
-// 02-03-15 - Resolve Auto Layout landscape presentation (09:45-
+// 02-03-15 - Resolve Auto Layout landscape presentation (2.75 + ___ hours = 09:45-12:30, 15:00-)  
 // 01-31-15 - debug: Find why I'm displaying one portrait image, while others are being squelched. (0.25 h = 19:45-20:00)
 // 01-31-15 - debug: Caught another 'NSRangeException' occurence. 'Fast''Random'Repeat''Landscape'.  Traced, found and remediated. (0.5 h 18:45-19:15)
 // 01-31-15 - Modify code to show first slide without delay (0.25 h = 18:15-18:30)
