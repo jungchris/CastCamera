@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -19,82 +19,15 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu-background" translatesAutoresizingMaskIntoConstraints="NO" id="FXM-U4-PI8">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <variation key="heightClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="16" y="0.0" width="584" height="400"/>
+                                </variation>
                             </imageView>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbr-dQ-v2Z" userLabel="ContainerSegmentedViews">
-                                <rect key="frame" x="150" y="72" width="300" height="300"/>
-                                <subviews>
-                                    <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yjw-rR-qDy" userLabel="SegmentedSpeed" customClass="HMSegmentedControl">
-                                        <rect key="frame" x="0.0" y="32" width="300" height="45"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="iFR-4S-Duj"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="hmsSegmentSpeedTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="3eI-s2-WtK"/>
-                                        </connections>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9un-On-byM" userLabel="SegmentedRandom" customClass="HMSegmentedControl">
-                                        <rect key="frame" x="0.0" y="95" width="300" height="45"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="45" id="yy4-04-Yt5"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="hmsSegmentRandomTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="2jN-Zp-ndf"/>
-                                        </connections>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8p0-HY-vx8" userLabel="SegmentedRepeat" customClass="HMSegmentedControl">
-                                        <rect key="frame" x="0.0" y="160" width="300" height="45"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="45" id="5mh-3P-ydo"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="hmsSegmentRepeatTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="Wkb-cS-Gsd"/>
-                                        </connections>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AAR-7Y-AN6" userLabel="CenterAnchor">
-                                        <rect key="frame" x="0.0" y="140" width="300" height="20"/>
-                                        <color key="backgroundColor" red="1" green="0.51837321719999996" blue="0.26018908169999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="20" id="sgg-8t-ZJW"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KSZ-YS-gZh" userLabel="SegmentedLandscape" customClass="HMSegmentedControl">
-                                        <rect key="frame" x="0.0" y="222" width="300" height="45"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="45" id="P4o-av-di9"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="hmsSegmentLandscapeTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="RLP-FQ-zY8"/>
-                                        </connections>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="KSZ-YS-gZh" secondAttribute="trailing" id="1GQ-yj-oIQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="8p0-HY-vx8" secondAttribute="trailing" id="5kV-Zn-Kdw"/>
-                                    <constraint firstItem="9un-On-byM" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="8YW-F8-SRe"/>
-                                    <constraint firstItem="AAR-7Y-AN6" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="BXK-PT-me6"/>
-                                    <constraint firstAttribute="trailing" secondItem="9un-On-byM" secondAttribute="trailing" id="Fvr-aw-ZxD"/>
-                                    <constraint firstItem="yjw-rR-qDy" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="MHb-gD-vfQ"/>
-                                    <constraint firstItem="8p0-HY-vx8" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="Mt6-kM-MSV"/>
-                                    <constraint firstItem="9un-On-byM" firstAttribute="top" secondItem="yjw-rR-qDy" secondAttribute="bottom" constant="18" id="YWL-n0-bRQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="yjw-rR-qDy" secondAttribute="trailing" id="bfk-tQ-7zp"/>
-                                    <constraint firstAttribute="trailing" secondItem="AAR-7Y-AN6" secondAttribute="trailing" id="cGn-OG-s29"/>
-                                    <constraint firstItem="8p0-HY-vx8" firstAttribute="top" secondItem="AAR-7Y-AN6" secondAttribute="bottom" id="cIm-4Z-5Uj"/>
-                                    <constraint firstItem="AAR-7Y-AN6" firstAttribute="top" secondItem="9un-On-byM" secondAttribute="bottom" id="ezd-7v-Hta"/>
-                                    <constraint firstItem="KSZ-YS-gZh" firstAttribute="top" secondItem="8p0-HY-vx8" secondAttribute="bottom" constant="17" id="gVA-53-0yW"/>
-                                    <constraint firstItem="KSZ-YS-gZh" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="m7p-EA-AMI"/>
-                                    <constraint firstAttribute="centerY" secondItem="AAR-7Y-AN6" secondAttribute="centerY" id="mmA-ko-fx1"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4x-hy-jpS" userLabel="ContainerButtonControls">
-                                <rect key="frame" x="170" y="355" width="257" height="232"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4x-hy-jpS" userLabel="ButtonContainer">
+                                <rect key="frame" x="150" y="380" width="300" height="207"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZT-dX-dKL" userLabel="ButtonPicker">
-                                        <rect key="frame" x="16" y="62" width="50" height="50"/>
+                                        <rect key="frame" x="36" y="37" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="UpY-nk-3xd"/>
                                             <constraint firstAttribute="width" constant="50" id="egR-LA-UCQ"/>
@@ -102,7 +35,7 @@
                                         <state key="normal" image="icon-picker">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="159" y="276" width="50" height="50"/>
                                         </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
@@ -114,15 +47,15 @@
                                         <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
                                             <rect key="frame" x="259" y="276" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="35" y="594" width="50" height="50"/>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="19" y="568" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonShowLibraryTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l3C-IQ-ns3"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uKV-E4-YZP" userLabel="ButtonStartStop">
-                                        <rect key="frame" x="16" y="120" width="50" height="50"/>
+                                        <rect key="frame" x="36" y="95" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="7f3-0Q-nWS"/>
                                             <constraint firstAttribute="width" constant="50" id="RiA-Dh-hH2"/>
@@ -130,7 +63,7 @@
                                         <state key="normal" image="icon-play">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="217" y="276" width="50" height="50"/>
                                         </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
@@ -142,15 +75,15 @@
                                         <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
                                             <rect key="frame" x="317" y="276" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="84" y="652" width="50" height="50"/>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="68" y="626" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonStartStopTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gse-vA-xmt"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pp4-lA-3Ys" userLabel="ButtonBack">
-                                        <rect key="frame" x="74" y="120" width="50" height="50"/>
+                                        <rect key="frame" x="95" y="107" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="1Jq-id-36z"/>
                                             <constraint firstAttribute="height" constant="50" id="7Jx-tI-ocp"/>
@@ -158,7 +91,7 @@
                                         <state key="normal" image="icon-back">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="275" y="276" width="50" height="50"/>
                                         </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
@@ -170,15 +103,15 @@
                                         <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
                                             <rect key="frame" x="375" y="276" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="142" y="652" width="50" height="50"/>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="126" y="626" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonBackTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HlJ-ch-O2m"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GBV-uH-VAW" userLabel="ButtonPause">
-                                        <rect key="frame" x="132" y="120" width="50" height="50"/>
+                                        <rect key="frame" x="153" y="107" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="50" id="04t-f5-OYR"/>
                                             <constraint firstAttribute="height" constant="50" id="fXt-8m-cyK"/>
@@ -186,7 +119,7 @@
                                         <state key="normal" image="icon-pause">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="333" y="276" width="50" height="50"/>
                                         </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
@@ -198,15 +131,15 @@
                                         <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
                                             <rect key="frame" x="433" y="276" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="200" y="652" width="50" height="50"/>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="184" y="626" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonPauseTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dsL-2H-tge"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3XJ-Vq-1qc" userLabel="ButtonNext">
-                                        <rect key="frame" x="190" y="120" width="50" height="50"/>
+                                        <rect key="frame" x="210" y="95" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="L5T-ge-ZHm"/>
                                             <constraint firstAttribute="width" constant="50" id="sNq-wr-WmG"/>
@@ -214,7 +147,7 @@
                                         <state key="normal" image="icon-next">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" fixedFrame="YES">
+                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="391" y="276" width="50" height="50"/>
                                         </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
@@ -226,15 +159,15 @@
                                         <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
                                             <rect key="frame" x="491" y="276" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="258" y="652" width="50" height="50"/>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="242" y="626" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonNextTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6ze-0q-HaN"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xQg-ib-Fso" userLabel="ButtonSocialShare">
-                                        <rect key="frame" x="190" y="62" width="50" height="50"/>
+                                        <rect key="frame" x="210" y="37" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="bdh-ew-z24"/>
                                             <constraint firstAttribute="width" constant="50" id="hy8-gR-t7g"/>
@@ -255,36 +188,149 @@
                                             <rect key="frame" x="734" y="93" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="315" y="594" width="50" height="50"/>
+                                            <rect key="frame" x="299" y="568" width="50" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="buttonSocialTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oJB-hY-VSC"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.61687021922431762" green="0.84971606581509662" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="GBV-uH-VAW" secondAttribute="centerY" constant="-29" id="03c-Fj-KFq"/>
-                                    <constraint firstItem="uKV-E4-YZP" firstAttribute="top" secondItem="Pp4-lA-3Ys" secondAttribute="bottom" constant="-50" id="3jM-Jn-ROF"/>
-                                    <constraint firstItem="3XJ-Vq-1qc" firstAttribute="top" secondItem="xQg-ib-Fso" secondAttribute="bottom" constant="8" id="4JT-J2-n47"/>
-                                    <constraint firstItem="GBV-uH-VAW" firstAttribute="top" secondItem="3XJ-Vq-1qc" secondAttribute="bottom" constant="-50" id="KfH-7m-aI8"/>
-                                    <constraint firstItem="uKV-E4-YZP" firstAttribute="top" secondItem="cZT-dX-dKL" secondAttribute="bottom" constant="8" id="MXZ-Ny-Ow7"/>
                                     <constraint firstAttribute="centerX" secondItem="Pp4-lA-3Ys" secondAttribute="centerX" constant="29" id="T9s-G2-VZy"/>
-                                    <constraint firstItem="uKV-E4-YZP" firstAttribute="leading" secondItem="cZT-dX-dKL" secondAttribute="trailing" constant="-50" id="WqN-Jg-u1G"/>
-                                    <constraint firstItem="Pp4-lA-3Ys" firstAttribute="leading" secondItem="uKV-E4-YZP" secondAttribute="trailing" constant="8" id="gsm-BL-zdH"/>
-                                    <constraint firstItem="3XJ-Vq-1qc" firstAttribute="leading" secondItem="GBV-uH-VAW" secondAttribute="trailing" constant="8" id="h4K-1V-DF7"/>
                                     <constraint firstAttribute="centerX" secondItem="GBV-uH-VAW" secondAttribute="centerX" constant="-29" id="h72-z3-elO"/>
-                                    <constraint firstItem="xQg-ib-Fso" firstAttribute="leading" secondItem="3XJ-Vq-1qc" secondAttribute="trailing" constant="-50" id="ljz-qE-Joc"/>
                                     <constraint firstAttribute="centerY" secondItem="Pp4-lA-3Ys" secondAttribute="centerY" constant="-29" id="nmP-eQ-nmK"/>
                                 </constraints>
+                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="343" y="105" width="257" height="232"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="16" y="444" width="368" height="336"/>
+                                    <mask key="constraints">
+                                        <exclude reference="T9s-G2-VZy"/>
+                                        <exclude reference="nmP-eQ-nmK"/>
+                                        <exclude reference="03c-Fj-KFq"/>
+                                        <exclude reference="h72-z3-elO"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sbr-dQ-v2Z" userLabel="SegmentContainer">
+                                <rect key="frame" x="150" y="72" width="300" height="300"/>
+                                <subviews>
+                                    <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yjw-rR-qDy" userLabel="SegmentedSpeed" customClass="HMSegmentedControl">
+                                        <rect key="frame" x="0.0" y="32" width="300" height="45"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="iFR-4S-Duj"/>
+                                        </constraints>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="-16" y="16" width="300" height="45"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="hmsSegmentSpeedTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="3eI-s2-WtK"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9un-On-byM" userLabel="SegmentedRandom" customClass="HMSegmentedControl">
+                                        <rect key="frame" x="0.0" y="95" width="300" height="45"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="45" id="yy4-04-Yt5"/>
+                                        </constraints>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="-16" y="79" width="300" height="45"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="hmsSegmentRandomTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="2jN-Zp-ndf"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8p0-HY-vx8" userLabel="SegmentedRepeat" customClass="HMSegmentedControl">
+                                        <rect key="frame" x="0.0" y="160" width="300" height="45"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="45" id="5mh-3P-ydo"/>
+                                        </constraints>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="-16" y="144" width="300" height="45"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="hmsSegmentRepeatTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="Wkb-cS-Gsd"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AAR-7Y-AN6" userLabel="CenterAnchor">
+                                        <rect key="frame" x="0.0" y="140" width="300" height="20"/>
+                                        <color key="backgroundColor" red="1" green="0.51837321719999996" blue="0.26018908169999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="20" id="sgg-8t-ZJW"/>
+                                        </constraints>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="-16" y="124" width="300" height="20"/>
+                                        </variation>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KSZ-YS-gZh" userLabel="SegmentedLandscape" customClass="HMSegmentedControl">
+                                        <rect key="frame" x="0.0" y="222" width="300" height="45"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="45" id="P4o-av-di9"/>
+                                        </constraints>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="-16" y="206" width="300" height="45"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="hmsSegmentLandscapeTouch:" destination="BYZ-38-t0r" eventType="valueChanged" id="RLP-FQ-zY8"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.75756230213515463" blue="0.41378661263404615" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="KSZ-YS-gZh" secondAttribute="trailing" id="1GQ-yj-oIQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="8p0-HY-vx8" secondAttribute="trailing" id="5kV-Zn-Kdw"/>
+                                    <constraint firstItem="9un-On-byM" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="8YW-F8-SRe"/>
+                                    <constraint firstItem="AAR-7Y-AN6" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="BXK-PT-me6"/>
+                                    <constraint firstAttribute="trailing" secondItem="9un-On-byM" secondAttribute="trailing" id="Fvr-aw-ZxD"/>
+                                    <constraint firstItem="yjw-rR-qDy" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="MHb-gD-vfQ"/>
+                                    <constraint firstItem="8p0-HY-vx8" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="Mt6-kM-MSV"/>
+                                    <constraint firstAttribute="trailing" secondItem="yjw-rR-qDy" secondAttribute="trailing" id="bfk-tQ-7zp"/>
+                                    <constraint firstAttribute="trailing" secondItem="AAR-7Y-AN6" secondAttribute="trailing" id="cGn-OG-s29"/>
+                                    <constraint firstAttribute="width" secondItem="sbr-dQ-v2Z" secondAttribute="height" multiplier="1:1" id="eqk-U6-zzi"/>
+                                    <constraint firstItem="KSZ-YS-gZh" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="leading" id="m7p-EA-AMI"/>
+                                    <constraint firstAttribute="centerY" secondItem="AAR-7Y-AN6" secondAttribute="centerY" id="mmA-ko-fx1"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="eqk-U6-zzi"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="64" width="302" height="302"/>
+                                    <mask key="constraints">
+                                        <include reference="eqk-U6-zzi"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="374" height="353"/>
+                                    <mask key="constraints">
+                                        <exclude reference="MHb-gD-vfQ"/>
+                                        <exclude reference="bfk-tQ-7zp"/>
+                                        <exclude reference="8YW-F8-SRe"/>
+                                        <exclude reference="Fvr-aw-ZxD"/>
+                                        <exclude reference="BXK-PT-me6"/>
+                                        <exclude reference="cGn-OG-s29"/>
+                                        <exclude reference="mmA-ko-fx1"/>
+                                        <exclude reference="5kV-Zn-Kdw"/>
+                                        <exclude reference="Mt6-kM-MSV"/>
+                                        <exclude reference="1GQ-yj-oIQ"/>
+                                        <exclude reference="m7p-EA-AMI"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FXM-U4-PI8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Ajg-fo-D87"/>
-                            <constraint firstItem="FXM-U4-PI8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="Ipv-Yq-IUB"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FXM-U4-PI8" secondAttribute="bottom" id="fJA-9g-pBd"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="FXM-U4-PI8" secondAttribute="trailing" constant="-16" id="le9-9M-6Z3"/>
+                            <constraint firstItem="FXM-U4-PI8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="5kW-uP-a6V"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FXM-U4-PI8" secondAttribute="bottom" id="gQa-Lt-0we"/>
+                            <constraint firstAttribute="trailing" secondItem="FXM-U4-PI8" secondAttribute="trailing" id="hZm-tI-g7g"/>
+                            <constraint firstItem="FXM-U4-PI8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="xa9-cB-Bk6"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6g3-RY-LVt"/>
@@ -303,7 +349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1033" y="339"/>
+            <point key="canvasLocation" x="1032" y="339"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="VGX-6d-1zP">
