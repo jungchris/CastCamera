@@ -138,7 +138,8 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // start web server if not running (start with default image)
     UIImage *image = [UIImage imageNamed:@"movie-icon.jpg"];
-//    self.imageViewIcon.image = image;
+    self.imageViewShow.image = image;
+    
     self.mediaData = UIImagePNGRepresentation(image);
     self.mediaType = @"image/jpeg";
     if (!SharedWebServer.isRunning) {
@@ -368,7 +369,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // speed control
     
-    self.hmsSegmentSpeed.sectionTitles = @[@"Slow", @"Medium", @"Fast"];
+    self.hmsSegmentSpeed.sectionTitles = @[@"Slow", @"Mid", @"Fast"];
     self.hmsSegmentSpeed.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     self.hmsSegmentSpeed.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     self.hmsSegmentSpeed.verticalDividerEnabled = YES;
@@ -1126,6 +1127,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             } // isOnSwitchLandscape
         } // width > height
 
+        // if iPad, show the image locally
+        self.imageViewShow.image = image;
+        
         self.mediaData = UIImageJPEGRepresentation(image, 0.6);
         self.mediaType = @"image/jpeg";
         
@@ -1498,6 +1502,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                 return;
             }
         }
+        
+        // if iPad, show the image locally
+        self.imageViewShow.image = image;
         
         self.mediaData = UIImageJPEGRepresentation(image, 0.5);
         self.mediaType = @"image/jpeg";

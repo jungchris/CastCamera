@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -79,7 +79,7 @@
                                         </connections>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="9un-On-byM" firstAttribute="top" secondItem="yjw-rR-qDy" secondAttribute="bottom" constant="8" symbolic="YES" id="2SD-sP-qvM"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="300" id="9db-JL-hJJ">
@@ -112,14 +112,14 @@
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="16" y="72" width="374" height="353"/>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="16" y="480" width="300" height="300"/>
                                     <mask key="constraints">
                                         <include reference="9db-JL-hJJ"/>
                                     </mask>
                                 </variation>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zpG-df-aPV">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zpG-df-aPV">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </imageView>
                             <view alpha="0.5" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e4x-hy-jpS" userLabel="ButtonContainer">
@@ -149,7 +149,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="68" y="626" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="30" y="145" width="66" height="50"/>
                                         </variation>
                                         <connections>
@@ -180,7 +180,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="126" y="626" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="104" y="145" width="66" height="50"/>
                                         </variation>
                                         <connections>
@@ -211,7 +211,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="184" y="626" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="178" y="145" width="66" height="50"/>
                                         </variation>
                                         <connections>
@@ -242,7 +242,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="242" y="626" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="252" y="145" width="66" height="50"/>
                                         </variation>
                                         <connections>
@@ -269,7 +269,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="299" y="568" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="252" y="83" width="66" height="22"/>
                                         </variation>
                                         <connections>
@@ -296,7 +296,7 @@
                                         <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="19" y="568" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="30" y="83" width="66" height="22"/>
                                         </variation>
                                         <connections>
@@ -304,7 +304,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.61687021919999996" green="0.84971606580000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Pp4-lA-3Ys" firstAttribute="leading" secondItem="uKV-E4-YZP" secondAttribute="trailing" constant="8" symbolic="YES" id="0ei-7o-mQk"/>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="top" secondItem="xQg-ib-Fso" secondAttribute="bottom" constant="40" id="0qf-Nf-ivk"/>
@@ -323,8 +323,12 @@
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="width" secondItem="Pp4-lA-3Ys" secondAttribute="width" id="f4O-EK-Usy"/>
                                     <constraint firstItem="uKV-E4-YZP" firstAttribute="width" secondItem="cZT-dX-dKL" secondAttribute="width" id="fTO-af-Xt8"/>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="width" secondItem="xQg-ib-Fso" secondAttribute="width" id="gMq-ch-mJe"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="350" id="gPp-mM-I9U"/>
                                     <constraint firstItem="GBV-uH-VAW" firstAttribute="leading" secondItem="Pp4-lA-3Ys" secondAttribute="trailing" constant="8" id="jnA-2q-DKj"/>
-                                    <constraint firstAttribute="width" secondItem="e4x-hy-jpS" secondAttribute="height" multiplier="100:69" priority="750" id="o6a-eY-2RW"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="350" id="ku1-Gw-wF1">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="300"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" secondItem="e4x-hy-jpS" secondAttribute="height" multiplier="100:69" priority="250" id="o6a-eY-2RW"/>
                                     <constraint firstAttribute="bottom" secondItem="uKV-E4-YZP" secondAttribute="bottom" constant="45" id="oHU-aV-qqW"/>
                                     <constraint firstAttribute="trailing" secondItem="3XJ-Vq-1qc" secondAttribute="trailing" constant="30" id="r5g-hw-xHq"/>
                                     <constraint firstItem="GBV-uH-VAW" firstAttribute="leading" secondItem="Pp4-lA-3Ys" secondAttribute="trailing" constant="8" symbolic="YES" id="u0A-0i-tgZ"/>
@@ -332,6 +336,8 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="gPp-mM-I9U"/>
+                                        <exclude reference="ku1-Gw-wF1"/>
                                         <exclude reference="o6a-eY-2RW"/>
                                         <exclude reference="Ivm-sL-N91"/>
                                         <exclude reference="0ei-7o-mQk"/>
@@ -345,10 +351,12 @@
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="16" y="444" width="368" height="336"/>
                                 </variation>
-                                <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="434" y="526" width="300" height="207"/>
+                                <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                    <rect key="frame" x="434" y="526" width="324" height="207"/>
                                     <mask key="constraints">
-                                        <include reference="o6a-eY-2RW"/>
+                                        <include reference="gPp-mM-I9U"/>
+                                        <include reference="ku1-Gw-wF1"/>
+                                        <exclude reference="o6a-eY-2RW"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -393,7 +401,9 @@
                             <constraint firstAttribute="trailing" secondItem="FXM-U4-PI8" secondAttribute="trailing" id="hZm-tI-g7g"/>
                             <constraint firstAttribute="width" secondItem="e4x-hy-jpS" secondAttribute="width" multiplier="0.4" id="idS-5k-nSX"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="e4x-hy-jpS" secondAttribute="bottom" constant="8" symbolic="YES" id="r7M-rY-IhS"/>
-                            <constraint firstAttribute="height" secondItem="e4x-hy-jpS" secondAttribute="height" multiplier="0.3" id="rLA-N3-d5O"/>
+                            <constraint firstAttribute="height" secondItem="e4x-hy-jpS" secondAttribute="height" multiplier="0.4" priority="250" id="rLA-N3-d5O">
+                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
+                            </constraint>
                             <constraint firstItem="e4x-hy-jpS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="vwN-da-qAL"/>
                             <constraint firstItem="FXM-U4-PI8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="xa9-cB-Bk6"/>
                             <constraint firstAttribute="trailing" secondItem="e4x-hy-jpS" secondAttribute="trailing" constant="20" symbolic="YES" id="yEp-2W-7fH"/>
@@ -405,11 +415,11 @@
                                 <exclude reference="zpG-df-aPV"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="0lf-0n-UUL"/>
-                                <exclude reference="W3Y-Cp-rzK"/>
                                 <exclude reference="IEc-4o-m4G"/>
                                 <exclude reference="IhY-jH-MPJ"/>
                                 <exclude reference="Oie-oQ-Tlg"/>
+                                <exclude reference="0lf-0n-UUL"/>
+                                <exclude reference="W3Y-Cp-rzK"/>
                                 <exclude reference="2vE-jc-8E7"/>
                                 <exclude reference="85e-Cm-y7j"/>
                                 <exclude reference="BZ3-LM-T6D"/>
@@ -491,7 +501,7 @@
                                 <include reference="6Qt-w9-lZl"/>
                                 <exclude reference="Po4-PP-9EO"/>
                                 <exclude reference="Xeq-Xu-NUa"/>
-                                <include reference="idS-5k-nSX"/>
+                                <exclude reference="idS-5k-nSX"/>
                                 <include reference="rLA-N3-d5O"/>
                                 <include reference="yEp-2W-7fH"/>
                                 <include reference="VHo-Of-ZNF"/>

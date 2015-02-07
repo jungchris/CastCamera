@@ -31,7 +31,6 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
     WSAssetPickerControllerDelegate>
 
 //image views
-@property (weak, nonatomic) IBOutlet UIImageView *imageViewIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewShow;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewBackground;
 
