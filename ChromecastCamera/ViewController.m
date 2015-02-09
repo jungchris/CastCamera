@@ -12,7 +12,7 @@
 
 #import "HMSegmentedControl.h"
 
-//static NSString * kReceiverAppID;
+// changed to _kReceiverAppID
 static NSString *const kReceiverAppID = @"898F3A9B";
 
 @interface ViewController () {
@@ -22,6 +22,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 }
 
 // Chromecast
+//@property NSString *kReceiverAppID;
 @property GCKMediaControlChannel *mediaControlChannel;
 @property GCKApplicationMetadata *applicationMetadata;
 @property GCKDevice *selectedDevice;
@@ -95,7 +96,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     [super viewDidLoad];
     
-//    kReceiverAppID=kGCKMediaDefaultReceiverApplicationID;
+//    self.kReceiverAppID=kGCKMediaDefaultReceiverApplicationID;
     
     // set the status bar appearance
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
@@ -136,12 +137,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // allocate the randomizing array
     self.randomNumbersArray = [[NSArray alloc] init];
     
-    // start web server if not running (start with default image)
+    // set default image)
     UIImage *image = [UIImage imageNamed:@"chrome-cool.png"];
     self.imageViewShow.image = image;
-    
     self.mediaData = UIImagePNGRepresentation(image);
     self.mediaType = @"image/jpeg";
+    
+    // consider moving this code to invoke web server only when Chromecast is being activated
     if (!SharedWebServer.isRunning) {
         [self webServerAddHandlerForData:self.mediaData type:self.mediaType];
         [self webServerStart];
@@ -852,8 +854,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     [metadata setString:title forKey:kGCKMetadataKeyTitle];
     [metadata setString:subTitle forKey:kGCKMetadataKeySubtitle];
     
+    // changed 02-09-15 from imageURL
     [metadata addImage:[[GCKImage alloc]
-                        initWithURL:[[NSURL alloc] initWithString:imageURL]
+                        initWithURL:[[NSURL alloc] initWithString:@"http://www.incaffeine.com/img/slides/slide-bg.jpg"]
                         width:480
                         height:360]];
     
@@ -867,6 +870,60 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
     //cast video
     [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+}
+
+// only used for testing purposes
+- (void)testChromecast {
+
+    //Define Media metadata
+    GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+    
+    [metadata setString:@"Big Buck Bunny (2008)" forKey:kGCKMetadataKeyTitle];
+    
+    [metadata setString:@"Big Buck Bunny tells the story of a giant rabbit with a heart bigger than "
+     "himself. When one sunny day three rodents rudely harass him, something "
+     "snaps... and the rabbit ain't no bunny anymore! In the typical cartoon "
+     "tradition he prepares the nasty rodents a comical revenge."
+                 forKey:kGCKMetadataKeySubtitle];
+    
+    [metadata addImage:[[GCKImage alloc]
+                        initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
+                                     "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+                        width:480
+                        height:360]];
+    
+    //define Media information
+//    GCKMediaInformation *mediaInformation =
+//    [[GCKMediaInformation alloc] initWithContentID:
+//     @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+//                                        streamType:GCKMediaStreamTypeNone
+//                                       contentType:@"video/mp4"
+//                                          metadata:metadata
+//                                    streamDuration:0
+//                                        customData:nil];
+    
+    GCKMediaInformation *mediaInformation =
+    [[GCKMediaInformation alloc] initWithContentID:
+     @"http://www.incaffeine.com/img/slides/slide-bg.jpg"
+                                        streamType:GCKMediaStreamTypeNone
+                                       contentType:@"text/html"
+                                          metadata:metadata
+                                    streamDuration:0
+                                        customData:nil];
+    
+//    GCKMediaInformation *mediaInformation =
+//    [[GCKMediaInformation alloc] initWithContentID:
+//     @"http://www.incaffeine.com"
+//                                        streamType:GCKMediaStreamTypeNone
+//                                       contentType:@"text/html"
+//                                          metadata:metadata
+//                                    streamDuration:0
+//                                        customData:nil];
+    
+    
+    //cast video
+    [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+    
 }
 
 #pragma mark - WSAssetPickerController Delegates
@@ -1339,104 +1396,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 //    }
 //}
 
-//- (void)manuallyDisplayNextImageFromNSDataArray:(BOOL)showNext {
-//    
-//    // check if we're to decrement first
-//    if (!showNext) {
-//        // check what we did last time we were here
-//        if (self.isOnModeForward) {
-//            // last time here we moved forward, so go back two
-//            if (self.mediaIndex > 1) {
-//                self.mediaIndex = self.mediaIndex - 2;
-//            }
-//        } else {
-//            // last time we were going backwards
-//            if (self.mediaIndex > 0) {
-//                self.mediaIndex = self.mediaIndex - 1;
-//            }
-//        }
-//        self.isOnModeForward = FALSE;
-//    } else {
-//        // handle unique case where we've moved back to beginning and image repeats
-//        if (!self.isOnModeForward && self.mediaIndex == 0) {
-//            self.mediaIndex = self.mediaIndex + 1;
-//        }
-//    }
-//    
-//    // build image info from scratch, checking the server URL each time
-//    NSMutableString *mediaURL = [[NSMutableString alloc] init];
-//    if (SharedWebServer.serverURL) {
-//        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
-//        
-//    } else {
-//        NSLog(@"Error catch: SharedWebServer.serverURL nil");
-//        return;
-//    }
-//    
-//    // WORK ON THE IMAGE & UPDATE CHROMECAST WITH IT
-//    
-//    // check index bounds
-//    if (self.mediaIndex < [self.mediaArray count]) {
-//        
-//        // are we to randomize and ... can we?
-//        if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [self.mediaArray count])) {
-//            
-//            // in order to randomize we intermediate the index
-//            self.mediaData = self.mediaArray[[self.randomNumbersArray[self.mediaIndex] intValue]];
-//            
-//        } else {
-//            // use straight index
-//            self.mediaData = self.mediaArray[self.mediaIndex];
-//        }
-//        
-//        self.mediaType = @"image/jpeg";
-//        
-//        // start building the image name
-//        [mediaURL appendString:@"image"];
-//            
-//        // set the URL's media index uniquely to avoid getting a cached image
-////        [mediaURL appendString:[NSString stringWithFormat:@"%d",(int)CFAbsoluteTimeGetCurrent()]];
-//        
-//        // checking to a straight indexed image to improve forward<->back performance
-//        // first append the picker index
-//        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
-//        [mediaURL appendString:@"a"];
-//
-//        // we're repeating non-random images, so use simple increment
-//        [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
-//        
-//        [mediaURL appendString:@".jpg"];
-//        
-//        // UPDATE CHROMECAST
-//        
-//        // update cast
-//        [self updateChromecastWithTitle:@"Image"
-//                               subTitle:@"from iPhone"
-//                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-//                               mediaURL:[mediaURL copy]
-//                            contentType:self.mediaType];
-//        
-//    } else {
-//        NSLog(@"Catch! index exceeding bounds");
-//    }
-//    
-//    if (showNext) {
-//        self.isOnModeForward = TRUE;
-//        if (self.mediaIndex >= [self.mediaArray count]) {
-//            // we've trying to get past end of array
-//            return;
-//        } else {
-//            self.mediaIndex = self.mediaIndex + 1;
-//        }
-//    } else {
-//        self.isOnModeForward = FALSE;
-//    }
-//    
-//    // update buttons if necessary
-//    [self updateNextButtonUsingBounds];
-//    [self updateBackButtonUsingBounds];
-//    
-//}
+
 
 - (void)manuallyDisplayNextImageFromUIImageArray:(BOOL)showNext {
     
@@ -1534,11 +1494,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // UPDATE CHROMECAST
         
         // update cast
-        [self updateChromecastWithTitle:@"Image"
-                               subTitle:@"from iPhone"
-                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-                               mediaURL:[mediaURL copy]
-                            contentType:self.mediaType];
+        // TODO: Uncomment before ship & remove test
+//        [self updateChromecastWithTitle:@"Image"
+//                               subTitle:@"from iPhone"
+//                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+//                               mediaURL:[mediaURL copy]
+//                            contentType:self.mediaType];
+        [self testChromecast];
+        
         
     } else {
         NSLog(@"Catch! index exceeding bounds");
@@ -1796,7 +1759,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // CURRENT VERSION:
 // todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // todo - Test app's response to 'Received notification that device disconnected'
+// todo - Debug: Check why had to background and re-enter app in order to see Chromecast option
 // todo - Update 'next' button to hidden when switching to landscape only from portrait during manual view
+// todo - Convert images to movie with image fade-ins
+// consider - Set up and test GCDWebServer to play movies (as files?) https://github.com/swisspol/GCDWebServer/issues/66
+// todo - Test Chromecast Default Receiver
+// 02-09-15 - Evaluate using HTML5 for image transitions VS creating a movie file.  Looks like I need to create own receiver http://stackoverflow.com/questions/23800651/chromecast-ios-stream-html-content (1.75 hours 09:00 - 10:45)
+// 02-08-15 - Beta testing reveals viewers dislike image transitions to black screen. (0.5 hours)
 // 02-07-15 - Hide manual 'next' button when starting slideshow from 'buttonStartStop'. (0.5 h + ___ 09:15--9:45)
 // 02-07-15 - Set up Autolayout presentations for iPads (1.0 hours - 08:15-09:15)
 // 02-03-15 - Resolve Auto Layout landscape presentation (2.75 + ___ hours = 09:45-12:30, 15:00-)  
@@ -1908,4 +1877,37 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // added GCDWebServer to project root (copied entire subfolder per instruction)
 // Stream a local file to Chromecast: http://stackoverflow.com/questions/21631673/how-to-stream-a-local-file-to-the-chromecast
 // 01-04-15 - Created project
+//
+/* 
+ //Define Media metadata
+ GCKMediaMetadata *metadata = [[GCKMediaMetadata alloc] init];
+ 
+ [metadata setString:@"Big Buck Bunny (2008)" forKey:kGCKMetadataKeyTitle];
+ 
+ [metadata setString:@"Big Buck Bunny tells the story of a giant rabbit with a heart bigger than "
+ "himself. When one sunny day three rodents rudely harass him, something "
+ "snaps... and the rabbit ain't no bunny anymore! In the typical cartoon "
+ "tradition he prepares the nasty rodents a comical revenge."
+ forKey:kGCKMetadataKeySubtitle];
+ 
+ [metadata addImage:[[GCKImage alloc]
+ initWithURL:[[NSURL alloc] initWithString:@"http://commondatastorage.googleapis.com/"
+ "gtv-videos-bucket/sample/images/BigBuckBunny.jpg"]
+ width:480
+ height:360]];
+ 
+ //define Media information
+ GCKMediaInformation *mediaInformation =
+ [[GCKMediaInformation alloc] initWithContentID:
+ @"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+ streamType:GCKMediaStreamTypeNone
+ contentType:@"video/mp4"
+ metadata:metadata
+ streamDuration:0
+ customData:nil];
+ 
+ //cast video
+ [_mediaControlChannel loadMedia:mediaInformation autoplay:TRUE playPosition:0];
+ */
+
 
