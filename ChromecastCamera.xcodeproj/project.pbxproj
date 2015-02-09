@@ -20,6 +20,8 @@
 		2D2F6B9C1A66D006009724B5 /* WSButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B961A66D006009724B5 /* WSButtonBackground@2x.png */; };
 		2D2F6B9D1A66D006009724B5 /* WSButtonBackgroundPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */; };
 		2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */; };
+		2D4BB7851A87C94000CDB1DD /* chrome-cool.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D4BB7841A87C94000CDB1DD /* chrome-cool.png */; };
+		2D4BB7871A87CA9100CDB1DD /* chrome-bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D4BB7861A87CA9100CDB1DD /* chrome-bokeh.png */; };
 		2D9CD9CB1A59F55000032CDE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CA1A59F55000032CDE /* main.m */; };
 		2D9CD9CE1A59F55000032CDE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CD1A59F55000032CDE /* AppDelegate.m */; };
 		2D9CD9D11A59F55000032CDE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9D01A59F55000032CDE /* ViewController.m */; };
@@ -96,6 +98,8 @@
 		2D2F6B961A66D006009724B5 /* WSButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSButtonBackground@2x.png"; sourceTree = "<group>"; };
 		2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WSButtonBackgroundPressed.png; sourceTree = "<group>"; };
 		2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSButtonBackgroundPressed@2x.png"; sourceTree = "<group>"; };
+		2D4BB7841A87C94000CDB1DD /* chrome-cool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chrome-cool.png"; sourceTree = "<group>"; };
+		2D4BB7861A87CA9100CDB1DD /* chrome-bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chrome-bokeh.png"; sourceTree = "<group>"; };
 		2D9CD9C51A59F55000032CDE /* ChromecastCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChromecastCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9CD9C91A59F55000032CDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D9CD9CA1A59F55000032CDE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -261,6 +265,8 @@
 		2D9CD9C81A59F55000032CDE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2D4BB7841A87C94000CDB1DD /* chrome-cool.png */,
+				2D4BB7861A87CA9100CDB1DD /* chrome-bokeh.png */,
 				2D9CD9FF1A59F7B900032CDE /* icon-cast-connected.png */,
 				2D9CDA001A59F7B900032CDE /* icon-cast-connected@2x.png */,
 				2D9CDA011A59F7B900032CDE /* icon-cast-identified.png */,
@@ -472,6 +478,8 @@
 				2D9CD9D61A59F55000032CDE /* Images.xcassets in Resources */,
 				2D9CDA061A59F7B900032CDE /* icon-cast-identified@2x.png in Resources */,
 				2D2F6B9B1A66D006009724B5 /* WSButtonBackground.png in Resources */,
+				2D4BB7871A87CA9100CDB1DD /* chrome-bokeh.png in Resources */,
+				2D4BB7851A87C94000CDB1DD /* chrome-cool.png in Resources */,
 				2D2F6B991A66D006009724B5 /* WSAssetViewSelectionIndicator.png in Resources */,
 				2D9CDA041A59F7B900032CDE /* icon-cast-connected@2x.png in Resources */,
 				2D2F6B9D1A66D006009724B5 /* WSButtonBackgroundPressed.png in Resources */,

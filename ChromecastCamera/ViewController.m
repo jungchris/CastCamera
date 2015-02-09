@@ -137,7 +137,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.randomNumbersArray = [[NSArray alloc] init];
     
     // start web server if not running (start with default image)
-    UIImage *image = [UIImage imageNamed:@"movie-icon.jpg"];
+    UIImage *image = [UIImage imageNamed:@"chrome-cool.png"];
     self.imageViewShow.image = image;
     
     self.mediaData = UIImagePNGRepresentation(image);
@@ -444,8 +444,11 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // check if can enable media buttons
     if ([self.mediaArray count] > 0) {
         
-        // TRY: Move this code here from buttonStartStop
-        // BEGIN CODE RFACTOR
+        // 02-07-15
+//        // enable the corresponding buttons
+//        [self enableMediaControlButtons];
+        
+        // Move this code here from buttonStartStop
         // enable and show pause
         self.buttonPause.alpha = kButtonStrongAlpha;
         self.buttonPause.enabled = YES;
@@ -459,17 +462,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.buttonBack.enabled = NO;
         
         // change button icon to 'stop'
-        [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop"] forState:UIControlStateNormal];
+        [self.buttonStartStop setImage:[UIImage imageNamed:@"icon-stop-highlight"] forState:UIControlStateNormal];
         
         // set pause button back to 'pause' icon
-        [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause"] forState:UIControlStateNormal];
-        // END OF CODE REFACTOR
-        
+        [self.buttonPause setImage:[UIImage imageNamed:@"icon-pause-highlight"] forState:UIControlStateNormal];
         
         // highlight the media button
         UIImage *buttonImage = [UIImage imageNamed:@"icon-picker-highlight"];
         [self.buttonShowLibrary setImage:buttonImage forState:UIControlStateNormal];
         
+//        // 02-07-15
         // enable the corresponding buttons
         [self enableMediaControlButtons];
         
@@ -486,10 +488,10 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     if (self.isOnPlayActive) {
         
         // show is running
-        // disable the forward and back buttons
+        // disable the forward back and next buttons
         self.buttonPause.alpha      = kButtonSubtleAlpha;
-        self.buttonNext.alpha       = kButtonSubtleAlpha;
         self.buttonPause.enabled    = NO;
+        self.buttonNext.alpha       = kButtonSubtleAlpha;
         self.buttonNext.enabled     = NO;
         
         // enable the pause button
@@ -502,6 +504,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         // disable the pause button
         self.buttonPause.alpha      = kButtonSubtleAlpha;
         self.buttonPause.enabled    = NO;
+        // added 02-07-15
+//        self.buttonNext.alpha       = kButtonSubtleAlpha;
+//        self.buttonNext.enabled     = NO;
         
         // replace the 'stop' icon with 'run'
         UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
@@ -534,6 +539,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)updateNextButtonUsingBounds {
     
     // check next button
+    // TODO: Improve the mediaIndex to account for any portrait images at end of a slideshow
     if (self.mediaIndex >= [self.mediaArray count]) {
         self.buttonNext.alpha = kButtonSubtleAlpha;
         self.buttonNext.enabled = NO;
@@ -1140,7 +1146,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
             
             // URLs repeat so should be cacheable
             // first append the picker index
-            [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.pickerCounter]];
+            [mediaURL appendString:[NSString stringWithFormat:@"%lu", (unsigned long)self.pickerCounter]];
             [mediaURL appendString:@"a"];
     
             if ((self.isOnSwitchRandomize) && ([self.randomNumbersArray count] == [itemArray count]) && (self.mediaIndex < [itemArray count])) {
@@ -1148,7 +1154,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                 [mediaURL appendString:[NSString stringWithFormat:@"%d",[self.randomNumbersArray[self.mediaIndex] intValue]]];
             } else {
                 // we're repeating non-random images, so use simple increment
-                [mediaURL appendString:[NSString stringWithFormat:@"%lu",self.mediaIndex]];
+                [mediaURL appendString:[NSString stringWithFormat:@"%lu", (unsigned long)self.mediaIndex]];
             }
             
         } else {
@@ -1790,8 +1796,9 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // CURRENT VERSION:
 // todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // todo - Test app's response to 'Received notification that device disconnected'
-// todo - Hide manual 'next' button when starting slideshow from 'buttonStartStop'.
-// todo - Set up Autolayout presentations for iPads
+// todo - Update 'next' button to hidden when switching to landscape only from portrait during manual view
+// 02-07-15 - Hide manual 'next' button when starting slideshow from 'buttonStartStop'. (0.5 h + ___ 09:15--9:45)
+// 02-07-15 - Set up Autolayout presentations for iPads (1.0 hours - 08:15-09:15)
 // 02-03-15 - Resolve Auto Layout landscape presentation (2.75 + ___ hours = 09:45-12:30, 15:00-)  
 // 01-31-15 - debug: Find why I'm displaying one portrait image, while others are being squelched. (0.25 h = 19:45-20:00)
 // 01-31-15 - debug: Caught another 'NSRangeException' occurence. 'Fast''Random'Repeat''Landscape'.  Traced, found and remediated. (0.5 h 18:45-19:15)
