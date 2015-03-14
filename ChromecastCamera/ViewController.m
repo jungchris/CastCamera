@@ -14,6 +14,7 @@
 
 // changed to _kReceiverAppID
 static NSString *const kReceiverAppID = @"898F3A9B";
+//static NSString *const kReceiverAppID = @"F5A38776";
 
 @interface ViewController () {
     
@@ -119,8 +120,16 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     //Initialize device scanner
     self.deviceScanner = [[GCKDeviceScanner alloc] init];
     
-    // prepare to Chromecast
-    self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"898F3A9B"];
+    // TODO: Debug
+    /* So what the f?  When I change from Styled to Custom below I no longer see the device in my app on launch.  I moved the index.html file to dropbox and checked its properties.  */
+    
+    // prepare to Chromecast (Using Styled Media Receiver: 898F3A9B)
+    // prepare to Chromecast (Using Custom Receiver: F5A38776)
+    self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"F5A38776"];
+    
+    // prepare to Chromecast (Using namespace 'castcam')
+//    NSArray *nameSpaces = [[NSArray alloc] initWithObjects:@"castcam", nil];
+//    self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForRunningApplicationWithSupportedNamespaces:nameSpaces];
     
     [self.deviceScanner addListener:self];
     [self.deviceScanner startScan];
@@ -901,7 +910,8 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 //                                          metadata:metadata
 //                                    streamDuration:0
 //                                        customData:nil];
-    
+
+//    // test with inCaffeine website image
     GCKMediaInformation *mediaInformation =
     [[GCKMediaInformation alloc] initWithContentID:
      @"http://www.incaffeine.com/img/slides/slide-bg.jpg"
@@ -911,6 +921,18 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
                                     streamDuration:0
                                         customData:nil];
     
+    
+    // test with Leemark HTML5, CSS, JavaScript (no JQuery) website image
+//    GCKMediaInformation *mediaInformation =
+//    [[GCKMediaInformation alloc] initWithContentID:
+//     @"http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm"
+//                                        streamType:GCKMediaStreamTypeNone
+//                                       contentType:@"text/html"
+//                                          metadata:metadata
+//                                    streamDuration:0
+//                                        customData:nil];
+    
+    // cast static image
 //    GCKMediaInformation *mediaInformation =
 //    [[GCKMediaInformation alloc] initWithContentID:
 //     @"http://www.incaffeine.com"
@@ -1495,12 +1517,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         
         // update cast
         // TODO: Uncomment before ship & remove test
-//        [self updateChromecastWithTitle:@"Image"
-//                               subTitle:@"from iPhone"
-//                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
-//                               mediaURL:[mediaURL copy]
-//                            contentType:self.mediaType];
-        [self testChromecast];
+        [self updateChromecastWithTitle:@"Image"
+                               subTitle:@"from iPhone"
+                               imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                               mediaURL:[mediaURL copy]
+                            contentType:self.mediaType];
+        
+        // TODO: comment before ship
+//        [self testChromecast];
         
         
     } else {
