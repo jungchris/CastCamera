@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="zKK-RM-y9s">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -32,7 +32,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="iFR-4S-Duj"/>
                                         </constraints>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="-16" y="16" width="300" height="45"/>
                                         </variation>
                                         <connections>
@@ -45,7 +45,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="45" id="yy4-04-Yt5"/>
                                         </constraints>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="-16" y="79" width="300" height="45"/>
                                         </variation>
                                         <connections>
@@ -58,7 +58,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="45" id="5mh-3P-ydo"/>
                                         </constraints>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="-16" y="144" width="300" height="45"/>
                                         </variation>
                                         <connections>
@@ -71,7 +71,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="45" id="P4o-av-di9"/>
                                         </constraints>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="-16" y="206" width="300" height="45"/>
                                         </variation>
                                         <connections>
@@ -106,12 +106,6 @@
                                         <exclude reference="9db-JL-hJJ"/>
                                     </mask>
                                 </variation>
-                                <variation key="heightClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="64" width="302" height="302"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="374" height="353"/>
-                                </variation>
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="16" y="480" width="300" height="300"/>
                                     <mask key="constraints">
@@ -131,22 +125,16 @@
                                             <constraint firstAttribute="height" constant="50" id="7f3-0Q-nWS"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="RiA-Dh-hH2"/>
                                         </constraints>
-                                        <state key="normal" image="icon-play">
+                                        <state key="normal" image="icon-play-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="217" y="276" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="117" y="471" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="117" y="292" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="317" y="276" width="50" height="50"/>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="68" y="626" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -162,22 +150,16 @@
                                             <constraint firstAttribute="height" constant="50" id="HvW-lX-HLC"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="rsn-g4-q07"/>
                                         </constraints>
-                                        <state key="normal" image="icon-back">
+                                        <state key="normal" image="icon-back-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" misplaced="YES">
-                                            <rect key="frame" x="275" y="276" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="175" y="471" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="175" y="292" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="375" y="276" width="50" height="50"/>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="126" y="626" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -193,22 +175,16 @@
                                             <constraint firstAttribute="height" constant="50" id="JRo-up-N8b"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="ow9-dt-nbS"/>
                                         </constraints>
-                                        <state key="normal" image="icon-pause">
+                                        <state key="normal" image="icon-pause-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" misplaced="YES">
-                                            <rect key="frame" x="333" y="276" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="233" y="471" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="233" y="292" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="433" y="276" width="50" height="50"/>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="184" y="626" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -224,22 +200,16 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="2GN-Aa-5tZ"/>
                                             <constraint firstAttribute="height" constant="50" id="6zv-14-iMO"/>
                                         </constraints>
-                                        <state key="normal" image="icon-next">
+                                        <state key="normal" image="icon-next-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="391" y="276" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="291" y="471" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="291" y="292" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="491" y="276" width="50" height="50"/>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="242" y="626" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -251,22 +221,19 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xQg-ib-Fso" userLabel="ButtonSocialShare">
                                         <rect key="frame" x="211" y="21" width="50" height="50"/>
-                                        <state key="normal" image="icon-share">
+                                        <state key="normal" image="icon-share-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="534" y="93" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="334" y="93" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="334" y="75" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=compact-widthClass=regular" misplaced="YES">
                                             <rect key="frame" x="734" y="93" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="299" y="568" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -278,22 +245,16 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZT-dX-dKL" userLabel="ButtonPicker">
                                         <rect key="frame" x="37" y="21" width="50" height="50"/>
-                                        <state key="normal" image="icon-picker">
+                                        <state key="normal" image="icon-picker-highlight">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <variation key="heightClass=compact" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="159" y="276" width="50" height="50"/>
-                                        </variation>
                                         <variation key="widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="59" y="471" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=compact-widthClass=compact" fixedFrame="YES">
                                             <rect key="frame" x="59" y="292" width="50" height="50"/>
                                         </variation>
-                                        <variation key="heightClass=compact-widthClass=regular" fixedFrame="YES">
-                                            <rect key="frame" x="259" y="276" width="50" height="50"/>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                        <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                             <rect key="frame" x="19" y="568" width="50" height="50"/>
                                         </variation>
                                         <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
@@ -310,7 +271,9 @@
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="top" secondItem="xQg-ib-Fso" secondAttribute="bottom" constant="40" id="0qf-Nf-ivk"/>
                                     <constraint firstItem="cZT-dX-dKL" firstAttribute="leading" secondItem="e4x-hy-jpS" secondAttribute="leading" constant="30" id="5PD-Xi-a1v"/>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="leading" secondItem="GBV-uH-VAW" secondAttribute="trailing" constant="8" symbolic="YES" id="ArI-ke-gmJ"/>
-                                    <constraint firstItem="uKV-E4-YZP" firstAttribute="leading" secondItem="e4x-hy-jpS" secondAttribute="leading" constant="30" id="F4B-y0-eUx"/>
+                                    <constraint firstItem="uKV-E4-YZP" firstAttribute="leading" secondItem="e4x-hy-jpS" secondAttribute="leading" constant="30" id="F4B-y0-eUx">
+                                        <variation key="heightClass=compact" constant="25"/>
+                                    </constraint>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="width" secondItem="GBV-uH-VAW" secondAttribute="width" id="Ffb-4G-tZa"/>
                                     <constraint firstItem="uKV-E4-YZP" firstAttribute="leading" secondItem="e4x-hy-jpS" secondAttribute="leading" constant="37" id="Ivm-sL-N91"/>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="leading" secondItem="GBV-uH-VAW" secondAttribute="trailing" constant="8" id="POD-bb-gNA"/>
@@ -324,13 +287,15 @@
                                     <constraint firstItem="uKV-E4-YZP" firstAttribute="width" secondItem="cZT-dX-dKL" secondAttribute="width" id="fTO-af-Xt8"/>
                                     <constraint firstItem="3XJ-Vq-1qc" firstAttribute="width" secondItem="xQg-ib-Fso" secondAttribute="width" id="gMq-ch-mJe"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="350" id="gPp-mM-I9U"/>
-                                    <constraint firstItem="GBV-uH-VAW" firstAttribute="leading" secondItem="Pp4-lA-3Ys" secondAttribute="trailing" constant="8" id="jnA-2q-DKj"/>
+                                    <constraint firstItem="GBV-uH-VAW" firstAttribute="leading" secondItem="Pp4-lA-3Ys" secondAttribute="trailing" priority="750" constant="8" id="jnA-2q-DKj"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="350" id="ku1-Gw-wF1">
                                         <variation key="heightClass=regular-widthClass=regular" constant="300"/>
                                     </constraint>
                                     <constraint firstAttribute="width" secondItem="e4x-hy-jpS" secondAttribute="height" multiplier="100:69" priority="250" id="o6a-eY-2RW"/>
                                     <constraint firstAttribute="bottom" secondItem="uKV-E4-YZP" secondAttribute="bottom" constant="45" id="oHU-aV-qqW"/>
-                                    <constraint firstAttribute="trailing" secondItem="3XJ-Vq-1qc" secondAttribute="trailing" constant="30" id="r5g-hw-xHq"/>
+                                    <constraint firstAttribute="trailing" secondItem="3XJ-Vq-1qc" secondAttribute="trailing" constant="30" id="r5g-hw-xHq">
+                                        <variation key="heightClass=compact" constant="25"/>
+                                    </constraint>
                                     <constraint firstItem="GBV-uH-VAW" firstAttribute="leading" secondItem="Pp4-lA-3Ys" secondAttribute="trailing" constant="8" symbolic="YES" id="u0A-0i-tgZ"/>
                                     <constraint firstAttribute="trailing" secondItem="xQg-ib-Fso" secondAttribute="trailing" constant="30" id="uE0-1G-iwJ"/>
                                 </constraints>
@@ -344,12 +309,6 @@
                                         <exclude reference="u0A-0i-tgZ"/>
                                         <exclude reference="ArI-ke-gmJ"/>
                                     </mask>
-                                </variation>
-                                <variation key="heightClass=compact" misplaced="YES">
-                                    <rect key="frame" x="343" y="105" width="257" height="232"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="444" width="368" height="336"/>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                     <rect key="frame" x="434" y="526" width="324" height="207"/>
@@ -365,12 +324,12 @@
                         <constraints>
                             <constraint firstItem="FXM-U4-PI8" firstAttribute="height" secondItem="sbr-dQ-v2Z" secondAttribute="height" multiplier="0.45" id="0lf-0n-UUL"/>
                             <constraint firstItem="sbr-dQ-v2Z" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="2vE-jc-8E7"/>
-                            <constraint firstItem="e4x-hy-jpS" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="trailing" priority="750" constant="8" symbolic="YES" id="5hf-9B-TzJ"/>
+                            <constraint firstItem="e4x-hy-jpS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sbr-dQ-v2Z" secondAttribute="trailing" priority="750" constant="8" symbolic="YES" id="5hf-9B-TzJ"/>
                             <constraint firstItem="FXM-U4-PI8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="5kW-uP-a6V"/>
                             <constraint firstItem="e4x-hy-jpS" firstAttribute="leading" secondItem="sbr-dQ-v2Z" secondAttribute="trailing" constant="168" id="6Qt-w9-lZl">
                                 <variation key="heightClass=regular-widthClass=regular" constant="8" symbolic="YES"/>
                             </constraint>
-                            <constraint firstAttribute="centerY" secondItem="sbr-dQ-v2Z" secondAttribute="centerY" id="85e-Cm-y7j"/>
+                            <constraint firstAttribute="centerY" secondItem="sbr-dQ-v2Z" secondAttribute="centerY" priority="750" id="85e-Cm-y7j"/>
                             <constraint firstItem="e4x-hy-jpS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="8t2-NI-dZ7"/>
                             <constraint firstItem="sbr-dQ-v2Z" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.4" id="BZ3-LM-T6D"/>
                             <constraint firstItem="sbr-dQ-v2Z" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="D4p-Gx-j9q"/>
@@ -382,7 +341,7 @@
                             <constraint firstAttribute="centerX" secondItem="sbr-dQ-v2Z" secondAttribute="centerX" id="HYg-FU-2Fu"/>
                             <constraint firstItem="zpG-df-aPV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="IEc-4o-m4G"/>
                             <constraint firstAttribute="trailingMargin" secondItem="zpG-df-aPV" secondAttribute="trailing" id="IhY-jH-MPJ"/>
-                            <constraint firstAttribute="centerY" secondItem="e4x-hy-jpS" secondAttribute="centerY" id="JLh-7T-puM"/>
+                            <constraint firstAttribute="centerY" secondItem="e4x-hy-jpS" secondAttribute="centerY" priority="750" id="JLh-7T-puM"/>
                             <constraint firstItem="sbr-dQ-v2Z" firstAttribute="top" secondItem="zpG-df-aPV" secondAttribute="bottom" constant="12" id="NmA-E2-oiG"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="e4x-hy-jpS" secondAttribute="bottom" constant="8" symbolic="YES" id="O81-QR-zdd"/>
                             <constraint firstAttribute="trailing" secondItem="e4x-hy-jpS" secondAttribute="trailing" constant="20" symbolic="YES" id="OOL-wY-Pf8"/>
@@ -407,7 +366,7 @@
                             <constraint firstItem="e4x-hy-jpS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.45" id="vwN-da-qAL"/>
                             <constraint firstItem="FXM-U4-PI8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="xa9-cB-Bk6"/>
                             <constraint firstAttribute="trailing" secondItem="e4x-hy-jpS" secondAttribute="trailing" constant="20" symbolic="YES" id="yEp-2W-7fH"/>
-                            <constraint firstItem="e4x-hy-jpS" firstAttribute="top" secondItem="sbr-dQ-v2Z" secondAttribute="bottom" priority="750" constant="19" id="yKw-uH-QHe"/>
+                            <constraint firstItem="e4x-hy-jpS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sbr-dQ-v2Z" secondAttribute="bottom" priority="750" constant="19" id="yKw-uH-QHe"/>
                             <constraint firstItem="sbr-dQ-v2Z" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="ymv-ID-G5b"/>
                         </constraints>
                         <variation key="default">
@@ -548,12 +507,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-back" width="22" height="22"/>
-        <image name="icon-next" width="22" height="22"/>
-        <image name="icon-pause" width="22" height="22"/>
-        <image name="icon-picker" width="22" height="22"/>
-        <image name="icon-play" width="22" height="22"/>
-        <image name="icon-share" width="22" height="22"/>
+        <image name="icon-back-highlight" width="32" height="32"/>
+        <image name="icon-next-highlight" width="32" height="32"/>
+        <image name="icon-pause-highlight" width="32" height="32"/>
+        <image name="icon-picker-highlight" width="32" height="32"/>
+        <image name="icon-play-highlight" width="32" height="32"/>
+        <image name="icon-share-highlight" width="32" height="32"/>
         <image name="menu-background" width="520" height="763"/>
     </resources>
 </document>

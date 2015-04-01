@@ -23,5 +23,4 @@
 - (BOOL)saveUserPreferences;
 - (CCJUserModel *)restoreUserPreferences;
 
-
 @end

@@ -48,6 +48,7 @@
 		2DC3D3D51A68606100EF5F9C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D41A68606100EF5F9C /* iAd.framework */; };
 		2DC3D3D71A68606F00EF5F9C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D61A68606F00EF5F9C /* Social.framework */; };
 		2DD831361AB4C597001BEF95 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD831351AB4C597001BEF95 /* GoogleCast.framework */; };
+		2DEC6CA81AC3224C00D99255 /* castground0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC6CA71AC3224C00D99255 /* castground0.jpg */; };
 		2DF115DA1A5B77B7000734FE /* GCDWebServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BD1A5B77B7000734FE /* GCDWebServer.m */; };
 		2DF115DB1A5B77B7000734FE /* GCDWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BF1A5B77B7000734FE /* GCDWebServerConnection.m */; };
 		2DF115DC1A5B77B7000734FE /* GCDWebServerFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115C11A5B77B7000734FE /* GCDWebServerFunctions.m */; };
@@ -135,6 +136,7 @@
 		2DC3D3D41A68606100EF5F9C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		2DC3D3D61A68606F00EF5F9C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		2DD831351AB4C597001BEF95 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
+		2DEC6CA71AC3224C00D99255 /* castground0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = castground0.jpg; sourceTree = "<group>"; };
 		2DF115BC1A5B77B7000734FE /* GCDWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServer.h; sourceTree = "<group>"; };
 		2DF115BD1A5B77B7000734FE /* GCDWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDWebServer.m; sourceTree = "<group>"; };
 		2DF115BE1A5B77B7000734FE /* GCDWebServerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServerConnection.h; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				2D2F6B971A66D006009724B5 /* WSButtonBackgroundPressed.png */,
 				2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */,
 				2DFE82E41A5F28EC0043A150 /* movie-icon.jpg */,
+				2DEC6CA71AC3224C00D99255 /* castground0.jpg */,
 				2D9CD9C91A59F55000032CDE /* Info.plist */,
 				2D9CD9CA1A59F55000032CDE /* main.m */,
 			);
@@ -472,6 +475,7 @@
 				2D2F6B9A1A66D006009724B5 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
 				2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */,
 				2DADFB5B1A7B26DB00F54041 /* CCLaunchScreen.xib in Resources */,
+				2DEC6CA81AC3224C00D99255 /* castground0.jpg in Resources */,
 				2D9CD9D91A59F55000032CDE /* LaunchScreen.xib in Resources */,
 				2D9CDA051A59F7B900032CDE /* icon-cast-identified.png in Resources */,
 				2D2F6B9C1A66D006009724B5 /* WSButtonBackground@2x.png in Resources */,
@@ -593,7 +597,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+					"DEBUG=3",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -688,7 +692,11 @@
 					"$(inherited)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+					"DEBUG=3",
+					"$(inherited)",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"DEBUG=3",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ChromecastCameraTests/Info.plist;

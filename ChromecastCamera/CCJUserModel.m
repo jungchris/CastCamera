@@ -32,7 +32,7 @@
     
     self = [super init];
     
-    // save switches
+    // restore switches
     self.userSpeedySwitchOn = [aDecoder decodeBoolForKey:@"userSpeedySwitchOn"];
     self.userRandomSwitchOn = [aDecoder decodeBoolForKey:@"userRandomSwitchOn"];
     self.userRepeatSwitchOn = [aDecoder decodeBoolForKey:@"userRepeatSwitchOn"];
@@ -78,7 +78,6 @@
     }
 }
 
-
 // return the /Documents file path
 - (NSString *)documentDirectoryPath {
     
@@ -87,6 +86,5 @@
     NSString *documentDirectory  = [documentDirectories firstObject];
     return [documentDirectory stringByAppendingPathComponent:@"user.archive"];
 }
-
 
 @end

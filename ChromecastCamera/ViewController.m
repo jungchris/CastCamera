@@ -78,7 +78,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 #define kTimerFast      3.0
 
 // Background alpha changes
-#define kBackgroundAnimationSpeed   0.75
+#define kBackgroundAnimationSpeed   1.0
 #define kBackgroundSubtleAlpha      0.4
 #define kBackgroundStrongAlpha      1.0
 
@@ -87,7 +87,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 #define kButtonSubtleAlpha          0.3
 #define kButtonStrongAlpha          1.0
 
-// Chromecast screen size
+// Chromecast screen size - hard-coding this but seems to be the default
 #define kScreenWidth    1280
 #define kScreenHeight   720
 
@@ -165,7 +165,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.pickerController.delegate = self;
     
     // set switch defaults
-    self.timerSpeed = 5.0;
+    self.timerSpeed = kTimerMedium;
     
     // set mode trackers to be used later
     self.isOnModeForward = YES;
@@ -173,7 +173,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     self.isOnWaitingForChromecastStart = NO;
     
     // load switch settings from user model if able
-    [self restorePropertiesFromSharedUserModel];
+//    [self restorePropertiesFromSharedUserModel];
     
     // iAd
     // implement global iAd process.
@@ -192,6 +192,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     
     // set image background alpha, will animate into view when running
     self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+    
+    // set GCDWebServer loggin to warnings and above only
+    [GCDWebServer setLogLevel:3];
     
 }
 
@@ -324,6 +327,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 
 - (BOOL)isConnected {
 
+    
     return self.deviceManager.isConnected;
 }
 
@@ -366,9 +370,28 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         if (self.deviceManager && self.deviceManager.isConnected) {
             //Show cast button in enabled state
             [_chromecastButton setTintColor:[UIColor blueColor]];
+            
+            // Show play & forward buttons thick
+//            UIImage *buttonPlay = [UIImage imageNamed:@"icon-play-highlight"];
+//            [self.buttonStartStop setImage:buttonPlay forState:UIControlStateNormal];
+//            
+//            UIImage *buttonNext = [UIImage imageNamed:@"icon-next-highlight"];
+//            [self.buttonNext setImage:buttonNext forState:UIControlStateNormal];
+            
+            [self configureContolButtonsAsThickIcons];
+            
+            
         } else {
             //Show cast button in disabled state
             [_chromecastButton setTintColor:[UIColor grayColor]];
+            
+//            UIImage *buttonPlay = [UIImage imageNamed:@"icon-play"];
+//            [self.buttonStartStop setImage:buttonPlay forState:UIControlStateNormal];
+//            
+//            UIImage *buttonNext = [UIImage imageNamed:@"icon-next"];
+//            [self.buttonNext setImage:buttonNext forState:UIControlStateNormal];
+            
+            [self configureControlButtonsAsThinIcons];
             
         }
     }
@@ -482,13 +505,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         UIImage *buttonImage = [UIImage imageNamed:@"icon-picker-highlight"];
         [self.buttonShowLibrary setImage:buttonImage forState:UIControlStateNormal];
         
-//        // 02-07-15
         // enable the corresponding buttons
         [self enableMediaControlButtons];
         
     } else {
         // show media button as thin lines (no images selected)
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-picker"];
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-picker-highlight"];
         [self.buttonShowLibrary setImage:buttonImage forState:UIControlStateNormal];
         
         // disable media buttons
@@ -520,8 +542,12 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 //        self.buttonNext.enabled     = NO;
         
         // replace the 'stop' icon with 'run'
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-play-highlight"];
         [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
+        
+        // 03-25-15 noticed that 'next' button was thin after selecting images
+        UIImage *buttonNext = [UIImage imageNamed:@"icon-next-highlight"];
+        [self.buttonNext setImage:buttonNext forState:UIControlStateNormal];
         
         // enable the next button
         [self updateNextButtonUsingBounds];
@@ -617,13 +643,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
         self.timerForShow = nil;
         
         // change 'pause' button icon to 'play'
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-play-highlight"];
         [self.buttonPause setImage:buttonImage forState:UIControlStateNormal];
         
     } else {
         
         // change pause btton from 'play' icon to 'pause'
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-pause"];
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-pause-highlight"];
         [self.buttonPause setImage:buttonImage forState:UIControlStateNormal];
         
         // restart timer without resetting index
@@ -669,13 +695,13 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 - (void)hmsSegmentSpeedTouch:(id)sender {
     
     if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
-        self.timerSpeed = 8.0;
+        self.timerSpeed = kTimerSlow;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 1) {
-        self.timerSpeed = 5.0;
+        self.timerSpeed = kTimerMedium;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 2) {
-        self.timerSpeed = 3.0;
+        self.timerSpeed = kTimerFast;
     }
     
     // stop the show
@@ -743,7 +769,7 @@ static NSString *const kReceiverAppID = @"898F3A9B";
 #pragma mark - GCKDeviceManagerDelegate
 
 - (void)deviceManagerDidConnect:(GCKDeviceManager *)deviceManager {
-    NSLog(@"connected!!");
+    NSLog(@"deviceManagerDidConnect:!");
     [self updateButtonStates];
     [self.deviceManager launchApplication:kReceiverAppID];
 }
@@ -764,6 +790,9 @@ didConnectToCastApplication:(GCKApplicationMetadata *)applicationMetadata
         self.isOnWaitingForChromecastStart = NO;
         // request slideshow start
         [self handlerForStartStopButton];
+    } else {
+        // not waiting, set background image
+        [self showBackgroundCastImage];
     }
 }
 
@@ -976,6 +1005,37 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 #pragma mark - Main Methods
 
+// sets the TV image background as soon as the device connects
+- (void)showBackgroundCastImage {
+    
+    // build image info from scratch, checking the server URL each time
+    NSMutableString *mediaURL = [[NSMutableString alloc] init];
+    if (SharedWebServer.serverURL) {
+        [mediaURL appendString:[SharedWebServer.serverURL absoluteString]];
+        
+    } else {
+        NSLog(@"Error catch: SharedWebServer.serverURL nil");
+        return;
+    }
+    
+    // prepare background image
+    UIImage *image = [UIImage imageNamed:@"castground0.jpg"];
+    
+    self.mediaData = UIImageJPEGRepresentation(image, 0.7);
+    self.mediaType = @"image/jpeg";
+    
+    //prepare local web server URL for image
+    [mediaURL appendString:@"background0.jpg"];
+    
+    // update cast
+    [self updateChromecastWithTitle:@"Image"
+                           subTitle:@"from iPhone"
+                           imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
+                           mediaURL:[mediaURL copy]
+                        contentType:self.mediaType];
+    
+}
+
 - (void)handlerForStartStopButton {
     
     // toggle play on/off
@@ -988,7 +1048,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         [self updateMediaControlButtons];
         
         // change button icon to 'play'
-        UIImage *buttonImage = [UIImage imageNamed:@"icon-play"];
+        UIImage *buttonImage = [UIImage imageNamed:@"icon-play-highlight"];
         [self.buttonStartStop setImage:buttonImage forState:UIControlStateNormal];
         
         // change background alpha
@@ -1029,60 +1089,6 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     }
 }
 
-
-// CJ DEPRECATED
-// used in asset picker to populate self.mediaArray
-//- (NSArray *)prepareImagesFromArray:(NSArray *)imageArray {
-//    
-//    if (!imageArray) {
-//        return nil;
-//    }
-//    // resolved "Dead store" warning
-////    NSArray *imageProcessedArray = [[NSArray alloc] init];
-//    if ([imageArray count] > 0) {
-//        // Pre-process images here creating array of JPEG NSData
-////        imageProcessedArray = [self createNSDataArrayFromUIImageArray:imageArray];
-//        // create random array in case it's needed in NSTimer selector later
-//        self.randomNumbersArray = [self createRandomArray:[[self createNSDataArrayFromUIImageArray:imageArray] count]];
-//        // return direcly to avoid 'Dead store'
-//        return [self createNSDataArrayFromUIImageArray:imageArray];
-//        
-//    } else {
-//        // do nothing
-//        NSLog(@"Oops!  No image to process");
-//        return nil;
-//    }
-////    return imageProcessedArray;
-//}
-
-// CJ DEPRECATED
-- (void)displayImagesFromNSDataArray:(NSArray *)imageArray {
-    
-    if (!imageArray) {
-        return;
-    }
-    
-    if ([imageArray count] > 0) {
-        
-        // check if timer already running and invalidate if it is
-        if ([self.timerForShow isValid]) {
-            [self.timerForShow invalidate];
-            self.timerForShow = nil;
-        }
-        
-        // start timer to walk through all array items
-        self.timerForShow = [NSTimer
-                             scheduledTimerWithTimeInterval:self.timerSpeed
-                             target:self
-                             selector:@selector(selectorForDisplayImagesTimer:)
-                             userInfo:self.mediaArray
-                             repeats:YES];
-        
-    } else {
-        // do nothing
-        NSLog(@"Oops!  No image selected, don't invoke NSTimer");
-    }
-}
 
 - (void)displayImagesFromUIImageArray:(NSArray *)imageArray {
     
@@ -1244,14 +1250,42 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
         [mediaURL appendString:@".jpg"];
         
-        // UPDATE CHROMECAST
-        
         // update cast
         [self updateChromecastWithTitle:@"Image"
                                subTitle:@"from iPhone"
                                imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
                                mediaURL:[mediaURL copy]
                             contentType:self.mediaType];
+        
+        /*
+        // animate screen background with fade-out/fade-in
+        self.imageViewBackground.alpha = kBackgroundStrongAlpha;
+        double fadeTime = self.timerSpeed - kBackgroundAnimationSpeed;
+        NSLog(@"fade in time: %f", fadeTime);
+        [UIView animateWithDuration:fadeTime animations:^{
+            // first fade in
+            self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+//            [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+//                // fade back out
+//                self.imageViewBackground.alpha = kBackgroundStrongAlpha;
+//            }];
+        }];
+         */
+        
+        
+        [UIView animateWithDuration:kBackgroundAnimationSpeed animations:^{
+            // fade in quickly
+            self.imageViewBackground.alpha = kBackgroundStrongAlpha;
+            
+            double fadeTime = self.timerSpeed - kBackgroundAnimationSpeed - 0.75;
+            NSLog(@"fade in time: %f", fadeTime);
+            [UIView animateWithDuration:fadeTime animations:^{
+                // first fade in
+                self.imageViewBackground.alpha = kBackgroundSubtleAlpha;
+            }];
+    
+        }];
+        
         
     } else {
         NSLog(@"Oops! self.mediaIndex > [itemArray count]");
@@ -1516,14 +1550,14 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
         // UPDATE CHROMECAST
         
         // update cast
-        // TODO: Uncomment before ship & remove test
+        // Uncomment before ship & remove test
         [self updateChromecastWithTitle:@"Image"
                                subTitle:@"from iPhone"
                                imageURL:@"http://incaffeine.com/img/slides/slide-bg.jpg"
                                mediaURL:[mediaURL copy]
                             contentType:self.mediaType];
         
-        // TODO: comment before ship
+        // comment before ship
 //        [self testChromecast];
         
         
@@ -1551,6 +1585,39 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 
 
 #pragma mark - Helper Methods
+
+- (void)configureControlButtonsAsThinIcons {
+    
+    UIImage *buttonPlay = [UIImage imageNamed:@"icon-play"];
+    [self.buttonStartStop setImage:buttonPlay forState:UIControlStateNormal];
+    
+    UIImage *buttonBack = [UIImage imageNamed:@"icon-back"];
+    [self.buttonBack setImage:buttonBack forState:UIControlStateNormal];
+    
+    UIImage *buttonPause = [UIImage imageNamed:@"icon-pause"];
+    [self.buttonPause setImage:buttonPause forState:UIControlStateNormal];
+    
+    UIImage *buttonNext = [UIImage imageNamed:@"icon-next"];
+    [self.buttonNext setImage:buttonNext forState:UIControlStateNormal];
+    
+}
+
+- (void)configureContolButtonsAsThickIcons {
+    
+    UIImage *buttonPlay = [UIImage imageNamed:@"icon-play-highlight"];
+    [self.buttonStartStop setImage:buttonPlay forState:UIControlStateNormal];
+    
+    UIImage *buttonBack = [UIImage imageNamed:@"icon-back-highlight"];
+    [self.buttonBack setImage:buttonBack forState:UIControlStateNormal];
+    
+    UIImage *buttonPause = [UIImage imageNamed:@"icon-pause-highlight"];
+    [self.buttonPause setImage:buttonPause forState:UIControlStateNormal];
+    
+    UIImage *buttonNext = [UIImage imageNamed:@"icon-next-highlight"];
+    [self.buttonNext setImage:buttonNext forState:UIControlStateNormal];
+    
+}
+
 
 // Created an array of NSData JPEG compressed images from UIImages array
 // method also supports landscape aspect fill & skipping portrait images
@@ -1684,13 +1751,13 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     // set the switch states manually
     // todo: restore from used model
     if (self.hmsSegmentSpeed.selectedSegmentIndex == 0) {
-        self.timerSpeed = 8.0;
+        self.timerSpeed = kTimerSlow;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 1) {
-        self.timerSpeed = 5.0;
+        self.timerSpeed = kTimerMedium;
         
     } else if (self.hmsSegmentSpeed.selectedSegmentIndex == 2) {
-        self.timerSpeed = 3.0;
+        self.timerSpeed = kTimerFast;
     }
     
     if (self.isOnSwitchRandomize) {
@@ -1781,13 +1848,24 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
 // feature - Allow 'select all' in media picker if feasable
 
 // CURRENT VERSION:
-// todo - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // todo - Test app's response to 'Received notification that device disconnected'
-// todo - Debug: Check why had to background and re-enter app in order to see Chromecast option
+// todo - Check why had to background and re-enter app in order to see Chromecast option
 // todo - Update 'next' button to hidden when switching to landscape only from portrait during manual view
 // todo - Convert images to movie with image fade-ins
+
+// 04-01-15 - Adding WatchKit
+// 03-25-15 - Set device background to pulse gradually based on timer speed
+// 03-25-15 - Set buttons to thin on Chrome disconnect, thick on reconnect
+// 03-25-15 - Fixed 'next' button no highlighted.  Refactored code to highlight/thin buttons.
+// 03-25-15 - Installed and set a background image to display on Cast start
+// 03-23-15 - Set up background image alpha to pulse animated on each image transition
+// 03-23-15 - Set up Play and Next button to be thin when device is not connected
+// 03-21-15 - Changed buttons to highlighted state for better visibility
+// 03-21-15 - Fixed some autolayout constraint errors
+// 03-20-15 - Set up a Custom Receiver in HTML and loaded on incaffeine.com
 // consider - Set up and test GCDWebServer to play movies (as files?) https://github.com/swisspol/GCDWebServer/issues/66
 // todo - Test Chromecast Default Receiver
+// 02-09-15 - Test during extended runtime using instruments to watch for memory leaks, CPU usage
 // 02-09-15 - Evaluate using HTML5 for image transitions VS creating a movie file.  Looks like I need to create own receiver http://stackoverflow.com/questions/23800651/chromecast-ios-stream-html-content (1.75 hours 09:00 - 10:45)
 // 02-08-15 - Beta testing reveals viewers dislike image transitions to black screen. (0.5 hours)
 // 02-07-15 - Hide manual 'next' button when starting slideshow from 'buttonStartStop'. (0.5 h + ___ 09:15--9:45)
