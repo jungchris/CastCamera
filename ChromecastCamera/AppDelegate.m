@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ViewController.h"
 
 @interface AppDelegate ()
 
@@ -37,6 +38,21 @@
     [self customizeUserInterface];
     
     return YES;
+}
+
+// this method is called by WatchKit extension
+- (void)application:(UIApplication *)application handleWatchKitExtensionRequest:(NSDictionary *)userInfo reply:(void (^)(NSDictionary *))reply {
+    
+    // extract the button touched
+    NSString *buttonTouched = [userInfo objectForKey:@"buttonTouched"];
+    
+    // send to ViewController
+    AppDelegate *tmpDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    ViewController *vc = (ViewController *)((UINavigationController*)tmpDelegate.window.rootViewController).visibleViewController;
+    vc.remoteControl = buttonTouched;
+    
+    // TODO: trigger change event in vc to act on changed element
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

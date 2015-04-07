@@ -22,6 +22,8 @@
 		2D2F6B9E1A66D006009724B5 /* WSButtonBackgroundPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */; };
 		2D4BB7851A87C94000CDB1DD /* chrome-cool.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D4BB7841A87C94000CDB1DD /* chrome-cool.png */; };
 		2D4BB7871A87CA9100CDB1DD /* chrome-bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D4BB7861A87CA9100CDB1DD /* chrome-bokeh.png */; };
+		2D99D5EA1AD42B3C00C5F1F8 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D99D5E91AD42B3C00C5F1F8 /* GoogleCast.framework */; };
+		2D99D5EB1AD4334700C5F1F8 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D99D5E91AD42B3C00C5F1F8 /* GoogleCast.framework */; };
 		2D9CD9CB1A59F55000032CDE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CA1A59F55000032CDE /* main.m */; };
 		2D9CD9CE1A59F55000032CDE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9CD1A59F55000032CDE /* AppDelegate.m */; };
 		2D9CD9D11A59F55000032CDE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9CD9D01A59F55000032CDE /* ViewController.m */; };
@@ -47,7 +49,12 @@
 		2DC207471A5E300B0016CDE2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */; };
 		2DC3D3D51A68606100EF5F9C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D41A68606100EF5F9C /* iAd.framework */; };
 		2DC3D3D71A68606F00EF5F9C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3D3D61A68606F00EF5F9C /* Social.framework */; };
-		2DD831361AB4C597001BEF95 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD831351AB4C597001BEF95 /* GoogleCast.framework */; };
+		2DDFABB71ACC9A37002AB08E /* InterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDFABB61ACC9A37002AB08E /* InterfaceController.m */; };
+		2DDFABB91ACC9A37002AB08E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFABB81ACC9A37002AB08E /* Images.xcassets */; };
+		2DDFABBD1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFABBC1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app */; };
+		2DDFABC51ACC9A37002AB08E /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFABC31ACC9A37002AB08E /* Interface.storyboard */; };
+		2DDFABC71ACC9A37002AB08E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DDFABC61ACC9A37002AB08E /* Images.xcassets */; };
+		2DDFABCA1ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2DDFABB11ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2DEC6CA81AC3224C00D99255 /* castground0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DEC6CA71AC3224C00D99255 /* castground0.jpg */; };
 		2DF115DA1A5B77B7000734FE /* GCDWebServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BD1A5B77B7000734FE /* GCDWebServer.m */; };
 		2DF115DB1A5B77B7000734FE /* GCDWebServerConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF115BF1A5B77B7000734FE /* GCDWebServerConnection.m */; };
@@ -74,7 +81,35 @@
 			remoteGlobalIDString = 2D9CD9C41A59F55000032CDE;
 			remoteInfo = ChromecastCamera;
 		};
+		2DDFABBE1ACC9A37002AB08E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D9CD9BD1A59F55000032CDE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DDFABBB1ACC9A37002AB08E;
+			remoteInfo = "ChromecastCamera WatchKit App";
+		};
+		2DDFABC81ACC9A37002AB08E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2D9CD9BD1A59F55000032CDE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DDFABB01ACC9A37002AB08E;
+			remoteInfo = "ChromecastCamera WatchKit Extension";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2DDFABD11ACC9A37002AB08E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2DDFABCA1ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2D2F6B7C1A66CFD3009724B5 /* WSAlbumTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSAlbumTableViewController.h; sourceTree = "<group>"; };
@@ -101,6 +136,7 @@
 		2D2F6B981A66D006009724B5 /* WSButtonBackgroundPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSButtonBackgroundPressed@2x.png"; sourceTree = "<group>"; };
 		2D4BB7841A87C94000CDB1DD /* chrome-cool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chrome-cool.png"; sourceTree = "<group>"; };
 		2D4BB7861A87CA9100CDB1DD /* chrome-bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chrome-bokeh.png"; sourceTree = "<group>"; };
+		2D99D5E91AD42B3C00C5F1F8 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "../ExtraLibs/GoogleCastSDK-2.6.0-Release/GoogleCast.framework"; sourceTree = "<group>"; };
 		2D9CD9C51A59F55000032CDE /* ChromecastCamera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChromecastCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D9CD9C91A59F55000032CDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D9CD9CA1A59F55000032CDE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -135,7 +171,15 @@
 		2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2DC3D3D41A68606100EF5F9C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		2DC3D3D61A68606F00EF5F9C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		2DD831351AB4C597001BEF95 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
+		2DDFABB11ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "ChromecastCamera WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DDFABB41ACC9A37002AB08E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DDFABB51ACC9A37002AB08E /* InterfaceController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceController.h; sourceTree = "<group>"; };
+		2DDFABB61ACC9A37002AB08E /* InterfaceController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InterfaceController.m; sourceTree = "<group>"; };
+		2DDFABB81ACC9A37002AB08E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2DDFABBC1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChromecastCamera WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DDFABC21ACC9A37002AB08E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DDFABC41ACC9A37002AB08E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		2DDFABC61ACC9A37002AB08E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2DEC6CA71AC3224C00D99255 /* castground0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = castground0.jpg; sourceTree = "<group>"; };
 		2DF115BC1A5B77B7000734FE /* GCDWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDWebServer.h; sourceTree = "<group>"; };
 		2DF115BD1A5B77B7000734FE /* GCDWebServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDWebServer.m; sourceTree = "<group>"; };
@@ -180,12 +224,12 @@
 				2DF115E81A5B7D02000734FE /* libz.dylib in Frameworks */,
 				2D9CD9FB1A59F63C00032CDE /* SystemConfiguration.framework in Frameworks */,
 				2D9CD9F91A59F63100032CDE /* CoreText.framework in Frameworks */,
-				2DD831361AB4C597001BEF95 /* GoogleCast.framework in Frameworks */,
 				2D9CD9F71A59F62700032CDE /* MediaAccessibility.framework in Frameworks */,
 				2D9CD9F51A59F61D00032CDE /* AVFoundation.framework in Frameworks */,
 				2D9CD9F31A59F61400032CDE /* CoreGraphics.framework in Frameworks */,
 				2D9CD9F11A59F60900032CDE /* UIKit.framework in Frameworks */,
 				2D9CD9EF1A59F60000032CDE /* Foundation.framework in Frameworks */,
+				2D99D5EA1AD42B3C00C5F1F8 /* GoogleCast.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +237,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DDFABAE1ACC9A37002AB08E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D99D5EB1AD4334700C5F1F8 /* GoogleCast.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +280,8 @@
 				2DADFB5C1A7C31A500F54041 /* HMSegmentedControl */,
 				2D2F6B7B1A66CFAA009724B5 /* WSAssetPickerController */,
 				2DF115BA1A5B77B7000734FE /* GCDWebServer */,
+				2DDFABB21ACC9A37002AB08E /* ChromecastCamera WatchKit Extension */,
+				2DDFABC01ACC9A37002AB08E /* ChromecastCamera WatchKit App */,
 				2D9CD9FE1A59F67800032CDE /* Frameworks */,
 				2D9CD9C71A59F55000032CDE /* ChromecastCamera */,
 				2D9CD9E11A59F55000032CDE /* ChromecastCameraTests */,
@@ -240,6 +294,8 @@
 			children = (
 				2D9CD9C51A59F55000032CDE /* ChromecastCamera.app */,
 				2D9CD9DE1A59F55000032CDE /* ChromecastCameraTests.xctest */,
+				2DDFABB11ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex */,
+				2DDFABBC1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -307,11 +363,11 @@
 		2D9CD9FE1A59F67800032CDE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D99D5E91AD42B3C00C5F1F8 /* GoogleCast.framework */,
 				2DC3D3D61A68606F00EF5F9C /* Social.framework */,
 				2DC3D3D41A68606100EF5F9C /* iAd.framework */,
 				2DC207461A5E300B0016CDE2 /* MobileCoreServices.framework */,
 				2DF115E71A5B7D02000734FE /* libz.dylib */,
-				2DD831351AB4C597001BEF95 /* GoogleCast.framework */,
 				2D9CD9FA1A59F63C00032CDE /* SystemConfiguration.framework */,
 				2D9CD9F81A59F63100032CDE /* CoreText.framework */,
 				2D9CD9F61A59F62700032CDE /* MediaAccessibility.framework */,
@@ -330,6 +386,43 @@
 				2DADFB5E1A7C31CC00F54041 /* HMSegmentedControl.m */,
 			);
 			name = HMSegmentedControl;
+			sourceTree = "<group>";
+		};
+		2DDFABB21ACC9A37002AB08E /* ChromecastCamera WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				2DDFABB51ACC9A37002AB08E /* InterfaceController.h */,
+				2DDFABB61ACC9A37002AB08E /* InterfaceController.m */,
+				2DDFABB81ACC9A37002AB08E /* Images.xcassets */,
+				2DDFABB31ACC9A37002AB08E /* Supporting Files */,
+			);
+			path = "ChromecastCamera WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		2DDFABB31ACC9A37002AB08E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2DDFABB41ACC9A37002AB08E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2DDFABC01ACC9A37002AB08E /* ChromecastCamera WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				2DDFABC31ACC9A37002AB08E /* Interface.storyboard */,
+				2DDFABC61ACC9A37002AB08E /* Images.xcassets */,
+				2DDFABC11ACC9A37002AB08E /* Supporting Files */,
+			);
+			path = "ChromecastCamera WatchKit App";
+			sourceTree = "<group>";
+		};
+		2DDFABC11ACC9A37002AB08E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2DDFABC21ACC9A37002AB08E /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2DF115BA1A5B77B7000734FE /* GCDWebServer */ = {
@@ -401,10 +494,12 @@
 				2D9CD9C11A59F55000032CDE /* Sources */,
 				2D9CD9C21A59F55000032CDE /* Frameworks */,
 				2D9CD9C31A59F55000032CDE /* Resources */,
+				2DDFABD11ACC9A37002AB08E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2DDFABC91ACC9A37002AB08E /* PBXTargetDependency */,
 			);
 			name = ChromecastCamera;
 			productName = ChromecastCamera;
@@ -429,6 +524,39 @@
 			productReference = 2D9CD9DE1A59F55000032CDE /* ChromecastCameraTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		2DDFABB01ACC9A37002AB08E /* ChromecastCamera WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DDFABD01ACC9A37002AB08E /* Build configuration list for PBXNativeTarget "ChromecastCamera WatchKit Extension" */;
+			buildPhases = (
+				2DDFABAD1ACC9A37002AB08E /* Sources */,
+				2DDFABAE1ACC9A37002AB08E /* Frameworks */,
+				2DDFABAF1ACC9A37002AB08E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2DDFABBF1ACC9A37002AB08E /* PBXTargetDependency */,
+			);
+			name = "ChromecastCamera WatchKit Extension";
+			productName = "ChromecastCamera WatchKit Extension";
+			productReference = 2DDFABB11ACC9A37002AB08E /* ChromecastCamera WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit-extension";
+		};
+		2DDFABBB1ACC9A37002AB08E /* ChromecastCamera WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2DDFABCF1ACC9A37002AB08E /* Build configuration list for PBXNativeTarget "ChromecastCamera WatchKit App" */;
+			buildPhases = (
+				2DDFABBA1ACC9A37002AB08E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ChromecastCamera WatchKit App";
+			productName = "ChromecastCamera WatchKit App";
+			productReference = 2DDFABBC1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -444,6 +572,14 @@
 					2D9CD9DD1A59F55000032CDE = {
 						CreatedOnToolsVersion = 6.1;
 						TestTargetID = 2D9CD9C41A59F55000032CDE;
+					};
+					2DDFABB01ACC9A37002AB08E = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 27FPRX2G44;
+					};
+					2DDFABBB1ACC9A37002AB08E = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 27FPRX2G44;
 					};
 				};
 			};
@@ -462,6 +598,8 @@
 			targets = (
 				2D9CD9C41A59F55000032CDE /* ChromecastCamera */,
 				2D9CD9DD1A59F55000032CDE /* ChromecastCameraTests */,
+				2DDFABB01ACC9A37002AB08E /* ChromecastCamera WatchKit Extension */,
+				2DDFABBB1ACC9A37002AB08E /* ChromecastCamera WatchKit App */,
 			);
 		};
 /* End PBXProject section */
@@ -496,6 +634,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DDFABAF1ACC9A37002AB08E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DDFABBD1ACC9A37002AB08E /* ChromecastCamera WatchKit App.app in Resources */,
+				2DDFABB91ACC9A37002AB08E /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2DDFABBA1ACC9A37002AB08E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DDFABC51ACC9A37002AB08E /* Interface.storyboard in Resources */,
+				2DDFABC71ACC9A37002AB08E /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +699,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2DDFABAD1ACC9A37002AB08E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DDFABB71ACC9A37002AB08E /* InterfaceController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -550,6 +714,16 @@
 			isa = PBXTargetDependency;
 			target = 2D9CD9C41A59F55000032CDE /* ChromecastCamera */;
 			targetProxy = 2D9CD9DF1A59F55000032CDE /* PBXContainerItemProxy */;
+		};
+		2DDFABBF1ACC9A37002AB08E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DDFABBB1ACC9A37002AB08E /* ChromecastCamera WatchKit App */;
+			targetProxy = 2DDFABBE1ACC9A37002AB08E /* PBXContainerItemProxy */;
+		};
+		2DDFABC91ACC9A37002AB08E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DDFABB01ACC9A37002AB08E /* ChromecastCamera WatchKit Extension */;
+			targetProxy = 2DDFABC81ACC9A37002AB08E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -568,6 +742,14 @@
 				2D9CD9D81A59F55000032CDE /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		2DDFABC31ACC9A37002AB08E /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2DDFABC41ACC9A37002AB08E /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -657,10 +839,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/chrisjungmann/Desktop/Developer/GoogleCastSDK-2.5.1-Release",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
 					"$(PROJECT_DIR)",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
 				);
 				INFOPLIST_FILE = ChromecastCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -673,10 +857,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/chrisjungmann/Desktop/Developer/GoogleCastSDK-2.5.1-Release",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
 					"$(PROJECT_DIR)",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
 				);
 				INFOPLIST_FILE = ChromecastCamera/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -721,6 +907,80 @@
 			};
 			name = Release;
 		};
+		2DDFABCB1ACC9A37002AB08E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ChromecastCamera WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2DDFABCC1ACC9A37002AB08E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/chrisjungmann/Desktop/Developer/ExtraLibs/GoogleCastSDK-2.6.0-Release",
+				);
+				INFOPLIST_FILE = "ChromecastCamera WatchKit Extension/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2DDFABCD1ACC9A37002AB08E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IBSC_MODULE = ChromecastCamera_WatchKit_Extension;
+				INFOPLIST_FILE = "ChromecastCamera WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Debug;
+		};
+		2DDFABCE1ACC9A37002AB08E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				IBSC_MODULE = ChromecastCamera_WatchKit_Extension;
+				INFOPLIST_FILE = "ChromecastCamera WatchKit App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				"TARGETED_DEVICE_FAMILY[sdk=iphonesimulator*]" = "1,4";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -747,6 +1007,24 @@
 			buildConfigurations = (
 				2D9CD9EC1A59F55000032CDE /* Debug */,
 				2D9CD9ED1A59F55000032CDE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DDFABCF1ACC9A37002AB08E /* Build configuration list for PBXNativeTarget "ChromecastCamera WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DDFABCD1ACC9A37002AB08E /* Debug */,
+				2DDFABCE1ACC9A37002AB08E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2DDFABD01ACC9A37002AB08E /* Build configuration list for PBXNativeTarget "ChromecastCamera WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2DDFABCB1ACC9A37002AB08E /* Debug */,
+				2DDFABCC1ACC9A37002AB08E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

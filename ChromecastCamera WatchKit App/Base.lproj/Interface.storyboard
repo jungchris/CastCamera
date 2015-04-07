@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="3737"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController">
+                    <items>
+                        <imageView width="134" height="78" alignment="left" id="TSj-GT-UF3"/>
+                        <group width="1" height="62.5" alignment="left" id="60K-jd-nX5">
+                            <items>
+                                <button width="62" height="1" alignment="left" title="Button" id="rJH-gQ-VsZ">
+                                    <connections>
+                                        <action selector="buttonLeftTouch" destination="AgC-eL-Hgc" id="Iep-s7-qZT"/>
+                                    </connections>
+                                </button>
+                                <button width="63" height="1" alignment="right" title="Button" id="5Ey-YM-lQY">
+                                    <connections>
+                                        <action selector="buttonRightTouch" destination="AgC-eL-Hgc" id="7mL-KS-stl"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="buttonLeft" destination="rJH-gQ-VsZ" id="rbe-Mz-R0j"/>
+                        <outlet property="buttonRight" destination="5Ey-YM-lQY" id="Zee-By-SUt"/>
+                        <outlet property="imageTopWatch" destination="TSj-GT-UF3" id="vaJ-aM-WZq"/>
+                    </connections>
+                </controller>
+            </objects>
+        </scene>
+    </scenes>
+</document>

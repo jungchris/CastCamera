@@ -10,6 +10,7 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 
 #import <GoogleCast/GoogleCast.h>
+
 #import <Social/Social.h>
 #import <iAd/iAd.h>
 
@@ -65,6 +66,12 @@ UIActionSheetDelegate, UINavigationControllerDelegate,UIImagePickerControllerDel
 - (IBAction)hmsSegmentRandomTouch:(id)sender;
 - (IBAction)hmsSegmentRepeatTouch:(id)sender;
 - (IBAction)hmsSegmentLandscapeTouch:(id)sender;
+
+// temporary control properties
+@property (strong, nonatomic) NSString *remoteControl;
+
+// future controler properties
+// TODO: create NSDictionary model
 
 @end
 

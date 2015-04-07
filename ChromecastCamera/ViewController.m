@@ -1618,7 +1618,7 @@ didReceiveStatusForApplication:(GCKApplicationMetadata *)applicationMetadata {
     
 }
 
-
+// TODO: Delete if unused
 // Created an array of NSData JPEG compressed images from UIImages array
 // method also supports landscape aspect fill & skipping portrait images
 - (NSArray *)createNSDataArrayFromUIImageArray:(NSArray *)imageArray {
