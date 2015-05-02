@@ -13,8 +13,8 @@
 #import "HMSegmentedControl.h"
 
 // changed to _kReceiverAppID
-static NSString *const kReceiverAppID = @"898F3A9B";
-//static NSString *const kReceiverAppID = @"F5A38776";
+static NSString *const kReceiverAppID = @"********";
+//static NSString *const kReceiverAppID = @"********";
 
 @interface ViewController () {
     
@@ -123,9 +123,9 @@ static NSString *const kReceiverAppID = @"898F3A9B";
     // TODO: Debug
     /* So what the f?  When I change from Styled to Custom below I no longer see the device in my app on launch.  I moved the index.html file to dropbox and checked its properties.  */
     
-    // prepare to Chromecast (Using Styled Media Receiver: 898F3A9B)
-    // prepare to Chromecast (Using Custom Receiver: F5A38776)
-    self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"F5A38776"];
+    // prepare to Chromecast (Using Styled Media Receiver: ********)
+    // prepare to Chromecast (Using Custom Receiver: *******)
+    self.deviceScanner.filterCriteria = [GCKFilterCriteria criteriaForAvailableApplicationWithID:@"********"];
     
     // prepare to Chromecast (Using namespace 'castcam')
 //    NSArray *nameSpaces = [[NSArray alloc] initWithObjects:@"castcam", nil];
